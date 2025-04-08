@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import { connect } from "http2";
+import connectMongoDB from "./config/mongodb";
 
 export default function Home() {
   // State for login toggle
@@ -11,6 +13,7 @@ export default function Home() {
     setIsLoggedIn(!isLoggedIn);
   };
 
+  connectMongoDB();
   return (
     <div className="min-h-screen grid grid-rows-[auto_1fr_auto] p-8 sm:p-20 gap-8 font-sans">
       {/* Header: Red Bar with Title and Login Button */}
