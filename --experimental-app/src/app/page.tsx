@@ -1,65 +1,125 @@
+"use client"
+
+import { useState } from "react";
 import Image from "next/image";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  // State for login toggle
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  const handleLogin = () => {
+    setIsLoggedIn(!isLoggedIn);
+  };
+
+  return (
+    <div className="min-h-screen grid grid-rows-[auto_1fr_auto] p-8 sm:p-20 gap-8 font-sans">
+      {/* Header: Red Bar with Title and Login Button */}
+      <header className="w-full bg-[#b20000] text-white flex justify-between items-center p-4">
+        <h1 className="text-lg font-bold">Warnell VR Checkout System</h1>
+        <button
+          onClick={handleLogin}
+          className="bg-white text-[#b20000] px-4 py-2 rounded font-semibold"
+        >
+          {isLoggedIn ? "Log Out" : "Login"}
+        </button>
+      </header>
+
+      {/* Main Content: Custom Splash + Default Next.js Template */}
+      <main className="flex flex-col items-center justify-center gap-12">
+        {/* Custom Splash Section: Two Columns */}
+        <div className="flex flex-col sm:flex-row gap-8 w-full max-w-4xl items-center">
+          {/* Left Column: Instructions + VR Headset Image */}
+          <div className="flex-1 flex flex-col items-center sm:items-start gap-4">
+            <p className="text-xl text-center sm:text-left">
+              Login using your UGA email to access our VR Headset Checkout System for labs and projects.
+            </p>
+            <div className="w-full max-w-xs">
+              <Image
+                src="/headset.png" // Place your VR image in /public/
+                alt="VR Headset"
+                width={300}
+                height={200}
+                className="object-contain"
+              />
+            </div>
+          </div>
+          {/* Right Column: Building Info & Image */}
+          <div className="flex-1 flex flex-col items-center sm:items-start gap-4">
+            <p className="text-base text-center sm:text-left">
+              If you have any questions regarding technology, please visit the Warnell IT office located in building 4, room 424.
+            </p>
+            <div className="w-full max-w-xs">
+              <Image
+                src="/warnell-building.jpg" // Place your building image in /public/
+                alt="Warnell Building"
+                width={300}
+                height={200}
+                className="object-cover rounded"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Default Next.js Template Content */}
+        <div className="text-center">
+          <Image
+            className="dark:invert mx-auto"
+            src="/next.svg"
+            alt="Next.js logo"
+            width={180}
+            height={38}
+            priority
+          />
+          <ol className="list-decimal list-inside text-sm font-mono mt-4">
+            <li className="mb-2 tracking-tight">
+              Get started by editing{" "}
+              <code className="bg-black/5 dark:bg-white/6 px-1 py-0.5 rounded font-mono font-semibold">
+                src/app/page.tsx
+              </code>
+              .
+            </li>
+            <li className="tracking-tight">
+              Save and see your changes instantly.
+            </li>
+          </ol>
+          <div className="flex flex-col sm:flex-row gap-4 mt-4 justify-center">
+            <a
+              className="rounded-full border border-transparent transition-colors bg-gray-800 text-white flex items-center justify-center gap-2 px-4 py-2"
+              href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Image
+                className="dark:invert"
+                src="/vercel.svg"
+                alt="Vercel logomark"
+                width={20}
+                height={20}
+              />
+              Deploy now
+            </a>
+            <a
+              className="rounded-full border border-gray-300 transition-colors flex items-center justify-center px-4 py-2"
+              href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Read our docs
+            </a>
+          </div>
         </div>
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
+
+      {/* Footer: Navigation Links */}
+      <footer className="w-full border-t pt-4 flex flex-wrap items-center justify-center gap-4">
         <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
+          className="flex items-center gap-2 hover:underline"
           href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
           target="_blank"
           rel="noopener noreferrer"
         >
           <Image
-            aria-hidden
+            aria-hidden="true"
             src="/file.svg"
             alt="File icon"
             width={16}
@@ -68,13 +128,13 @@ export default function Home() {
           Learn
         </a>
         <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
+          className="flex items-center gap-2 hover:underline"
           href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
           target="_blank"
           rel="noopener noreferrer"
         >
           <Image
-            aria-hidden
+            aria-hidden="true"
             src="/window.svg"
             alt="Window icon"
             width={16}
@@ -83,13 +143,13 @@ export default function Home() {
           Examples
         </a>
         <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
+          className="flex items-center gap-2 hover:underline"
           href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
           target="_blank"
           rel="noopener noreferrer"
         >
           <Image
-            aria-hidden
+            aria-hidden="true"
             src="/globe.svg"
             alt="Globe icon"
             width={16}
