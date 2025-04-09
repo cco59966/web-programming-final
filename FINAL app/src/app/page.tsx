@@ -2,9 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { connect } from "http2";
 import connectMongoDB from "./config/mongodb";
-import CalendarView from './components/CalendarView';
 
 export default function Home() {
   // State for login toggle
