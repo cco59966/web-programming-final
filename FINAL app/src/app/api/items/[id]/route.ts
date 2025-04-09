@@ -1,5 +1,5 @@
 import connectMongoDB from "@/app/config/mongodb";
-import { Item } from "@/app/models/itemSchema";
+import User  from "@/app/models/User.js";
 import { NextResponse } from "next/server";
 import { NextRequest } from "next/server";
 import mongoose from "mongoose";
@@ -10,15 +10,15 @@ interface RouteParams {
 }
 export async function PUT(request: NextRequest, {params}: RouteParams) {
     const { id } = await params;
-    const { owner, title, description, url } = await request.json();
+    const { name, email, password, role } = await request.json();
     await connectMongoDB();
-    const item = await Item.findByIdAndUpdate(id, { owner, title, description, url }, { new: true });
+    const item = await User.findByIdAndUpdate(id, { name, email, password, role }, { new: true });
     return NextResponse.json({ item }, { status: 200 });
 }
 export async function GET(request:NextRequest, {params}:RouteParams) {
     const {id} = await params;
     await connectMongoDB();
-    const item = await Item.findOne({_id: id});
+    const item = await User.findOne({_id: id});
     return NextResponse.json({item}, {status: 200});
 }
 export async function DELETE(request: NextRequest, {params}: RouteParams) {
@@ -27,7 +27,7 @@ export async function DELETE(request: NextRequest, {params}: RouteParams) {
         return NextResponse.json({ message: "Invalid ID" }, { status: 400 });
     }
     await connectMongoDB();
-    const deletedItem = await Item.findByIdAndDelete(id);
+    const deletedItem = await User.findByIdAndDelete(id);
     if (!deletedItem) {
         return NextResponse.json({ message: "Item not found" }, { status: 404 });
     }
