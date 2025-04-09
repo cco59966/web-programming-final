@@ -1,3 +1,4 @@
+import { time } from "console";
 import mongoose from "mongoose";
 
 const CheckoutSchema = new mongoose.Schema(
@@ -5,6 +6,7 @@ const CheckoutSchema = new mongoose.Schema(
     headsetId: { type: String, required: true },
     userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
     checkoutDate: { type: Date, default: Date.now },
+    returnBy: {type: Date },
   },
   { timestamps: true }
 );
