@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { connect } from "http2";
 import connectMongoDB from "./config/mongodb";
+import CalendarView from './components/CalendarView';
 
 export default function Home() {
   // State for login toggle
@@ -46,6 +47,7 @@ export default function Home() {
               />
             </div>
           </div>
+          
           {/* Right Column: Building Info & Image */}
           <div className="flex-1 flex flex-col items-center sm:items-start gap-4">
             <p className="text-base text-center sm:text-left">
