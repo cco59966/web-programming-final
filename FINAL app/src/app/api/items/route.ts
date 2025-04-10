@@ -13,10 +13,11 @@ export async function POST(request: NextRequest) {
 
     // Handling 'user' type (create a new user)
     if (type === "user") {
-      const { name, email, role } = data;
+      const { name, email, password, role } = data;
       const newUser = new User({
         name,
         email,
+        password,
         role: role || "student",  // Default role to 'student' if not provided
       });
       await newUser.save();
