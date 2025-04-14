@@ -88,7 +88,7 @@ const HeadsetItem = ({ id, name, image }: { id: number; name: string; image: str
 return (
     <div className="min-h-screen flex flex-col">
     {/* HEADER (Red Bar) */}
-    <header className="bg-[#b20000] text-black flex justify-between items-center px-8 py-6">
+    <header className="bg-[#BA0C2F] text-black flex justify-between items-center px-8 py-6">
       <div className = "flex items-center justify-start">
  
       <h1 className="text-3xl font-bold text-left">Warnell VR Checkout System</h1>
