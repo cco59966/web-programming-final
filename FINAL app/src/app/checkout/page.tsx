@@ -1,5 +1,5 @@
 import React from 'react';
-import './CheckoutPage.css';
+import '../css/CheckoutPage.css';
 import Image from "next/image";
 import connectMongoDB from "../config/mongodb";
 
