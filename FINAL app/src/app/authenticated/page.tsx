@@ -1,8 +1,8 @@
 "use client"
 
 import { useState } from "react";
-import connectMongoDB from "./config/mongodb";
-import './css/VRPage.css';
+import connectMongoDB from ".././config/mongodb";
+import '.././css/VRPage.css';
 import { useRouter } from 'next/navigation';
 
 export default function Home() {
@@ -17,7 +17,7 @@ export default function Home() {
     // Handle form submission logic here
     console.log('Form submitted');
    
-      router.push('/authenticated'); // ✅ Redirect to desired page
+      router.push('/authenticated.tsx'); // ✅ Redirect to desired page
     
   };
 
@@ -28,33 +28,9 @@ export default function Home() {
     <div className="vr-container">
       <header className="vr-header"></header>
 
-      <div className="vr-title">Warnell VR Checkout System</div>
+      <div className="vr-title">Your Headsets</div>
 
-      <div className="vr-login-form">
-        <form onSubmit={handleSubmit}>
-          <input 
-            type="text" 
-            name="name" 
-            placeholder="Enter your name" 
-            required 
-          />
-          <input 
-            type="email" 
-            name="email" 
-            placeholder="Enter your email" 
-            required 
-          />
-          <input 
-            type="password" 
-            name="password" 
-            placeholder="Enter your password" 
-            required 
-          />
-          
-          <button type="submit">Login</button>
-        
-        </form>
-      </div>
+      
 
       <footer className="vr-footer">
         <div className="vr-links-column">
