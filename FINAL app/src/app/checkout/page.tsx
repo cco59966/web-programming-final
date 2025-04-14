@@ -26,7 +26,7 @@ const router = useRouter(); // Using Next.js router for navigation
     // Handle form submission logic here
     console.log('Form submitted');
    
-      router.push('checkout'); // ✅ Redirect to desired page
+      router.push('authenticated'); // ✅ Redirect to desired page
     
   };
   const handleSubmit3 = (e: React.FormEvent<HTMLFormElement>) => {
@@ -58,7 +58,7 @@ const router = useRouter(); // Using Next.js router for navigation
        
        className="bg-black text-white px-4 py-2 rounded font-semibold"
      >
-      Add Items
+      View Current Reservations
      </button>
      </form>
      <form onSubmit={handleSubmit}>
