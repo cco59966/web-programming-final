@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import connectMongoDB from ".././config/mongodb";
-import '././css/VRPage.css';
+import '.././css/VRPage.css';
 import { useRouter } from 'next/navigation';
 
 export default function Home() {

@@ -18,10 +18,25 @@ export default function Home() {
     // Handle form submission logic here
     console.log('Form submitted');
    
-      router.push('/authenticated.tsx'); // ✅ Redirect to desired page
+      router.push('/login'); // ✅ Redirect to desired page
     
   };
-
+  const handleSubmit2 = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    // Handle form submission logic here
+    console.log('Form submitted');
+   
+      router.push('checkout-page'); // ✅ Redirect to desired page
+    
+  };
+  const handleSubmit3 = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    // Handle form submission logic here
+    console.log('Form submitted');
+   
+      router.push('page.tsx'); // ✅ Redirect to desired page
+    
+  };
   connectMongoDB();
 
 
@@ -42,29 +57,102 @@ const dummyHeadsets = [
   },
 ];
 
-
 const HeadsetItem = ({ id, name, image }: { id: number; name: string; image: string }) => (
-    <div style={{ display: 'flex', alignItems: 'center', gap: '5rem' }}>
-    <Image src={image} alt={name} width={200} height={150} priority />
-    <h3>Headset #{id}</h3>
-    <h3>{name}</h3>
-  </div>
-   
+    <div className="w-full mb-8">
+      <div className="flex bg-white shadow-md rounded-xl p-6 h-[200px]">
+        
+        {/* Image Section */}
+        <div className="flex-1 flex justify-center items-center">
+          <Image src={image} alt={name} width={200} height={150} priority />
+        </div>
+  
+        {/* Text Section */}
+        <div className="flex-1 flex flex-col justify-center pl-4">
+          <h3 className="text-xl font-semibold text-gray-800">Headset #{id}</h3>
+          <p className="text-gray-600">{name}</p>
+        </div>
+  
+        {/* Button Section */}
+        <div className="flex-1 flex items-center justify-end">
+          <button className="bg-black text-white px-4 py-2 rounded font-semibold">
+            Return
+          </button>
+        </div>
+      </div>
+    </div>
   );
-
+  
+  
+  
+  
 return (
+    <div className="min-h-screen flex flex-col">
+    {/* HEADER (Red Bar) */}
+    <header className="bg-[#b20000] text-black flex justify-between items-center px-8 py-6">
+      <div className = "flex items-center justify-start">
+      {/* Button with Triangle */}
+    <button className="bg-black text-white p-2 rounded mr-4 flex items-center justify-center">
+      <svg 
+        className="w-4 h-4" 
+        viewBox="0 0 20 20" 
+        fill="currentColor" 
+        aria-hidden="true"
+    >
+        {/* Example triangle polygon (pointing right) */}
+        <polygon points="5,3 15,10 5,17" />
+      </svg>
+    </button>
+      <h1 className="text-3xl font-bold text-left">Warnell VR Checkout System</h1>
+      </div>
+      <form onSubmit={handleSubmit3}>
+      <button
+       
+       className="bg-black text-white px-4 py-2 rounded font-semibold"
+     >
+      Return Home
+     </button>
+     </form>
+      <form onSubmit={handleSubmit2}>
+      <button
+       
+       className="bg-black text-white px-4 py-2 rounded font-semibold"
+     >
+      Add Items
+     </button>
+     </form>
+     <form onSubmit={handleSubmit}>
+      <button
+       
+        className="bg-black text-white px-4 py-2 rounded font-semibold"
+      >
+       Logout
+      </button>
+      </form>
+    </header>
+  
+    
   <div className="vr-container2">
-    <header className="vr-header"></header>
+    
 
-    <div className="vr-title">Your Headsets</div>
+    
+
+  
+
       
+
+
+
+
     <div>
-      <h2>Available VR Headsets</h2>
+
+      
+      <div className="overflow-y-auto h-[600px] pr-4">
       <div className="headset-list">
         {dummyHeadsets.map((headset) => (
           <HeadsetItem key={headset.id} id={headset.id} name={headset.name} image={headset.image} />
         ))}
       </div>
+    </div>
     </div>
       <footer className="vr-footer">
         <div className="vr-links-column">
@@ -87,6 +175,7 @@ return (
       </footer>
 
       <img src="./images/uga.png" alt="UGA Logo" className="vr-logo" />
+    </div>
     </div>
   );
 }
