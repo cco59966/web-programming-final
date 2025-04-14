@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import connectMongoDB from "./config/mongodb";
+import '././css/VRPage.css';
 
 export default function Home() {
   // State for login toggle
@@ -18,7 +19,7 @@ export default function Home() {
   return (
     <div className="min-h-screen flex flex-col">
       {/* HEADER (Red Bar) */}
-      <header className="bg-[#b20000] text-black flex justify-between items-center px-8 py-6">
+      <header className="bg-[#BA0C2F] text-black flex justify-between items-center px-8 py-6">
         <div className = "flex items-center justify-start">
         {/* Button with Triangle */}
       <button className="bg-black text-white p-2 rounded mr-4 flex items-center justify-center">
@@ -61,7 +62,7 @@ export default function Home() {
           {/* VR Headset Image */}
           <div className="w-full max-w-sm">
             <Image
-              src="/vr-headset.png"           // in /public/headset.png
+              src="/FINAL app/src/images/vrheadset.jpeg"           // in /public/headset.png
               alt="VR Headset"
               width={300}
               height={200}
@@ -72,7 +73,7 @@ export default function Home() {
           {/* Building Image */}
           <div className="w-full max-w-sm">
             <Image
-              src="/uga-building.png"  // in /public/warnell-building.jpg
+              src="/FINAL app/src/images/Warnell.jpeg"  // in /public/warnell-building.jpg
               alt="Warnell Building"
               width={300}
               height={200}
@@ -88,7 +89,7 @@ export default function Home() {
         <div className="flex items-center space-x-4 mb-4 sm:mb-0">
           <div className="relative w-40 h-40">
             <Image
-              src="/uga-logo.png"        // in /public/uga-logo.png
+              src="/FINAL app/src/app/uga.png"        // in /public/uga-logo.png
               alt="UGA Logo"
               fill
               className="object-contain"
