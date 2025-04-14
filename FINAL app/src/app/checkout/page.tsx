@@ -1,24 +1,85 @@
+'use client'
+
 import React from 'react';
 import '.././css/CheckoutPage.css';
 import Image from "next/image";
 import connectMongoDB from "../config/mongodb";
+import { useRouter } from 'next/navigation';
+import '.././css/VRPage.css';
 
 
 const CheckoutPage: React.FC = () => {
+  const router = useRouter();
+  
+const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
+  // Handle form submission logic here
+  console.log('Form submitted');
+ 
+    router.push('/login'); // ✅ Redirect to desired page
+  
+};
+const handleSubmit2 = (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
+  // Handle form submission logic here
+  console.log('Form submitted');
+ 
+    router.push('checkout'); // ✅ Redirect to desired page
+  
+};
+const handleSubmit3 = (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
+  // Handle form submission logic here
+  console.log('Form submitted');
+ 
+    router.push('/'); // ✅ Redirect to desired page
+  
+};
   return (
-    <div>
-      <header>
-        <div className="dropdown">
-          Dropdown
-          <div className="dropdown-content">
-            <a href="#">Option 1</a>
-            <a href="#">Option 2</a>
-            <a href="#">Option 3</a>
-          </div>
-        </div>
-        <div className="title">Warnell VR Checkout System</div>
-        <button className="logout-button">Logout</button>
-      </header>
+    
+    <div className="min-h-screen flex flex-col">
+    {/* HEADER (Red Bar) */}
+    <header className="bg-[#b20000] text-black flex justify-between items-center px-8 py-6">
+      <div className = "flex items-center justify-start">
+      {/* Button with Triangle */}
+    <button className="bg-black text-white p-2 rounded mr-4 flex items-center justify-center">
+      <svg 
+        className="w-4 h-4" 
+        viewBox="0 0 20 20" 
+        fill="currentColor" 
+        aria-hidden="true"
+    >
+        {/* Example triangle polygon (pointing right) */}
+        <polygon points="5,3 15,10 5,17" />
+      </svg>
+    </button>
+      <h1 className="text-3xl font-bold text-left">Warnell VR Checkout System</h1>
+      </div>
+      <form onSubmit={handleSubmit3}>
+      <button
+       
+       className="bg-black text-white px-4 py-2 rounded font-semibold"
+     >
+      Return Home
+     </button>
+     </form>
+      <form onSubmit={handleSubmit2}>
+      <button
+       
+       className="bg-black text-white px-4 py-2 rounded font-semibold"
+     >
+      Add Items
+     </button>
+     </form>
+     <form onSubmit={handleSubmit}>
+      <button
+       
+        className="bg-black text-white px-4 py-2 rounded font-semibold"
+      >
+       Logout
+      </button>
+      </form>
+    </header>
 
       {/* Info box on the left-hand side */}
       <div className="info">
@@ -39,11 +100,9 @@ const CheckoutPage: React.FC = () => {
           
           <label htmlFor="checkoutDate">Choose checkout date:</label>
           <input type="date" id="checkoutDate" name="checkoutDate" required />
+        
           
-          <label htmlFor="startDate">Start date:</label>
-          <input type="date" id="startDate" name="startDate" required />
-          
-          <label htmlFor="endDate">End date:</label>
+          <label htmlFor="endDate">Return date:</label>
           <input type="date" id="endDate" name="endDate" required />
           
           <button type="submit">Submit Reservation</button>
