@@ -8,6 +8,8 @@ interface RouteParams {
         id: string;
     };
 }
+
+// PUT request information, got this from the slides
 export async function PUT(request: NextRequest, {params}: RouteParams) {
     const { id } = await params;
     const { name, email, password, role } = await request.json();
@@ -15,12 +17,16 @@ export async function PUT(request: NextRequest, {params}: RouteParams) {
     const item = await User.findByIdAndUpdate(id, { name, email, password, role }, { new: true });
     return NextResponse.json({ item }, { status: 200 });
 }
+
+// GET request information, got this from the slides
 export async function GET(request:NextRequest, {params}:RouteParams) {
     const {id} = await params;
     await connectMongoDB();
     const item = await User.findOne({_id: id});
     return NextResponse.json({item}, {status: 200});
 }
+
+// DELETE request information, got this from the slides
 export async function DELETE(request: NextRequest, {params}: RouteParams) {
     const { id } = await params;
     if (!mongoose.Types.ObjectId.isValid(id)) {

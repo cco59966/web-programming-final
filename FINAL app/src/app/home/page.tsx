@@ -2,24 +2,15 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import connectMongoDB from "./config/mongodb";
-import '././css/VRPage.css';
+import connectMongoDB from ".././config/mongodb";
+import '.././css/VRPage.css';
 import Link from "next/link"
 import { useRouter } from 'next/navigation';
 export default function Home() {
   // State for login toggle
   const router = useRouter();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  
 
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
-  const handleLogin = () => {
-    setIsLoggedIn(!isLoggedIn);
-  };
-
-  const handleDropdownToggle = () => {
-    setIsDropdownOpen(!isDropdownOpen);
-  }
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -42,7 +33,7 @@ export default function Home() {
     // Handle form submission logic here
     console.log('Form submitted');
    
-      router.push('/'); // ✅ Redirect to desired page
+      router.push('checkout'); // ✅ Redirect to desired page
     
   };
   // Connect to the database (if required for your page).
@@ -57,18 +48,24 @@ export default function Home() {
      
         <h1 className="text-3xl font-bold text-left">Warnell VR Checkout System</h1>
         </div>
-        <form onSubmit={handleSubmit3}>
-       
+        <form onSubmit={handleSubmit2}>
+        <button
+         
+          className="bg-black text-white px-4 py-2 rounded font-semibold"
+        >
+         Add Items
+        </button>
        </form>
-       {isLoggedIn && (
-  <form onSubmit={handleSubmit2}>
-    <button
-      className="bg-black text-white px-4 py-2 rounded font-semibold"
-    >
-      View Current Reservations
-    </button>
-  </form>
-)}
+        <form onSubmit={handleSubmit3}>
+        <button
+         
+          className="bg-black text-white px-4 py-2 rounded font-semibold"
+        >
+         View Current Reservations
+        </button>
+       </form>
+       
+
 
 
        <form onSubmit={handleSubmit}>

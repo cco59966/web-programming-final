@@ -5,21 +5,21 @@ import connectMongoDB from ".././config/mongodb";
 import '.././css/VRPage.css';
 import Image from "next/image";
 import { useRouter } from 'next/navigation';
+import { set } from "mongoose";
 
 export default function Home() {
   // State for login toggle
   const router = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const handleLogin = () => {
-    setIsLoggedIn(!isLoggedIn);
-  };
+
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsLoggedIn(true); // Set login state to true // CHANGE THIS FOR THE END OF THE PROJECT
     // Handle form submission logic here
     console.log('Form submitted');
    
-      router.push('/login'); // ✅ Redirect to desired page
+      router.push('authenticated'); // ✅ Redirect to desired page
     
   };
   const handleSubmit2 = (e: React.FormEvent<HTMLFormElement>) => {
@@ -27,7 +27,7 @@ export default function Home() {
     // Handle form submission logic here
     console.log('Form submitted');
    
-      router.push('checkout'); // ✅ Redirect to desired page
+      router.push('login'); // ✅ Redirect to desired page
     
   };
   const handleSubmit3 = (e: React.FormEvent<HTMLFormElement>) => {
@@ -48,20 +48,11 @@ export default function Home() {
       <header className="bg-[#b20000] text-black flex justify-between items-center px-8 py-6">
         <div className = "flex items-center justify-start">
         {/* Button with Triangle */}
-      <button className="bg-black text-white p-2 rounded mr-4 flex items-center justify-center">
-        <svg 
-          className="w-4 h-4" 
-          viewBox="0 0 20 20" 
-          fill="currentColor" 
-          aria-hidden="true"
-      >
-          {/* Example triangle polygon (pointing right) */}
-          <polygon points="5,3 15,10 5,17" />
-        </svg>
-      </button>
+    
         <h1 className="text-3xl font-bold text-left">Warnell VR Checkout System</h1>
         </div>
         <form onSubmit={handleSubmit3}>
+       
         <button
          
          className="bg-black text-white px-4 py-2 rounded font-semibold"
@@ -69,22 +60,8 @@ export default function Home() {
         Return Home
        </button>
        </form>
-        <form onSubmit={handleSubmit2}>
-        <button
-         
-         className="bg-black text-white px-4 py-2 rounded font-semibold"
-       >
-        Add Items
-       </button>
-       </form>
-       <form onSubmit={handleSubmit}>
-        <button
-         
-          className="bg-black text-white px-4 py-2 rounded font-semibold"
-        >
-         Logout
-        </button>
-        </form>
+ 
+     
       </header>
       
       <div className="vr-container">
