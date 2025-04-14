@@ -5,11 +5,7 @@ import connectMongoDB from ".././config/mongodb";
 import '.././css/VRPage.css';
 import Image from "next/image";
 import { useRouter } from 'next/navigation';
-<<<<<<< HEAD
-import Image from "next/image";
-=======
 import { set } from "mongoose";
->>>>>>> 28f877e4791f9bcb0aeae004d5b1f21c0c0866f0
 
 export default function Home() {
   // State for login toggle
@@ -46,11 +42,10 @@ export default function Home() {
 
 
   return (
-<<<<<<< HEAD
+
     <div className="min-h-screen flex flex-col vr-container">
-      <header className="vr-header"></header>
+      
       <main className = "flex-1">
-      <div className="vr-title">Warnell VR Checkout System</div>
       <div className="vr-login-form">
         <form onSubmit={handleSubmit}>
           <input 
@@ -73,10 +68,9 @@ export default function Home() {
           />
           
           <button type="submit">Login</button>
-        
-=======
+        </form>
+      </div>
 
-      <div className="min-h-screen flex flex-col">
       {/* HEADER (Red Bar) */}
       <header className="bg-[#b20000] text-black flex justify-between items-center px-8 py-6">
         <div className = "flex items-center justify-start">
@@ -93,7 +87,7 @@ export default function Home() {
         Return Home
        </button>
        </form>
-<<<<<<< HEAD
+
         <form onSubmit={handleSubmit2}>
         <button
          
@@ -109,17 +103,15 @@ export default function Home() {
         >
          Logout
         </button>
->>>>>>> d81b2d15a4d74fd74a112ec769a367ddba0b1891
+
         </form>
-=======
+
  
      
->>>>>>> 28f877e4791f9bcb0aeae004d5b1f21c0c0866f0
+
       </header>
       
       <div className="vr-container">
-        
-  
         <div className="vr-login-form">
           <form onSubmit={handleSubmit}>
             <input 
@@ -145,36 +137,8 @@ export default function Home() {
           
           </form>
         </div>
-  
-        <footer className="vr-footer">
-          <div className="vr-links-column">
-            <a href="https://eits.uga.edu/resources/" target="_blank" rel="noopener noreferrer">
-              Resources
-            </a>
-            <a href="https://warnell.uga.edu/resources-students" target="_blank" rel="noopener noreferrer">
-              Contact Warnell IT
-            </a>
-            <a href="https://my.uga.edu/htmlportal/index.php?guest=normal/render.uP" target="_blank" rel="noopener noreferrer">
-              MYUGA
-            </a>
-            <a href="https://eits.uga.edu/support/" target="_blank" rel="noopener noreferrer">
-              Help
-            </a>
-          </div>
-          <div className="vr-copyright">
-            © University of Georgia.
-          </div>
-        </footer>
-  
-        <img src="uga.png" alt="UGA Logo" className="vr-logo" />
-      </div>
-<<<<<<< HEAD
-<<<<<<< HEAD
+        </div>
       </main>
-=======
-<<<<<<< HEAD
-=======
->>>>>>> d81b2d15a4d74fd74a112ec769a367ddba0b1891
 
       {/* FOOTER (Black Bar) */}
       <footer className="bg-black text-white p-0.5 flex flex-col sm:flex-row justify-between items-center">
@@ -201,13 +165,8 @@ export default function Home() {
         </div>
       </footer>
 
-<<<<<<< HEAD
-=======
       <Image src="/uga.png" alt="UGA Logo" className="vr-logo" width={200} height={150} priority />
->>>>>>> f02e56078de117d675215a694a690d0a146d05a6
->>>>>>> d81b2d15a4d74fd74a112ec769a367ddba0b1891
-=======
->>>>>>> 28f877e4791f9bcb0aeae004d5b1f21c0c0866f0
+
     </div>
   );
 }
