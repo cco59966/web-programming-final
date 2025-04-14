@@ -3,14 +3,22 @@
 import { useState } from "react";
 import Image from "next/image";
 import connectMongoDB from "./config/mongodb";
+import '././css/VRPage.css';
+import Link from "next/link"
 
 export default function Home() {
   // State for login toggle
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
   const handleLogin = () => {
     setIsLoggedIn(!isLoggedIn);
   };
+
+  const handleDropdownToggle = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  }
 
   // Connect to the database (if required for your page).
   connectMongoDB();
@@ -18,10 +26,12 @@ export default function Home() {
   return (
     <div className="min-h-screen flex flex-col">
       {/* HEADER (Red Bar) */}
-      <header className="bg-[#b20000] text-black flex justify-between items-center px-8 py-6">
+      <header className="relative bg-[#b20000] text-black flex justify-between items-center px-8 py-6">
         <div className = "flex items-center justify-start">
         {/* Button with Triangle */}
-      <button className="bg-black text-white p-2 rounded mr-4 flex items-center justify-center">
+      <button
+      onClick = {handleDropdownToggle} 
+      className="bg-black text-white p-2 rounded mr-4 flex items-center justify-center cursor-pointer">
         <svg 
           className="w-4 h-4" 
           viewBox="0 0 20 20" 
@@ -34,12 +44,30 @@ export default function Home() {
       </button>
         <h1 className="text-3xl font-bold text-left">Warnell VR Checkout System</h1>
         </div>
+        <Link href="/login">
         <button
           onClick={handleLogin}
-          className="bg-black text-white px-4 py-2 rounded font-semibold"
+          className="bg-black text-white px-4 py-2 rounded font-semibold cursor-pointer"
         >
           {isLoggedIn ? "Log Out" : "Login"}
         </button>
+        </Link>
+        {/* Navigation Dropdown (conditionally rendered) */}
+      {isDropdownOpen && (
+        <div className="absolute top-full left-4 mt-2 w-40 bg-white text-black rounded shadow-md z-10">
+          <ul>
+            <li>
+                <a className="block px-4 py-2 hover:bg-gray-200">Profile</a>
+            </li>
+            <li>
+                <a className="block px-4 py-2 hover:bg-gray-200">Settings</a>
+            </li>
+            <li>
+                <a href="https://eits.uga.edu/support/" className="block px-4 py-2 hover:bg-gray-200">Help</a>
+            </li>
+          </ul>
+        </div>
+      )}
       </header>
 
       {/* MAIN CONTENT */}
@@ -99,13 +127,14 @@ export default function Home() {
 
         {/* Right: Footer Links */}
         <div className="flex flex-col items-center space-y-2">
-          <a href="#" className="hover:underline">Resources</a>
-          <a href="#" className="hover:underline">Contact Warnell IT</a>
-          <a href="#" className="hover:underline">MyUGA</a>
-          <a href="#" className="hover:underline">Help</a>
+          <a href="https://eits.uga.edu/resources/" className="hover:underline">Resources</a>
+          <a href="https://warnell.uga.edu/resources-students" className="hover:underline">Contact Warnell IT</a>
+          <a href="https://my.uga.edu/htmlportal/index.php?guest=normal/render.uP" className="hover:underline">MyUGA</a>
+          <a href="https://eits.uga.edu/support/" className="hover:underline">Help</a>
         </div>
       </footer>
     </div>
   );
 }
+
 
