@@ -3,6 +3,7 @@
 import { useState } from "react";
 import connectMongoDB from ".././config/mongodb";
 import '.././css/VRPage.css';
+import Image from "next/image";
 import { useRouter } from 'next/navigation';
 
 export default function Home() {
@@ -76,7 +77,7 @@ export default function Home() {
         </div>
       </footer>
 
-      <img src="uga.png" alt="UGA Logo" className="vr-logo" />
+      <Image src="/uga.png" alt="UGA Logo" className="vr-logo" width={200} height={150} priority />
     </div>
   );
 }

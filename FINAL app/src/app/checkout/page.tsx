@@ -62,7 +62,7 @@ const CheckoutPage: React.FC = () => {
         </div>
       </footer>
 
-      <img src="univ.png" alt="UGA Logo" className="logo" />
+      <Image src="/univ.png" alt="UGA Logo" className="vr-logo" width={200} height={150} priority />
     </div>
   );
 };
