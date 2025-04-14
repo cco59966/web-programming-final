@@ -1,0 +1,110 @@
+.vr-container {
+    margin: 0;
+    padding: 0;
+    background: url('/vr.jpg') no-repeat center center fixed;
+    background-size: cover;
+    height: 100vh;
+    position: relative;
+    font-family: Arial, sans-serif;
+    }
+     
+    .vr-header {
+    width: 100%;
+    background-color: rgb(203, 16, 16);
+    height: 50px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    }
+     
+    .vr-footer {
+    width: 100%;
+    background-color: black;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    position: absolute;
+    bottom: 0;
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 20px;
+    flex-direction: column;
+    }
+     
+    .vr-logo {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    width: 200px;
+    height: auto;
+    }
+     
+    .vr-title {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 24px;
+    color: black;
+    font-weight: bold;
+    }
+     
+    .vr-login-form {
+    position: absolute;
+    top: 20%;
+    left: 70%;
+    transform: translateX(-50%);
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    border-radius: 8px;
+    width: 300px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    
+    .vr-login-form input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    }
+     
+    .vr-login-form button {
+    width: 100%;
+    padding: 10px;
+    background-color: rgb(203, 16, 16);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    }
+     
+    .vr-login-form button:hover {
+    background-color: rgb(153, 12, 12);
+    }
+     
+    .vr-links-column {
+    color: white;
+    font-size: 12px;
+    text-align: right;
+    margin-top: 5px;
+    margin-right: 10px; 
+    }
+     
+    .vr-links-column a {
+    display: block;
+    color: white;
+    text-decoration: none;
+    margin: 2px 0;
+    }
+     
+    .vr-links-column a:hover {
+    text-decoration: underline;
+    }
+     
+    .vr-copyright {
+    margin-top: 10px;
+    }
+    
