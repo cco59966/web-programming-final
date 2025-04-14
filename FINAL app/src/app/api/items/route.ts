@@ -1,53 +1,69 @@
+// Import database connection and required models
 import connectMongoDB from "../../config/mongodb";
 import User from "../../models/User.js";
 import Headset from "../../models/Headset.js";
 import Checkout from "../../models/Checkout.js";
+
+// Import Next.js utilities for handling server requests and responses
 import { NextResponse } from "next/server";
 import { NextRequest } from "next/server";
 
+// Define the POST endpoint to handle various operations based on 'type'
 export async function POST(request: NextRequest) {
   try {
+    // Extract the 'type' and 'data' fields from the incoming JSON body
     const { type, data } = await request.json();
     console.log("Request received: ", { type, data });
+
+    // Connect to the MongoDB database
     await connectMongoDB();
 
-    // Handling 'headset' type (adding a new headset)
-if (type === "headset") {
-  const { id, status, assignedTo, returnBy } = data;
+    // ─────────────────────────────────────────────
+    // TYPE: 'headset' – Add a new headset to the system
+    // ─────────────────────────────────────────────
+    if (type === "headset") {
+      const { id, status, assignedTo, returnBy } = data;
 
-  // Check if a headset with this ID already exists
-  const existing = await Headset.findOne({ id });
-  if (existing) {
-    return NextResponse.json({ error: "Headset with this ID already exists" }, { status: 400 });
-  }
+      // Prevent duplicate headsets by checking for an existing one with the same ID
+      const existing = await Headset.findOne({ id });
+      if (existing) {
+        return NextResponse.json({ error: "Headset with this ID already exists" }, { status: 400 });
+      }
 
-  const newHeadset = new Headset({
-    id,
-    status: status || "available",
-    assignedTo: assignedTo || null,
-    lastCheckedOut: null,
-    returnBy: returnBy || null,
-  });
+      // Create a new headset entry with default or provided values
+      const newHeadset = new Headset({
+        id,
+        status: status || "available",
+        assignedTo: assignedTo || null,
+        lastCheckedOut: null,
+        returnBy: returnBy || null,
+      });
 
-  await newHeadset.save();
+      await newHeadset.save();
 
-  console.log("Headset created:", newHeadset);
-  return NextResponse.json({
-    message: "Headset added successfully",
-    headset: newHeadset,
-  }, { status: 201 });
-}
+      console.log("Headset created:", newHeadset);
+      return NextResponse.json({
+        message: "Headset added successfully",
+        headset: newHeadset,
+      }, { status: 201 });
+    }
 
-    // Handling 'user' type (create a new user)
+    // ─────────────────────────────────────────────
+    // TYPE: 'user' – Create a new user account
+    // ─────────────────────────────────────────────
     if (type === "user") {
       const { name, email, password, role } = data;
+
+      // Create a new user with default role 'student' if not provided
       const newUser = new User({
         name,
         email,
         password,
-        role: role || "student",  // Default role to 'student' if not provided
+        role: role || "student",
       });
+
       await newUser.save();
+
       console.log("User created: ", newUser);
       return NextResponse.json({
         message: "User created successfully",
@@ -55,48 +71,50 @@ if (type === "headset") {
       }, { status: 201 });
     }
 
-    // Handling 'checkout' type (checking out a headset)
+    // ─────────────────────────────────────────────
+    // TYPE: 'checkout' – Assign a headset to a user
+    // ─────────────────────────────────────────────
     if (type === "checkout") {
       const { headsetId, userId, returnBy } = data;
       console.log("Processing checkout for headsetId:", headsetId, "and userId:", userId);
 
-      // Find the headset and user by their IDs
+      // Find the specified headset and user
       const headset = await Headset.findOne({ id: headsetId });
       const user = await User.findById(userId);
 
+      // Error handling: headset or user not found
       if (!headset) {
         console.error("Headset not found:", headsetId);
         return NextResponse.json({ error: "Headset not found" }, { status: 404 });
       }
-
       if (!user) {
         console.error("User not found:", userId);
         return NextResponse.json({ error: "User not found" }, { status: 404 });
       }
 
+      // Error handling: headset is already checked out
       if (headset.status === "checked out") {
         console.error("Headset already checked out:", headsetId);
         return NextResponse.json({ error: "Headset is already checked out" }, { status: 400 });
       }
 
-      // If the "returnBy" is not provided, set it to 7 days from today
+      // Set a return date (7 days from now by default if not provided)
       const returnDate = returnBy || new Date(new Date().setDate(new Date().getDate() + 7));
 
       // Create a new checkout record
       const newCheckout = new Checkout({
         headsetId: headset.id,
         userId: user._id,
-        returnBy: returnDate,  // Store the return by date in the checkout record
+        returnBy: returnDate,
       });
 
-      // Save the checkout record
       await newCheckout.save();
 
-      // Update headset status, assign it to the user, and set the returnBy date
+      // Update headset record to reflect that it is now checked out
       headset.status = "checked out";
       headset.assignedTo = user._id;
       headset.lastCheckedOut = new Date();
-      headset.returnBy = returnDate;  // Set the return by date in the headset document
+      headset.returnBy = returnDate;
       await headset.save();
 
       console.log("Checkout successful: ", newCheckout);
@@ -106,34 +124,34 @@ if (type === "headset") {
       }, { status: 200 });
     }
 
-    // Handling 'return' type (returning a headset)
+    // ─────────────────────────────────────────────
+    // TYPE: 'return' – Return a headset
+    // ─────────────────────────────────────────────
     if (type === "return") {
       const { headsetId } = data;
       console.log("Processing return for headsetId:", headsetId);
 
-      // Find the headset by its ID
+      // Find the headset by ID
       const headset = await Headset.findOne({ id: headsetId });
       if (!headset) {
         console.error("Headset not found:", headsetId);
         return NextResponse.json({ error: "Headset not found" }, { status: 404 });
       }
 
-      // If the headset is not checked out, return an error
+      // Make sure it's currently checked out
       if (headset.status !== "checked out") {
         console.error("Headset is not checked out:", headsetId);
         return NextResponse.json({ error: "Headset is not currently checked out" }, { status: 400 });
       }
 
-      // Update the headset to "available" status and clear the assignedTo and returnBy fields
+      // Reset the headset status and related fields
       headset.status = "available";
       headset.assignedTo = null;
       headset.lastCheckedOut = null;
-      headset.returnBy = null;  // Clear returnBy date as the headset is being returned
-
-      // Save the updated headset
+      headset.returnBy = null;
       await headset.save();
 
-      // Find and remove the corresponding checkout record
+      // Mark the checkout record as returned
       const checkoutRecord = await Checkout.findOne({ headsetId: headset.id });
       if (checkoutRecord) {
         checkoutRecord.returnedAt = new Date();
@@ -147,13 +165,14 @@ if (type === "headset") {
       }, { status: 200 });
     }
 
+    // If no matching type was found, return a bad request
     return NextResponse.json({
       error: "Invalid type. Must be 'user', 'headset', 'checkout', or 'return'."
     }, { status: 400 });
 
   } catch (error) {
+    // Catch any unexpected errors and return a 500 response
     console.error("Failed to process request:", error);
     return NextResponse.json({ error: "Request failed" }, { status: 500 });
   }
-
 }

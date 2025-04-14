@@ -16,9 +16,8 @@ const UserSchema = new mongoose.Schema(
     },
   },
   {
-    collection: "Users", // 👈 Force this schema to use the 'Users' collection
+    collection: "Users", 
   }
 );
 
-// 👇 Use `mongoose.models` to avoid OverwriteModelError
 export default mongoose.models.User || mongoose.model("User", UserSchema);
