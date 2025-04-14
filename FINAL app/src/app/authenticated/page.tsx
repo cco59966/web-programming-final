@@ -34,7 +34,7 @@ export default function Home() {
     // Handle form submission logic here
     console.log('Form submitted');
    
-      router.push('page.tsx'); // ✅ Redirect to desired page
+      router.push('/'); // ✅ Redirect to desired page
     
   };
   connectMongoDB();
@@ -155,7 +155,8 @@ return (
     </div>
     </div>
       <footer className="vr-footer">
-        <div className="vr-links-column">
+      <img src="https://bitbucket.org/ugamc/uga-global-footer/raw/e0c8a5d1e7e8950a9c2f767c7e941f5b2e5c70ae/src/_assets/img/GEORGIA-FS-CW.svg" alt="UGA Logo" className="vr-logo" height="20px" />
+ 
           <a href="https://eits.uga.edu/resources/" target="_blank" rel="noopener noreferrer">
             Resources
           </a>
@@ -168,14 +169,13 @@ return (
           <a href="https://eits.uga.edu/support/" target="_blank" rel="noopener noreferrer">
             Help
           </a>
-        </div>
+     
         <div className="vr-copyright">
           © University of Georgia.
         </div>
       </footer>
 
-      <img src="./images/uga.png" alt="UGA Logo" className="vr-logo" />
-    </div>
+        </div>
     </div>
   );
 }

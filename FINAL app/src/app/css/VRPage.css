@@ -3,7 +3,7 @@
     padding: 0;
     background: url('vr.jpg') no-repeat center center fixed;
     background-size: cover;
-    height: 100vh;
+    height: 100%;
     position: relative;
     font-family: Arial, sans-serif;
     }
@@ -13,7 +13,7 @@
         padding: 0; 
         background: rgb(210, 192, 192);
         background-size: cover;
-        height: 100vh;
+        height: 100%;
         position: relative;
         font-family: Arial, sans-serif;
         }
@@ -28,18 +28,24 @@
     }
      
     .vr-footer {
-    width: 100%;
-    background-color: black;
-    color: white;
-    text-align: center;
-    padding: 10px 0;
-    position: absolute;
-    bottom: 0;
-    display: flex;
-    justify-content: flex-end;
-    padding-right: 20px;
-    flex-direction: column;
+        width: 100%;
+        background-color: black;
+        color: white;
+        text-align: center; /* Ensures content aligns left, if you prefer */
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        display: flex; /* Aligns the child elements in a row (side by side) */
+        justify-content: space-around; /* Distributes space evenly between items */
+        padding: 10px;
+
     }
+    
+.vr-footer img {
+    max-height: 50%; /* Ensures the image height does not exceed the height of the footer */
+    height: auto; /* Keeps the image's aspect ratio */
+    width: auto; /* Keeps the image's aspect ratio */
+}
      
     .vr-logo {
     position: absolute;
@@ -114,7 +120,5 @@
     text-decoration: underline;
     }
      
-    .vr-copyright {
-    margin-top: 10px;
-    }
+ 
     
