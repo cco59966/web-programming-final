@@ -76,7 +76,7 @@ export default function Home() {
         </div>
       </footer>
 
-      <img src="./images/uga.png" alt="UGA Logo" className="vr-logo" />
+      <img src="uga.png" alt="UGA Logo" className="vr-logo" />
     </div>
   );
 }
