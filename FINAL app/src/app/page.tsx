@@ -4,14 +4,21 @@ import { useState } from "react";
 import Image from "next/image";
 import connectMongoDB from "./config/mongodb";
 import '././css/VRPage.css';
+import Link from "next/link"
 
 export default function Home() {
   // State for login toggle
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
   const handleLogin = () => {
     setIsLoggedIn(!isLoggedIn);
   };
+
+  const handleDropdownToggle = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  }
 
   // Connect to the database (if required for your page).
   connectMongoDB();
@@ -19,16 +26,48 @@ export default function Home() {
   return (
     <div className="min-h-screen flex flex-col">
       {/* HEADER (Red Bar) */}
-      <header className="bg-[#BA0C2F] text-black flex justify-between items-center px-8 py-6">
+      <header className="relative bg-[#b20000] text-black flex justify-between items-center px-8 py-6">
         <div className = "flex items-center justify-start">
+        {/* Button with Triangle */}
+      <button
+      onClick = {handleDropdownToggle} 
+      className="bg-black text-white p-2 rounded mr-4 flex items-center justify-center cursor-pointer">
+        <svg 
+          className="w-4 h-4" 
+          viewBox="0 0 20 20" 
+          fill="currentColor" 
+          aria-hidden="true"
+      >
+          {/* Example triangle polygon (pointing right) */}
+          <polygon points="5,3 15,10 5,17" />
+        </svg>
+      </button>
         <h1 className="text-3xl font-bold text-left">Warnell VR Checkout System</h1>
         </div>
+        <Link href="/login">
         <button
           onClick={handleLogin}
-          className="bg-black text-white px-4 py-2 rounded font-semibold"
+          className="bg-black text-white px-4 py-2 rounded font-semibold cursor-pointer"
         >
           {isLoggedIn ? "Log Out" : "Login"}
         </button>
+        </Link>
+        {/* Navigation Dropdown (conditionally rendered) */}
+      {isDropdownOpen && (
+        <div className="absolute top-full left-4 mt-2 w-40 bg-white text-black rounded shadow-md z-10">
+          <ul>
+            <li>
+                <a className="block px-4 py-2 hover:bg-gray-200">Profile</a>
+            </li>
+            <li>
+                <a className="block px-4 py-2 hover:bg-gray-200">Settings</a>
+            </li>
+            <li>
+                <a href="https://eits.uga.edu/support/" className="block px-4 py-2 hover:bg-gray-200">Help</a>
+            </li>
+          </ul>
+        </div>
+      )}
       </header>
 
       {/* MAIN CONTENT */}
@@ -50,7 +89,7 @@ export default function Home() {
           {/* VR Headset Image */}
           <div className="w-full max-w-sm">
             <Image
-              src="/FINAL app/src/images/vrheadset.jpeg"           // in /public/headset.png
+              src="/vr-headset.png"           // in /public/headset.png
               alt="VR Headset"
               width={300}
               height={200}
@@ -61,7 +100,7 @@ export default function Home() {
           {/* Building Image */}
           <div className="w-full max-w-sm">
             <Image
-              src="/FINAL app/src/images/Warnell.jpeg"  // in /public/warnell-building.jpg
+              src="/uga-building.png"  // in /public/warnell-building.jpg
               alt="Warnell Building"
               width={300}
               height={200}
@@ -77,24 +116,25 @@ export default function Home() {
         <div className="flex items-center space-x-4 mb-4 sm:mb-0">
           <div className="relative w-40 h-40">
             <Image
-              src="/images/uga.png"        // in /public/uga-logo.png
+              src="/uga-logo.png"        // in /public/uga-logo.png
               alt="UGA Logo"
               fill
               className="object-contain"
             />
           </div>
-          <span className="text-base">Â© University of Georgia</span>
+          <span className="text-base">© University of Georgia</span>
         </div>
 
         {/* Right: Footer Links */}
         <div className="flex flex-col items-center space-y-2">
-          <a href="#" className="hover:underline">Resources</a>
-          <a href="#" className="hover:underline">Contact Warnell IT</a>
-          <a href="#" className="hover:underline">MyUGA</a>
-          <a href="#" className="hover:underline">Help</a>
+          <a href="https://eits.uga.edu/resources/" className="hover:underline">Resources</a>
+          <a href="https://warnell.uga.edu/resources-students" className="hover:underline">Contact Warnell IT</a>
+          <a href="https://my.uga.edu/htmlportal/index.php?guest=normal/render.uP" className="hover:underline">MyUGA</a>
+          <a href="https://eits.uga.edu/support/" className="hover:underline">Help</a>
         </div>
       </footer>
     </div>
   );
 }
+
 
