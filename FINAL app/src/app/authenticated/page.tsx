@@ -121,17 +121,6 @@ return (
   
     
   <div className="vr-container2">
-    
-
-    
-
-  
-
-      
-
-
-
-
     <div>
 
       
