@@ -40,7 +40,7 @@ const router = useRouter(); // Using Next.js router for navigation
   return ( // Start of the component JSX
     <div className="min-h-screen flex flex-col">
     {/* HEADER (Red Bar) */}
-    <header className="bg-[#b20000] text-black flex justify-between items-center px-8 py-6">
+    <header className="bg-[#BA0C2F] text-black flex justify-between items-center px-8 py-6">
       <div className = "flex items-center justify-start">
  
       <h1 className="text-3xl font-bold text-left">Warnell VR Checkout System</h1>
@@ -132,7 +132,7 @@ const router = useRouter(); // Using Next.js router for navigation
         </div>
         <div style={{ textAlign: "center", width: "100%", marginTop: "5px" }}>
           {/* Footer text */}
-          Â© University of Georgia.
+          © University of Georgia.
         </div>
       </footer>
 
