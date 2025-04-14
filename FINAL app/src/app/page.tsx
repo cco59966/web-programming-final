@@ -5,9 +5,10 @@ import Image from "next/image";
 import connectMongoDB from "./config/mongodb";
 import '././css/VRPage.css';
 import Link from "next/link"
-
+import { useRouter } from 'next/navigation';
 export default function Home() {
   // State for login toggle
+  const router = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -20,18 +21,40 @@ export default function Home() {
     setIsDropdownOpen(!isDropdownOpen);
   }
 
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    // Handle form submission logic here
+    console.log('Form submitted');
+   
+      router.push('/login'); // ✅ Redirect to desired page
+    
+  };
+  const handleSubmit2 = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    // Handle form submission logic here
+    console.log('Form submitted');
+   
+      router.push('checkout'); // ✅ Redirect to desired page
+    
+  };
+  const handleSubmit3 = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    // Handle form submission logic here
+    console.log('Form submitted');
+   
+      router.push('/'); // ✅ Redirect to desired page
+    
+  };
   // Connect to the database (if required for your page).
   connectMongoDB();
 
   return (
     <div className="min-h-screen flex flex-col">
       {/* HEADER (Red Bar) */}
-      <header className="relative bg-[#BA0C2F] text-black flex justify-between items-center px-8 py-6">
+      <header className="bg-[#b20000] text-black flex justify-between items-center px-8 py-6">
         <div className = "flex items-center justify-start">
         {/* Button with Triangle */}
-      <button
-      onClick = {handleDropdownToggle} 
-      className="bg-black text-white p-2 rounded mr-4 flex items-center justify-center cursor-pointer">
+      <button className="bg-black text-white p-2 rounded mr-4 flex items-center justify-center">
         <svg 
           className="w-4 h-4" 
           viewBox="0 0 20 20" 
@@ -44,30 +67,30 @@ export default function Home() {
       </button>
         <h1 className="text-3xl font-bold text-left">Warnell VR Checkout System</h1>
         </div>
-        <Link href="/login">
+        <form onSubmit={handleSubmit3}>
         <button
-          onClick={handleLogin}
-          className="bg-black text-white px-4 py-2 rounded font-semibold cursor-pointer"
+         
+         className="bg-black text-white px-4 py-2 rounded font-semibold"
+       >
+        Return Home
+       </button>
+       </form>
+        <form onSubmit={handleSubmit2}>
+        <button
+         
+         className="bg-black text-white px-4 py-2 rounded font-semibold"
+       >
+        Add Items
+       </button>
+       </form>
+       <form onSubmit={handleSubmit}>
+        <button
+         
+          className="bg-black text-white px-4 py-2 rounded font-semibold"
         >
-          {isLoggedIn ? "Log Out" : "Login"}
+         Logout
         </button>
-        </Link>
-        {/* Navigation Dropdown (conditionally rendered) */}
-      {isDropdownOpen && (
-        <div className="absolute top-full left-4 mt-2 w-40 bg-white text-black rounded shadow-md z-10">
-          <ul>
-            <li>
-                <a className="block px-4 py-2 hover:bg-gray-200">Profile</a>
-            </li>
-            <li>
-                <a className="block px-4 py-2 hover:bg-gray-200">Settings</a>
-            </li>
-            <li>
-                <a href="https://eits.uga.edu/support/" className="block px-4 py-2 hover:bg-gray-200">Help</a>
-            </li>
-          </ul>
-        </div>
-      )}
+        </form>
       </header>
 
       {/* MAIN CONTENT */}
