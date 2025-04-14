@@ -21,18 +21,6 @@ export default function Home() {
       {/* HEADER (Red Bar) */}
       <header className="bg-[#BA0C2F] text-black flex justify-between items-center px-8 py-6">
         <div className = "flex items-center justify-start">
-        {/* Button with Triangle */}
-      <button className="bg-black text-white p-2 rounded mr-4 flex items-center justify-center">
-        <svg 
-          className="w-4 h-4" 
-          viewBox="0 0 20 20" 
-          fill="currentColor" 
-          aria-hidden="true"
-      >
-          {/* Example triangle polygon (pointing right) */}
-          <polygon points="5,3 15,10 5,17" />
-        </svg>
-      </button>
         <h1 className="text-3xl font-bold text-left">Warnell VR Checkout System</h1>
         </div>
         <button
@@ -89,7 +77,7 @@ export default function Home() {
         <div className="flex items-center space-x-4 mb-4 sm:mb-0">
           <div className="relative w-40 h-40">
             <Image
-              src="/FINAL app/src/app/uga.png"        // in /public/uga-logo.png
+              src="/images/uga.png"        // in /public/uga-logo.png
               alt="UGA Logo"
               fill
               className="object-contain"
