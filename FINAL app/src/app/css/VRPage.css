@@ -1,7 +1,7 @@
 .vr-container {
     margin: 0;
     padding: 0;
-    background: url('/vr.jpg') no-repeat center center fixed;
+    background: url('vr.jpg') no-repeat center center fixed;
     background-size: cover;
     height: 100vh;
     position: relative;
