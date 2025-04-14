@@ -138,31 +138,6 @@ export default function Home() {
   
         <img src="uga.png" alt="UGA Logo" className="vr-logo" />
       </div>
-<<<<<<< HEAD
-=======
-
-      <footer className="vr-footer">
-        <div className="vr-links-column">
-          <a href="https://eits.uga.edu/resources/" target="_blank" rel="noopener noreferrer">
-            Resources
-          </a>
-          <a href="https://warnell.uga.edu/resources-students" target="_blank" rel="noopener noreferrer">
-            Contact Warnell IT
-          </a>
-          <a href="https://my.uga.edu/htmlportal/index.php?guest=normal/render.uP" target="_blank" rel="noopener noreferrer">
-            MYUGA
-          </a>
-          <a href="https://eits.uga.edu/support/" target="_blank" rel="noopener noreferrer">
-            Help
-          </a>
-        </div>
-        <div className="vr-copyright">
-          © University of Georgia.
-        </div>
-      </footer>
-
-      <Image src="/uga.png" alt="UGA Logo" className="vr-logo" width={200} height={150} priority />
->>>>>>> f02e56078de117d675215a694a690d0a146d05a6
     </div>
   );
 }
