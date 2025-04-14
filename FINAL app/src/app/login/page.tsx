@@ -149,7 +149,7 @@ export default function Home() {
         </div>
       </footer>
 
-      <Image src="/uga.png" alt="UGA Logo" className="vr-logo" width={200} height={150} priority />
+     
 
     </div>
   );

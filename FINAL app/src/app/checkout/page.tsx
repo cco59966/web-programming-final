@@ -1,18 +1,23 @@
 "use client"
 
-// Importing React library to use JSX syntax for creating the component
-import React from 'react'; 
+import React, { useState } from 'react'; // Import React and the useState hook for state management
+import '.././css/CheckoutPage.css'; // Import the associated CSS for styling
+import Image from "next/image"; // Import Image component for optimized image handling
+import { useRouter } from 'next/navigation'; // Import useRouter for navigation between pages
 
-// Importing the CSS file that contains styles for this component
-import '.././css/CheckoutPage.css'; 
+const CheckoutPage = () => {
+  // State for reservation form
+  const router = useRouter(); // Initialize the router for navigation
+  const [headsetQuantity, setHeadsetQuantity] = useState<number>(0); // Quantity of headsets user wants to reserve
+  const [checkoutDate, setCheckoutDate] = useState<string>(''); // Date of checkout
+  const [startDate, setStartDate] = useState<string>(''); // Start date of reservation
+  const [endDate, setEndDate] = useState<string>(''); // End date of reservation
 
-// Importing the AddItem component from 'add-item.tsx' to allow users to add new headsets
-import AddItem from './add-item'; 
-import { useRouter } from 'next/navigation';
+  // State for add item form
+  const [headsetName, setHeadsetName] = useState<string>(''); // Name of the headset being added
+  const [headsetCount, setHeadsetCount] = useState<number>(0); // Quantity of the headset to be added
 
-// Defining the CheckoutPage functional component
-const CheckoutPage: React.FC = () => { 
-const router = useRouter(); // Using Next.js router for navigation
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // Handle form submission logic here
@@ -26,7 +31,7 @@ const router = useRouter(); // Using Next.js router for navigation
     // Handle form submission logic here
     console.log('Form submitted');
    
-      router.push('authenticated'); // ✅ Redirect to desired page
+      router.push('home'); // ✅ Redirect to desired page
     
   };
   const handleSubmit3 = (e: React.FormEvent<HTMLFormElement>) => {
@@ -34,44 +39,70 @@ const router = useRouter(); // Using Next.js router for navigation
     // Handle form submission logic here
     console.log('Form submitted');
    
-      router.push('home'); // ✅ Redirect to desired page
+      router.push('authenticated'); // ✅ Redirect to desired page
     
   };
-  return ( // Start of the component JSX
-    <div className="min-h-screen flex flex-col">
-    {/* HEADER (Red Bar) */}
-    <header className="bg-[#BA0C2F] text-black flex justify-between items-center px-8 py-6">
-      <div className = "flex items-center justify-start">
- 
-      <h1 className="text-3xl font-bold text-left">Warnell VR Checkout System</h1>
-      </div>
-      <form onSubmit={handleSubmit3}>
-      <button
-       
-       className="bg-black text-white px-4 py-2 rounded font-semibold"
-     >
-      Return Home
-     </button>
-     </form>
-      <form onSubmit={handleSubmit2}>
-      <button
-       
-       className="bg-black text-white px-4 py-2 rounded font-semibold"
-     >
-      View Current Reservations
-     </button>
-     </form>
-     <form onSubmit={handleSubmit}>
-      <button
-       
-        className="bg-black text-white px-4 py-2 rounded font-semibold"
-      >
-       Logout
-      </button>
-      </form>
-    </header>
 
-      {/* Information box on the left-hand side of the page with details */}
+  // Reservation form submit handler
+  const handleReservationSubmit = (e: React.FormEvent) => {
+    e.preventDefault(); // Prevent default form submission
+    console.log({ headsetQuantity, checkoutDate, startDate, endDate }); // Log the reservation details to console
+    // Clear input fields after submission
+    setHeadsetQuantity(0);
+    setCheckoutDate('');
+    setStartDate('');
+    setEndDate('');
+  };
+
+  // Add item form submit handler
+  const handleAddItemSubmit = (e: React.FormEvent) => {
+    e.preventDefault(); // Prevent default form submission
+    console.log({ headsetName, headsetCount }); // Log the item details to console
+    // Clear input fields after submission
+    setHeadsetName('');
+    setHeadsetCount(0);
+  };
+
+  return (
+    <div>
+      {/* HEADER (Red Bar) */}
+      <header className="bg-[#BA0C2F] text-black flex justify-between items-center px-8 py-6">
+        <div className = "flex items-center justify-start">
+        {/* Button with Triangle */}
+     
+        <h1 className="text-3xl font-bold text-left">Warnell VR Checkout System</h1>
+        </div>
+        <form onSubmit={handleSubmit2}>
+        <button
+         
+          className="bg-black text-white px-4 py-2 rounded font-semibold"
+        >
+         Return Home
+        </button>
+       </form>
+        <form onSubmit={handleSubmit3}>
+        <button
+         
+          className="bg-black text-white px-4 py-2 rounded font-semibold"
+        >
+         View Current Reservations
+        </button>
+       </form>
+       
+
+
+
+       <form onSubmit={handleSubmit}>
+        <button
+         
+          className="bg-black text-white px-4 py-2 rounded font-semibold"
+        >
+         Login / Signup
+        </button>
+        </form>
+      </header>
+
+      {/* Info box on the left-hand side with instructions */}
       <div className="info">
         Please select desired pickup date for VR headsets.<br />
         Reservations are first come, first serve.<br />
@@ -84,63 +115,108 @@ const router = useRouter(); // Using Next.js router for navigation
       {/* Reservation form in the center of the page */}
       <div className="reservation">
         <h2>Reservation Details</h2>
-        <form action="#" method="POST"> {/* Form to submit reservation */}
-          {/* Label and input for the number of headsets */}
+        <form onSubmit={handleReservationSubmit}>
           <label htmlFor="headsetQuantity">How many headsets would you want:</label>
-          <input type="number" id="headsetQuantity" name="headsetQuantity" min="1" required />
+          <input
+            type="number"
+            id="headsetQuantity"
+            name="headsetQuantity"
+            value={headsetQuantity}
+            min="1"
+            onChange={(e) => setHeadsetQuantity(Number(e.target.value))}
+            required
+          />
 
-          {/* Label and input for selecting the checkout date */}
           <label htmlFor="checkoutDate">Choose checkout date:</label>
-          <input type="date" id="checkoutDate" name="checkoutDate" required />
+          <input
+            type="date"
+            id="checkoutDate"
+            name="checkoutDate"
+            value={checkoutDate}
+            onChange={(e) => setCheckoutDate(e.target.value)}
+            required
+          />
 
-          {/* Label and input for selecting the start date */}
           <label htmlFor="startDate">Start date:</label>
-          <input type="date" id="startDate" name="startDate" required />
+          <input
+            type="date"
+            id="startDate"
+            name="startDate"
+            value={startDate}
+            onChange={(e) => setStartDate(e.target.value)}
+            required
+          />
 
-          {/* Label and input for selecting the end date */}
           <label htmlFor="endDate">End date:</label>
-          <input type="date" id="endDate" name="endDate" required />
+          <input
+            type="date"
+            id="endDate"
+            name="endDate"
+            value={endDate}
+            onChange={(e) => setEndDate(e.target.value)}
+            required
+          />
 
-          {/* Submit button for the reservation form */}
           <button type="submit">Submit Reservation</button>
         </form>
       </div>
 
+      {/* Add Item form positioned to the right side of the page */}
+      <div className="add-item">
+        <h2><strong>Add New Item</strong></h2>
+        <form onSubmit={handleAddItemSubmit}>
+          <label htmlFor="headsetName">Headset Name:</label>
+          <input
+            type="text"
+            id="headsetName"
+            name="headsetName"
+            value={headsetName}
+            onChange={(e) => setHeadsetName(e.target.value)}
+            required
+          />
 
-      {/* Divider line */}
-      <hr />
+          <label htmlFor="headsetCount">How many headsets:</label>
+          <input
+            type="number"
+            id="headsetCount"
+            name="headsetCount"
+            value={headsetCount}
+            min="1"
+            onChange={(e) => setHeadsetCount(Number(e.target.value))}
+            required
+          />
 
-      {/* Section to add a new headset */}
-      <div className="add-item-section">
-        {/* Title for the add headset section */}
-        <h2>Add a New Headset</h2>
-
-        {/* AddItem component renders the form to add headset number and name */}
-        <AddItem />
+          <button type="submit">Add Item</button>
+        </form>
       </div>
 
+      {/* FOOTER (Black Bar) */}
+           <footer className="bg-black text-white p-0.5 flex flex-col sm:flex-row justify-between items-center">
+             {/* Left: UGA Logo & Text */}
+             <div className="flex items-center space-x-4 mb-4 sm:mb-0">
+               <div className="relative w-40 h-20">
+                 <Image
+                   //src="/uga-logo.png"        // in /public/uga-logo.png
+                   src = "https://bitbucket.org/ugamc/uga-global-footer/raw/e0c8a5d1e7e8950a9c2f767c7e941f5b2e5c70ae/src/_assets/img/GEORGIA-FS-CW.svg"
+                   alt="UGA Logo"
+                   fill
+                   className="object-contain"
+                 />
+               </div>
+               <span className="text-base">© University of Georgia</span>
+             </div>
+     
+             {/* Right: Footer Links */}
+             <div className="flex flex-col items-center space-y-2">
+               <a href="https://eits.uga.edu/resources/" className="hover:underline">Resources</a>
+               <a href="https://warnell.uga.edu/resources-students" className="hover:underline">Contact Warnell IT</a>
+               <a href="https://my.uga.edu/htmlportal/index.php?guest=normal/render.uP" className="hover:underline">MyUGA</a>
+               <a href="https://eits.uga.edu/support/" className="hover:underline">Help</a>
+             </div>
+           </footer>
 
-
-      {/* Footer of the page containing resource links */}
-      <footer>
-        <div className="links-column">
-          {/* Resource links for the user */}
-          <a href="https://eits.uga.edu/resources/" target="_blank" rel="noopener noreferrer">Resources</a>
-          <a href="https://warnell.uga.edu/resources-students" target="_blank" rel="noopener noreferrer">Contact Warnell IT</a>
-          <a href="https://my.uga.edu/htmlportal/index.php?guest=normal/render.uP" target="_blank" rel="noopener noreferrer">MYUGA</a>
-          <a href="https://eits.uga.edu/support/" target="_blank" rel="noopener noreferrer">Help</a>
-        </div>
-        <div style={{ textAlign: "center", width: "100%", marginTop: "5px" }}>
-          {/* Footer text */}
-          © University of Georgia.
-        </div>
-      </footer>
-
-      {/* University logo at the bottom left */}
-      <img src="univ.png" alt="UGA Logo" className="logo" />
     </div>
   );
 };
 
-// Exporting the CheckoutPage component for use in other parts of the application
 export default CheckoutPage;

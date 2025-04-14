@@ -6,6 +6,7 @@
     height: 100vh;
     position: relative;
     font-family: Arial, sans-serif;
+   
     }
 
     .vr-container2 {
@@ -27,12 +28,13 @@
     left: 0;
     }
      
-    .vr-footer {
+    footer {
         width: 100%;
         background-color: black;
         color: white;
         text-align: center; /* Ensures content aligns left, if you prefer */
         position: fixed;
+
         bottom: 0;
         left: 0;
         display: flex; /* Aligns the child elements in a row (side by side) */
