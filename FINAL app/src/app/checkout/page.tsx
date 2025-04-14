@@ -24,7 +24,7 @@ const handleSubmit2 = (e: React.FormEvent<HTMLFormElement>) => {
   // Handle form submission logic here
   console.log('Form submitted');
  
-    router.push('checkout'); // ✅ Redirect to desired page
+    router.push('authenticated'); // ✅ Redirect to desired page
   
 };
 const handleSubmit3 = (e: React.FormEvent<HTMLFormElement>) => {
@@ -32,7 +32,7 @@ const handleSubmit3 = (e: React.FormEvent<HTMLFormElement>) => {
   // Handle form submission logic here
   console.log('Form submitted');
  
-    router.push('/'); // ✅ Redirect to desired page
+    router.push('home'); // ✅ Redirect to desired page
   
 };
   return (
@@ -41,18 +41,7 @@ const handleSubmit3 = (e: React.FormEvent<HTMLFormElement>) => {
     {/* HEADER (Red Bar) */}
     <header className="bg-[#b20000] text-black flex justify-between items-center px-8 py-6">
       <div className = "flex items-center justify-start">
-      {/* Button with Triangle */}
-    <button className="bg-black text-white p-2 rounded mr-4 flex items-center justify-center">
-      <svg 
-        className="w-4 h-4" 
-        viewBox="0 0 20 20" 
-        fill="currentColor" 
-        aria-hidden="true"
-    >
-        {/* Example triangle polygon (pointing right) */}
-        <polygon points="5,3 15,10 5,17" />
-      </svg>
-    </button>
+    
       <h1 className="text-3xl font-bold text-left">Warnell VR Checkout System</h1>
       </div>
       <form onSubmit={handleSubmit3}>
@@ -68,7 +57,7 @@ const handleSubmit3 = (e: React.FormEvent<HTMLFormElement>) => {
        
        className="bg-black text-white px-4 py-2 rounded font-semibold"
      >
-      Add Items
+      View Current Reservations
      </button>
      </form>
      <form onSubmit={handleSubmit}>
