@@ -7,6 +7,16 @@
     position: relative;
     font-family: Arial, sans-serif;
     }
+
+    .vr-container2 {
+        margin: 0;
+        padding: 0; 
+        background: white;
+        background-size: cover;
+        height: 100vh;
+        position: relative;
+        font-family: Arial, sans-serif;
+        }
      
     .vr-header {
     width: 100%;
