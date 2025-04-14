@@ -25,7 +25,7 @@ export default function Home() {
     // Handle form submission logic here
     console.log('Form submitted');
    
-      router.push('authenticated'); // ✅ Redirect to desired page
+      router.push('checkout'); // ✅ Redirect to desired page
     
   };
   const handleSubmit3 = (e: React.FormEvent<HTMLFormElement>) => {
@@ -33,7 +33,7 @@ export default function Home() {
     // Handle form submission logic here
     console.log('Form submitted');
    
-      router.push('checkout'); // ✅ Redirect to desired page
+      router.push('authenticated'); // ✅ Redirect to desired page
     
   };
   // Connect to the database (if required for your page).

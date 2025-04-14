@@ -27,7 +27,7 @@ export default function Home() {
     // Handle form submission logic here
     console.log('Form submitted');
    
-      router.push('login'); // ✅ Redirect to desired page
+      router.push('authenticated'); // ✅ Redirect to desired page
     
   };
   const handleSubmit3 = (e: React.FormEvent<HTMLFormElement>) => {
@@ -35,7 +35,7 @@ export default function Home() {
     // Handle form submission logic here
     console.log('Form submitted');
    
-      router.push('/'); // ✅ Redirect to desired page
+      router.push('home'); // ✅ Redirect to desired page
     
   };
   connectMongoDB();
@@ -88,24 +88,8 @@ export default function Home() {
        </button>
        </form>
 
-        <form onSubmit={handleSubmit2}>
-        <button
-         
-         className="bg-black text-white px-4 py-2 rounded font-semibold"
-       >
-        Add Items
-       </button>
-       </form>
-       <form onSubmit={handleSubmit}>
-        <button
-         
-          className="bg-black text-white px-4 py-2 rounded font-semibold"
-        >
-         Logout
-        </button>
-
-        </form>
-
+    
+       
  
      
 
