@@ -121,7 +121,10 @@ return (
   
     
   <div className="vr-container2">
+<<<<<<< HEAD
 
+=======
+>>>>>>> d7785cf91fb7e1f4a0f47cfd51ef6ac63d37aa15
     <div>
 
       
