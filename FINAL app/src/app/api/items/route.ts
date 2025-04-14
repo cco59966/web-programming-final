@@ -11,6 +11,33 @@ export async function POST(request: NextRequest) {
     console.log("Request received: ", { type, data });
     await connectMongoDB();
 
+    // Handling 'headset' type (adding a new headset)
+if (type === "headset") {
+  const { id, status, assignedTo, returnBy } = data;
+
+  // Check if a headset with this ID already exists
+  const existing = await Headset.findOne({ id });
+  if (existing) {
+    return NextResponse.json({ error: "Headset with this ID already exists" }, { status: 400 });
+  }
+
+  const newHeadset = new Headset({
+    id,
+    status: status || "available",
+    assignedTo: assignedTo || null,
+    lastCheckedOut: null,
+    returnBy: returnBy || null,
+  });
+
+  await newHeadset.save();
+
+  console.log("Headset created:", newHeadset);
+  return NextResponse.json({
+    message: "Headset added successfully",
+    headset: newHeadset,
+  }, { status: 201 });
+}
+
     // Handling 'user' type (create a new user)
     if (type === "user") {
       const { name, email, password, role } = data;
