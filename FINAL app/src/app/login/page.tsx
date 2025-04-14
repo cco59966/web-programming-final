@@ -5,22 +5,25 @@ import connectMongoDB from ".././config/mongodb";
 import '.././css/VRPage.css';
 import Image from "next/image";
 import { useRouter } from 'next/navigation';
+<<<<<<< HEAD
 import Image from "next/image";
+=======
+import { set } from "mongoose";
+>>>>>>> 28f877e4791f9bcb0aeae004d5b1f21c0c0866f0
 
 export default function Home() {
   // State for login toggle
   const router = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const handleLogin = () => {
-    setIsLoggedIn(!isLoggedIn);
-  };
+
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsLoggedIn(true); // Set login state to true // CHANGE THIS FOR THE END OF THE PROJECT
     // Handle form submission logic here
     console.log('Form submitted');
    
-      router.push('/login'); // ✅ Redirect to desired page
+      router.push('authenticated'); // ✅ Redirect to desired page
     
   };
   const handleSubmit2 = (e: React.FormEvent<HTMLFormElement>) => {
@@ -28,7 +31,7 @@ export default function Home() {
     // Handle form submission logic here
     console.log('Form submitted');
    
-      router.push('checkout'); // ✅ Redirect to desired page
+      router.push('login'); // ✅ Redirect to desired page
     
   };
   const handleSubmit3 = (e: React.FormEvent<HTMLFormElement>) => {
@@ -78,20 +81,11 @@ export default function Home() {
       <header className="bg-[#b20000] text-black flex justify-between items-center px-8 py-6">
         <div className = "flex items-center justify-start">
         {/* Button with Triangle */}
-      <button className="bg-black text-white p-2 rounded mr-4 flex items-center justify-center">
-        <svg 
-          className="w-4 h-4" 
-          viewBox="0 0 20 20" 
-          fill="currentColor" 
-          aria-hidden="true"
-      >
-          {/* Example triangle polygon (pointing right) */}
-          <polygon points="5,3 15,10 5,17" />
-        </svg>
-      </button>
+    
         <h1 className="text-3xl font-bold text-left">Warnell VR Checkout System</h1>
         </div>
         <form onSubmit={handleSubmit3}>
+       
         <button
          
          className="bg-black text-white px-4 py-2 rounded font-semibold"
@@ -99,6 +93,7 @@ export default function Home() {
         Return Home
        </button>
        </form>
+<<<<<<< HEAD
         <form onSubmit={handleSubmit2}>
         <button
          
@@ -116,6 +111,10 @@ export default function Home() {
         </button>
 >>>>>>> d81b2d15a4d74fd74a112ec769a367ddba0b1891
         </form>
+=======
+ 
+     
+>>>>>>> 28f877e4791f9bcb0aeae004d5b1f21c0c0866f0
       </header>
       
       <div className="vr-container">
@@ -170,6 +169,7 @@ export default function Home() {
         <img src="uga.png" alt="UGA Logo" className="vr-logo" />
       </div>
 <<<<<<< HEAD
+<<<<<<< HEAD
       </main>
 =======
 <<<<<<< HEAD
@@ -206,6 +206,8 @@ export default function Home() {
       <Image src="/uga.png" alt="UGA Logo" className="vr-logo" width={200} height={150} priority />
 >>>>>>> f02e56078de117d675215a694a690d0a146d05a6
 >>>>>>> d81b2d15a4d74fd74a112ec769a367ddba0b1891
+=======
+>>>>>>> 28f877e4791f9bcb0aeae004d5b1f21c0c0866f0
     </div>
   );
 }
