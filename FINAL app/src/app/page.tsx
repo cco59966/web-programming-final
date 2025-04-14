@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react";
-import Image from "./images";
 import connectMongoDB from "./config/mongodb";
 import './css/VRPage.css';
 
