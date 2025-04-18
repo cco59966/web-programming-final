@@ -1,5 +1,7 @@
 "use client"
 
+// Various import statements
+
 import { useState } from "react";
 import Image from "next/image";
 import connectMongoDB from ".././config/mongodb";
@@ -10,36 +12,41 @@ export default function Home() {
   // State for login toggle
   const router = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  // Handle login when we get the project going
   const handleLogin = () => {
     setIsLoggedIn(!isLoggedIn);
   };
+
+  // Different submit handlers for different forms (buttons)
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Handle form submission logic here
+
     console.log('Form submitted');
    
-      router.push('/login'); // ✅ Redirect to desired page
+      router.push('/login'); // Redirect to desired page
     
   };
   const handleSubmit2 = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Handle form submission logic here
+
     console.log('Form submitted');
    
-      router.push('checkout'); // ✅ Redirect to desired page
+      router.push('checkout'); // Redirect to desired page
     
   };
   const handleSubmit3 = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Handle form submission logic here
+    
     console.log('Form submitted');
    
-      router.push('home'); // ✅ Redirect to desired page
+      router.push('home'); // Redirect to desired page
     
   };
   connectMongoDB();
 
-
+// An array of dummy headsets to be used in the app
+// Will connect this to the database soon when it comes to the real deal
 const dummyHeadsets = [
   {
     id: 1,
@@ -56,6 +63,9 @@ const dummyHeadsets = [
     image: 'data:image/png;base64,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',
   },
 ];
+
+// Make a list of the headsets to display on the page
+// looks pretty nice in my opinion, the sizing is a little off but we will fix it
 
 const HeadsetItem = ({ id, name, image }: { id: number; name: string; image: string }) => (
     <div className="w-full mb-8">
@@ -83,16 +93,18 @@ const HeadsetItem = ({ id, name, image }: { id: number; name: string; image: str
   );
   
   
-  
+  // Our return page to show to the user
   
 return (
     <div className="min-h-screen flex flex-col">
-    {/* HEADER (Red Bar) */}
+    {/* Header across all pages */}
     <header className="bg-[#BA0C2F] text-black flex justify-between items-center px-8 py-6">
       <div className = "flex items-center justify-start">
  
       <h1 className="text-3xl font-bold text-left">Warnell VR Checkout System</h1>
       </div>
+
+        {/* Various buttons to go through the pages*/}
       <form onSubmit={handleSubmit3}>
       <button
        
@@ -119,6 +131,8 @@ return (
       </form>
     </header>
   
+
+   {/* This is the section that actually populates the lists with the headsets from the array*/}
     
   <div className="vr-container2">
     <div>
@@ -133,13 +147,13 @@ return (
     </div>
     </div>
     
-      {/* FOOTER (Black Bar) */}
+      {/* Footer */}
       <footer className="bg-black text-white p-0.5 flex flex-col sm:flex-row justify-between items-center">
-        {/* Left: UGA Logo & Text */}
+        {/* UGA Logo and Text ( This kind of moves around a bit) */}
         <div className="flex items-center space-x-4 mb-4 sm:mb-0">
           <div className="relative w-40 h-20">
             <Image
-              //src="/uga-logo.png"        // in /public/uga-logo.png
+      
               src = "https://bitbucket.org/ugamc/uga-global-footer/raw/e0c8a5d1e7e8950a9c2f767c7e941f5b2e5c70ae/src/_assets/img/GEORGIA-FS-CW.svg"
               alt="UGA Logo"
               fill
@@ -149,7 +163,7 @@ return (
           <span className="text-base">© University of Georgia</span>
         </div>
 
-        {/* Right: Footer Links */}
+        {/* Footer links */}
         <div className="flex flex-col items-center space-y-2">
           <a href="https://eits.uga.edu/resources/" className="hover:underline">Resources</a>
           <a href="https://warnell.uga.edu/resources-students" className="hover:underline">Contact Warnell IT</a>

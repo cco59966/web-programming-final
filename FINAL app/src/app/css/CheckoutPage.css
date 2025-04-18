@@ -1,150 +1,139 @@
-/* General body styling */
 body {
-    margin: 0;
-    padding: 0;
-    background: url('vr.jpg') no-repeat center center fixed; /* Set background image */
-    background-size: cover; /* Make the background image cover the entire page */
-    height: 100vh; /* Full viewport height */
-    position: relative; /* Relative positioning for child elements */
-    font-family: Arial, sans-serif; /* Set the font for the page */
-  }
+  margin: 0;
+  padding: 0;
+  background: url('vr.jpg') no-repeat center center fixed;
+  background-size: cover;
+  height: 100vh;
+  position: relative;
+  font-family: Arial, sans-serif;
+}
 
-    
+.add-item {
+  position: absolute;
+  top: 100px;
+  right: 20px;
+  width: 300px;
+  padding: 20px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+}
 
+.add-item h2 {
+  text-align: center;
+  color: #333;
+}
 
-    /* Styling for the "Add Item" form */
-  .add-item {
-    position: absolute; /* Absolute positioning */
-    top: 100px; /* Position it from the top */
-    right: 20px; /* Align it to the right side */
-    width: 300px; /* Set a fixed width for the form */
-    padding: 20px; /* Padding inside the form */
-    background-color: white; /* White background for the form */
-    border-radius: 10px; /* Round the corners */
-    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1); /* Add shadow effect */
-  }
-  
-  .add-item h2 {
-    text-align: center; /* Center the heading */
-    color: #333; /* Set heading color */
-  }
-  
-  .add-item form {
-    display: flex; /* Use flexbox for form layout */
-    flex-direction: column; /* Stack elements vertically */
-    gap: 10px; /* Add space between form elements */
-  }
-  
-  .add-item label {
-    font-weight: bold; /* Make labels bold */
-  }
-  
-  .add-item input {
-    padding: 8px; /* Padding inside the input fields */
-    border: 1px solid #ccc; /* Border around inputs */
-    border-radius: 5px; /* Round the corners of input fields */
-  }
-  
-  .add-item button {
-    padding: 10px; /* Padding inside the button */
-    background-color: rgb(203, 16, 16); /* Red background */
-    color: white; /* White text */
-    border: none; /* Remove border */
-    border-radius: 5px; /* Round the corners */
-    cursor: pointer; /* Pointer cursor on hover */
-    font-size: 14px; /* Set font size */
-  }
-  
-  .add-item button:hover {
-    background-color: rgb(153, 12, 12); /* Change background color on hover */
-  }
-  
-  /* Info section styling */
-  .info {
-    position: absolute; /* Positioning the info box */
-    top: 100px; /* From the top */
-    left: 20px; /* From the left */
-    width: 300px; /* Width of the info box */
-    padding: 20px; /* Padding inside the info box */
-    background-color: white; /* Set a background color */
-    border-radius: 10px; /* Round the corners */
-    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1); /* Shadow effect */
-    color: #333; /* Set text color */
-    font-size: 14px; /* Set font size */
-  }
-  
-  .info br {
-    line-height: 2; /* Add line height for better readability */
-  }
-  
-  /* Logo Styling */
-  .logo {
-    position: fixed; /* Fixed position for logo */
-    bottom: 10px; /* Align logo to the bottom */
-    left: 10px; /* Align logo to the left */
-    width: 100px; /* Set width of the logo */
-    height: auto; /* Auto height to maintain aspect ratio */
-  }
-  
-  
-    /* Info box positioned on the left-hand side with a white background */
-    .info {
-    position: absolute;
-    top: 150px; /* just below header (header is 50px high) */
-    left: 20px;
-    width: 300px; /* adjust as needed */
-    background-color: white;
-    color: black;
-    font-size: 16px;
-    text-align: left;
-    padding: 10px;
-    border-radius: 5px;
-    }
-     
-     /* Reservation form container */
-    .reservation {
-    position: absolute;
-    top: 100px;  /* Adjust vertical position as needed */
-    left: calc(50% - 150px); /* Centered horizontally (300px width) */
-    width: 300px;
-    background-color: white;
-    color: black;
-    font-size: 16px;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0px 4px 8px rgba(0,0,0,0.2);
-    }
-     
-    .reservation h2 {
-    margin-top: 0;
-    font-size: 20px;
-    }
-     
-    .reservation label {
-    display: block;
-    margin-bottom: 5px;
-    }
-    
-    .reservation input {
-    width: 100%;
-    padding: 8px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    }
-    
-    .reservation button {
-    background-color: rgb(186, 12, 47);
-    color: white;
-    border: none;
-    padding: 10px;
-    width: 100%;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
-    }
-     
-    .reservation button:hover {
-    background-color: rgb(186, 12, 47)
-    }
-     
+.add-item form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.add-item label {
+  font-weight: bold;
+}
+
+.add-item input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.add-item button {
+  padding: 10px;
+  background-color: rgb(203, 16, 16);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.add-item button:hover {
+  background-color: rgb(153, 12, 12);
+}
+
+.info {
+  position: absolute;
+  top: 100px;
+  left: 20px;
+  width: 300px;
+  padding: 20px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+  color: #333;
+  font-size: 14px;
+}
+
+.info br {
+  line-height: 2;
+}
+
+.logo {
+  position: fixed;
+  bottom: 10px;
+  left: 10px;
+  width: 100px;
+  height: auto;
+}
+
+.info {
+  position: absolute;
+  top: 150px;
+  left: 20px;
+  width: 300px;
+  background-color: white;
+  color: black;
+  font-size: 16px;
+  text-align: left;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.reservation {
+  position: absolute;
+  top: 100px;
+  left: calc(50% - 150px);
+  width: 300px;
+  background-color: white;
+  color: black;
+  font-size: 16px;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0px 4px 8px rgba(0,0,0,0.2);
+}
+
+.reservation h2 {
+  margin-top: 0;
+  font-size: 20px;
+}
+
+.reservation label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.reservation input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.reservation button {
+  background-color: rgb(186, 12, 47);
+  color: white;
+  border: none;
+  padding: 10px;
+  width: 100%;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.reservation button:hover {
+  background-color: rgb(186, 12, 47);
+}
