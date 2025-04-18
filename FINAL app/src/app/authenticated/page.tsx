@@ -21,6 +21,8 @@ export default function Home() {
     setIsLoggedIn(!isLoggedIn);
   };
 
+
+ 
   // Different submit handlers for different forms (buttons)
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -49,6 +51,7 @@ export default function Home() {
 
 
   useEffect(() => {
+    
     const fetchCheckedOutHeadsets = async () => {
       try {
         const res = await fetch("/api/items", {
@@ -80,30 +83,61 @@ export default function Home() {
 // Make a list of the headsets to display on the page
 // looks pretty nice in my opinion, the sizing is a little off but we will fix it
 
-const HeadsetItem = ({ id, name, image }: { id: number; name: string; image: string }) => (
+const HeadsetItem = ({ id, name, image }: { id: number; name: string; image: string }) => {
+  const handleReturn = async () => {
+    try {
+      const res = await fetch("/api/items", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          type: "return",
+          data: {
+            headsetId: id, // ✅ Correct headset ID passed in!
+          },
+        }),
+      });
+
+      const result = await res.json();
+
+      if (res.ok) {
+        console.log("Headset returned:", result);
+        // ✅ Reload or refetch updated list
+        window.location.reload();
+      } else {
+        console.error("Failed to return headset:", result.error);
+      }
+    } catch (error) {
+      console.error("Error returning headset:", error);
+    }
+  };
+
+  return (
     <div className="w-full mb-8">
       <div className="flex bg-white shadow-md rounded-xl p-6 h-[200px]">
-        
-        {/* Image Section */}
         <div className="flex-1 flex justify-center items-center">
           <Image src={image} alt={name} width={200} height={150} priority />
         </div>
-  
-        {/* Text Section */}
+
         <div className="flex-1 flex flex-col justify-center pl-4">
           <h3 className="text-xl font-semibold text-gray-800">Headset Meta Quest {id}</h3>
           <p className="text-gray-600">{name}</p>
         </div>
-  
-        {/* Button Section */}
+
         <div className="flex-1 flex items-center justify-end">
-          <button className="bg-black text-white px-4 py-2 rounded font-semibold">
+          <button
+            onClick={handleReturn}
+            className="bg-black text-white px-4 py-2 rounded font-semibold"
+          >
             Return
           </button>
         </div>
       </div>
     </div>
   );
+};
+
   
   
   // Our return page to show to the user

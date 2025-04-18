@@ -5,6 +5,6 @@ const headsetSchema = new mongoose.Schema({
   status: { type: String, enum: ["available", "checked out"], default: "available" },
   assignedTo: { type: mongoose.Schema.Types.ObjectId, ref: "User", default: null },
   lastCheckedOut: { type: Date, default: null },
-  returnBy: { type: Date, default: null }, // Add this field for return date
+  returnBy: { type: Date, default: null }, 
 });
 export default mongoose.models.Headset || mongoose.model("Headset", headsetSchema);
