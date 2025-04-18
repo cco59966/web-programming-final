@@ -177,6 +177,29 @@ export async function POST(request: NextRequest) {
       }, { status: 200 });
     }
 
+
+    // ─────────────────────────────────────────────
+    // TYPE: 'getCheckedOut' – Get all headsets checked out by a user
+    // ─────────────────────────────────────────────
+    if (type === "getCheckedOut") {
+      const { userId } = data;
+
+      if (!userId) {
+        return NextResponse.json({ error: "Missing userId in request data" }, { status: 400 });
+      }
+
+      const checkedOutHeadsets = await Headset.find({ assignedTo: userId });
+
+      console.log("Checked out headsets for user:", userId, checkedOutHeadsets);
+
+      return NextResponse.json({
+        message: "Checked out headsets fetched successfully",
+        headsets: checkedOutHeadsets,
+      }, { status: 200 });
+    }
+
+
+
     // If no matching type was found, return a bad request
     return NextResponse.json({
       error: "Invalid type. Must be 'user', 'headset', 'checkout', or 'return'."
