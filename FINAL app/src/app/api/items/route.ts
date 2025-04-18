@@ -3,6 +3,7 @@ import connectMongoDB from "../../config/mongodb";
 import User from "../../models/User.js";
 import Headset from "../../models/Headset.js";
 import Checkout from "../../models/Checkout.js";
+import Message from "../../models/Message.js";
 
 // Import Next.js utilities for handling server requests and responses
 import { NextResponse } from "next/server";
@@ -14,10 +15,21 @@ export async function POST(request: NextRequest) {
     // Extract the 'type' and 'data' fields from the incoming JSON body
     const { type, data } = await request.json();
     console.log("Request received: ", { type, data });
-
+   
+    
     // Connect to the MongoDB database
     await connectMongoDB();
+    if (type === "message") {
+      const { name, message } = data;
 
+      const newMessage = await Message.create({ name, message });
+
+      console.log("Message saved: ", newMessage);
+      return NextResponse.json({
+        message: "Message submitted successfully",
+        data: newMessage,
+      }, { status: 201 });
+    }
     // ─────────────────────────────────────────────
     // TYPE: 'headset' – Add a new headset to the system
     // ─────────────────────────────────────────────

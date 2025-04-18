@@ -7,4 +7,4 @@ const headsetSchema = new mongoose.Schema({
   lastCheckedOut: { type: Date, default: null },
   returnBy: { type: Date, default: null }, // Add this field for return date
 });
-export default mongoose.models.Headset || mongoose.model("Headset", UserSchema);
+export default mongoose.models.Headset || mongoose.model("Headset", headsetSchema);
