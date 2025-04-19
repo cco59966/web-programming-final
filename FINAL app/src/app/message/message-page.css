@@ -193,4 +193,26 @@
     color: #777;
     margin-top: 30px;
     font-style: italic;
+  }.forum-container {
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+    align-items: flex-start;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
   }
+  
+ 
+  .comment-form {
+    width: 40%;
+    margin-bottom: 0;
+  }
+  
+  .comments-list {
+    width: 60%;
+    margin-top: 0;
+    max-height: 70vh;
+    overflow-y: auto;
+  }
+  
