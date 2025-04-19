@@ -159,12 +159,6 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ error: "Headset not found" }, { status: 404 });
       }
 
-      // Make sure it's currently checked out
-      if (headset.status !== "checked out") {
-        console.error("Headset is not checked out:", headsetId);
-        return NextResponse.json({ error: "Headset is not currently checked out" }, { status: 400 });
-      }
-
       // Reset the headset status and related fields
       headset.status = "available";
       headset.assignedTo = null;
