@@ -4,62 +4,56 @@ import React, { useState } from 'react';
 import '.././css/CheckoutPage.css';
 import Image from "next/image";
 import { useRouter } from 'next/navigation';
-import { set } from 'mongoose';
 
 const CheckoutPage = () => {
   const router = useRouter();
   const [headsetQuantity, setHeadsetQuantity] = useState<number>(0);
- const [checkoutDate, setCheckoutDate] = useState<string>('');
- // const [startDate, setStartDate] = useState<string>('');
+  const [checkoutDate, setCheckoutDate] = useState<string>('');
   const [returnDate, setReturnDate] = useState<string>('');
 
-  const [messageName, setMessageName] = useState<string>('');
-  const [messageMessage, setMessageMessage] = useState<string>('');
+  // YouTube search state
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [videos, setVideos] = useState<any[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | undefined>(undefined);
 
-  const userId = "67f68c137a5d74179328d274"; // CHANGE THIS WHEN LOGIN IS WORKIGN CORRECTLY
+  const userId = "67f68c137a5d74179328d274"; // CHANGE THIS WHEN LOGIN IS WORKING CORRECTLY
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('Form submitted');
     router.push('/login');
   };
 
   const handleSubmit2 = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('Form submitted');
     router.push('home');
   };
 
   const handleSubmit3 = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('Form submitted');
     router.push('authenticated');
   };
 
   const handleReservationSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-  
     if (!userId) {
       console.error("User not logged in.");
       return;
     }
-  
     const reservationData = {
       type: "checkout",
       data: {
-        quantity: headsetQuantity, 
+        quantity: headsetQuantity,
         userId,
         returnBy: returnDate,
       },
     };
-  
     try {
       const response = await fetch("/api/items", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(reservationData),
       });
-  
       if (response.ok) {
         console.log("Reservation saved.");
         setHeadsetQuantity(0);
@@ -72,14 +66,31 @@ const CheckoutPage = () => {
       console.error("Error submitting reservation:", error);
     }
   };
-  
-  
 
-  const handleAddMessageSubmit = (e: React.FormEvent) => {
+  // YouTube search handler
+  const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log({ messageName, messageMessage });
-    setMessageName('');
-    setMessageMessage('');
+    if (!searchQuery.trim()) return;
+    setLoading(true);
+    setError(undefined);
+    try {
+      const res = await fetch(
+        `https://www.googleapis.com/youtube/v3/search?` +
+          `part=snippet&type=video&maxResults=10` +
+          `&q=${encodeURIComponent(searchQuery)}` +
+          `&key=${process.env.NEXT_PUBLIC_YOUTUBE_API_KEY}`
+      );
+      const data = await res.json();
+      if (res.ok) {
+        setVideos(data.items || []);
+      } else {
+        setError(data.error?.message || 'API error');
+      }
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -107,10 +118,9 @@ const CheckoutPage = () => {
 
       <div className="info">
         Reservations are first come, first serve.<br /><br />
-
         Headsets may be reserved up to a week in advance.<br /><br />
-        Headsets must be returned on the day specificed.<br /><br />
-        If you have any questions regarding technology please visit the Warnell IT office,
+        Headsets must be returned on the day specified.<br /><br />
+        If you have any questions regarding technology please visit the Warnell IT office,<br />
         located in building 4, room 424 or contact (706)-542-6695.
       </div>
 
@@ -152,32 +162,47 @@ const CheckoutPage = () => {
         </form>
       </div>
 
-       <div className="add-item">
-        <h2><strong>Have A Message You Would Like To Post?</strong></h2>
-        <form onSubmit={handleAddMessageSubmit}>
-          <label htmlFor="messageName">Your Name:</label>
+      {/* YouTube Search Block */}
+      <div className="add-item">
+        <h2><strong>Search YouTube Videos</strong></h2>
+        <form onSubmit={handleSearch} className="flex gap-2 mb-4">
           <input
             type="text"
-            id="headsetName"
-            name="headsetName"
-            value={messageName}
-            onChange={(e) => setMessageName(e.target.value)}
-            required
+            placeholder="Search…"
+            value={searchQuery}
+            onChange={e => setSearchQuery(e.target.value)}
+            className="border px-2 py-1 flex-grow"
           />
-
-          <label htmlFor="messageMessage">Your Message:</label>
-          <input
-            type="text"
-            id="headsetCount"
-            name="headsetCount"
-            value={messageMessage}
-            min="1"
-            onChange={(e) => setMessageMessage((e.target.value))}
-            required
-          />
-
-          <button type="submit">Add Message</button>
+          <button
+            type="submit"
+            className="bg-black text-white px-4 py-1 rounded"
+          >
+            Search
+          </button>
         </form>
+
+        {loading && <p>Loading results…</p>}
+        {error && <p className="text-red-600">{error}</p>}
+
+        <div className="results max-h-80 overflow-y-scroll space-y-4">
+          {videos.map(video => (
+            <a
+              key={video.id.videoId}
+              href={`https://youtu.be/${video.id.videoId}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-3"
+            >
+              <img
+                src={video.snippet.thumbnails.default.url}
+                alt={video.snippet.title}
+                width={120}
+                height={90}
+              />
+              <span>{video.snippet.title}</span>
+            </a>
+          ))}
+        </div>
       </div>
 
       <footer className="bg-black text-white p-0.5 flex flex-col sm:flex-row justify-between items-center">
