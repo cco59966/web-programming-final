@@ -45,28 +45,34 @@ const CheckoutPage = () => {
       data: {
         quantity: headsetQuantity,
         userId,
+        //checkoutDate,
         returnBy: returnDate,
       },
     };
+    
     try {
       const response = await fetch("/api/items", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(reservationData),
       });
+    
+      const resultText = await response.text(); // 🔥 read even if it's not ok
+      console.log("Server response:", resultText);
+    
       if (response.ok) {
         console.log("Reservation saved.");
         setHeadsetQuantity(0);
         setCheckoutDate('');
         setReturnDate('');
       } else {
-        console.error("Reservation failed to save.");
+        console.error("Reservation failed to save:", response.status, resultText);
       }
     } catch (error) {
       console.error("Error submitting reservation:", error);
     }
-  };
-
+    
+  }
   // YouTube search handler
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();

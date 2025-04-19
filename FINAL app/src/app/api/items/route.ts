@@ -20,17 +20,50 @@ export async function POST(request: NextRequest) {
     
     // Connect to the MongoDB database
     await connectMongoDB();
+   
+    if (type === "deleteMessage") {
+      const { messageId, userId } = data;
+    
+      if (!messageId || !userId) {
+        return NextResponse.json({ error: "Missing messageId or userId" }, { status: 400 });
+      }
+    
+      const message = await Message.findById(messageId);
+    
+      if (!message) {
+        return NextResponse.json({ error: "Message not found" }, { status: 404 });
+      }
+    
+      if (message.postedBy.toString() !== userId) {
+        return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
+      }
+    
+      await Message.findByIdAndDelete(messageId);
+    
+      return NextResponse.json({ message: "Message deleted" });
+    }
+    
     if (type === "message") {
-      const { name, message } = data;
-
-      const newMessage = await Message.create({ name, message });
-
-      console.log("Message saved: ", newMessage);
+      const { name, message, postedBy } = data;
+    
+      if (!postedBy) {
+        return NextResponse.json({ error: "Missing user ID" }, { status: 400 });
+      }
+    
+      const newMessage = await Message.create({
+        name,
+        message,
+        postedBy,
+      });
+    
       return NextResponse.json({
         message: "Message submitted successfully",
         data: newMessage,
       }, { status: 201 });
     }
+    
+      
+
     // ─────────────────────────────────────────────
     // TYPE: 'headset' – Add a new headset to the system
     // ─────────────────────────────────────────────
@@ -212,5 +245,18 @@ export async function POST(request: NextRequest) {
     // Catch any unexpected errors and return a 500 response
     console.error("Failed to process request:", error);
     return NextResponse.json({ error: "Request failed" }, { status: 500 });
+  }
+
+  
+}
+
+export async function GET(request: NextRequest) {
+  try {
+    await connectMongoDB();
+    const messages = await Message.find({});
+    return NextResponse.json({ messages }, { status: 200 });
+  } catch (error) {
+    console.error("Failed to fetch messages:", error);
+    return NextResponse.json({ error: "Failed to fetch messages" }, { status: 500 });
   }
 }
