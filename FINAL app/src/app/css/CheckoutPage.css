@@ -1,7 +1,7 @@
 body {
   margin: 0;
   padding: 0;
-  background: url('vr.jpg') no-repeat center center fixed;
+  background: rgb(210, 192, 192);
   background-size: cover;
   height: 100vh;
   position: relative;

@@ -4,16 +4,19 @@ import React, { useState } from 'react';
 import '.././css/CheckoutPage.css';
 import Image from "next/image";
 import { useRouter } from 'next/navigation';
+import { set } from 'mongoose';
 
 const CheckoutPage = () => {
   const router = useRouter();
   const [headsetQuantity, setHeadsetQuantity] = useState<number>(0);
-  const [checkoutDate, setCheckoutDate] = useState<string>('');
-  const [startDate, setStartDate] = useState<string>('');
-  const [endDate, setEndDate] = useState<string>('');
+ const [checkoutDate, setCheckoutDate] = useState<string>('');
+ // const [startDate, setStartDate] = useState<string>('');
+  const [returnDate, setReturnDate] = useState<string>('');
 
   const [messageName, setMessageName] = useState<string>('');
   const [messageMessage, setMessageMessage] = useState<string>('');
+
+  const userId = "67f68c137a5d74179328d274"; // CHANGE THIS WHEN LOGIN IS WORKIGN CORRECTLY
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -33,14 +36,44 @@ const CheckoutPage = () => {
     router.push('authenticated');
   };
 
-  const handleReservationSubmit = (e: React.FormEvent) => {
+  const handleReservationSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log({ headsetQuantity, checkoutDate, startDate, endDate });
-    setHeadsetQuantity(0);
-    setCheckoutDate('');
-    setStartDate('');
-    setEndDate('');
+  
+    if (!userId) {
+      console.error("User not logged in.");
+      return;
+    }
+  
+    const reservationData = {
+      type: "checkout",
+      data: {
+        quantity: headsetQuantity, 
+        userId,
+        returnBy: returnDate,
+      },
+    };
+  
+    try {
+      const response = await fetch("/api/items", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(reservationData),
+      });
+  
+      if (response.ok) {
+        console.log("Reservation saved.");
+        setHeadsetQuantity(0);
+        setCheckoutDate('');
+        setReturnDate('');
+      } else {
+        console.error("Reservation failed to save.");
+      }
+    } catch (error) {
+      console.error("Error submitting reservation:", error);
+    }
   };
+  
+  
 
   const handleAddMessageSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -73,18 +106,18 @@ const CheckoutPage = () => {
       </header>
 
       <div className="info">
-        Please select desired pickup date for VR headsets.<br />
-        Reservations are first come, first serve.<br />
-        Headsets may be reserved up to a week in advance.<br />
-        Headsets must be returned within 24 hours.<br /><br />
-        If you have any questions regarding technology please visit the Warnell IT office,<br />
-        located in building 4, room 424 or contact (678)-599-3529.
+        Reservations are first come, first serve.<br /><br />
+
+        Headsets may be reserved up to a week in advance.<br /><br />
+        Headsets must be returned on the day specificed.<br /><br />
+        If you have any questions regarding technology please visit the Warnell IT office,
+        located in building 4, room 424 or contact (706)-542-6695.
       </div>
 
       <div className="reservation">
         <h2>Reservation Details</h2>
         <form onSubmit={handleReservationSubmit}>
-          <label htmlFor="headsetQuantity">How many headsets would you want:</label>
+          <label htmlFor="headsetQuantity">Headset Amount:</label>
           <input
             type="number"
             id="headsetQuantity"
@@ -95,33 +128,23 @@ const CheckoutPage = () => {
             required
           />
 
-          <label htmlFor="checkoutDate">Choose checkout date:</label>
+          <label htmlFor="startDate">Checkout Date:</label>
           <input
             type="date"
-            id="checkoutDate"
-            name="checkoutDate"
+            id="startDate"
+            name="startDate"
             value={checkoutDate}
             onChange={(e) => setCheckoutDate(e.target.value)}
             required
           />
 
-          <label htmlFor="startDate">Start date:</label>
+          <label htmlFor="returnDate">Return Date:</label>
           <input
             type="date"
-            id="startDate"
-            name="startDate"
-            value={startDate}
-            onChange={(e) => setStartDate(e.target.value)}
-            required
-          />
-
-          <label htmlFor="endDate">End date:</label>
-          <input
-            type="date"
-            id="endDate"
-            name="endDate"
-            value={endDate}
-            onChange={(e) => setEndDate(e.target.value)}
+            id="returnDate"
+            name="returnDate"
+            value={returnDate}
+            onChange={(e) => setReturnDate(e.target.value)}
             required
           />
 
@@ -129,7 +152,7 @@ const CheckoutPage = () => {
         </form>
       </div>
 
-      <div className="add-item">
+       <div className="add-item">
         <h2><strong>Have A Message You Would Like To Post?</strong></h2>
         <form onSubmit={handleAddMessageSubmit}>
           <label htmlFor="messageName">Your Name:</label>

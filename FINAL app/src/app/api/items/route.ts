@@ -1,5 +1,6 @@
 // Import database connection and required models
 import connectMongoDB from "../../config/mongodb";
+import mongoose from "mongoose";
 import User from "../../models/User.js";
 import Headset from "../../models/Headset.js";
 import Checkout from "../../models/Checkout.js";
@@ -87,54 +88,62 @@ export async function POST(request: NextRequest) {
     // TYPE: 'checkout' – Assign a headset to a user
     // ─────────────────────────────────────────────
     if (type === "checkout") {
-      const { headsetId, userId, returnBy } = data;
-      console.log("Processing checkout for headsetId:", headsetId, "and userId:", userId);
-
-      // Find the specified headset and user
-      const headset = await Headset.findOne({ id: headsetId });
-      const user = await User.findById(userId);
-
-      // Error handling: headset or user not found
-      if (!headset) {
-        console.error("Headset not found:", headsetId);
-        return NextResponse.json({ error: "Headset not found" }, { status: 404 });
+      const { userId, returnBy, quantity } = data; 
+    
+      console.log("Bulk checkout request:", { userId, quantity });
+    
+      await connectMongoDB();
+    
+      let user;
+      try {
+        user = await User.findById(userId);
+      } catch (err) {
+        console.warn("Using fallback user");
+        user = { _id: new mongoose.Types.ObjectId("67f68c137a5d74179328d274") };
       }
+    
       if (!user) {
-        console.error("User not found:", userId);
-        return NextResponse.json({ error: "User not found" }, { status: 404 });
+        user = { _id: new mongoose.Types.ObjectId("67f68c137a5d74179328d274") };
       }
-
-      // Error handling: headset is already checked out
-      if (headset.status === "checked out") {
-        console.error("Headset already checked out:", headsetId);
-        return NextResponse.json({ error: "Headset is already checked out" }, { status: 400 });
-      }
-
-      // Set a return date (7 days from now by default if not provided)
+    
       const returnDate = returnBy || new Date(new Date().setDate(new Date().getDate() + 7));
-
-      // Create a new checkout record
-      const newCheckout = new Checkout({
-        headsetId: headset.id,
-        userId: user._id,
-        returnBy: returnDate,
-      });
-
-      await newCheckout.save();
-
-      // Update headset record to reflect that it is now checked out
-      headset.status = "checked out";
-      headset.assignedTo = user._id;
-      headset.lastCheckedOut = new Date();
-      headset.returnBy = returnDate;
-      await headset.save();
-
-      console.log("Checkout successful: ", newCheckout);
+    
+      const availableHeadsets = await Headset.find({ status: "available" }).limit(quantity);
+    
+      if (availableHeadsets.length < quantity) {
+        return NextResponse.json({
+          error: `Only ${availableHeadsets.length} headsets are available`,
+        }, { status: 400 });
+      }
+    
+      const checkouts = [];
+    
+      for (const headset of availableHeadsets) {
+        const newCheckout = new Checkout({
+          headsetId: headset.id,
+          userId: user._id,
+          returnBy: returnDate,
+        });
+    
+        await newCheckout.save();
+        checkouts.push(newCheckout);
+    
+        headset.status = "checked out";
+        headset.assignedTo = user._id;
+        headset.lastCheckedOut = new Date();
+        headset.returnBy = returnDate;
+        await headset.save();
+      }
+    
+     
+    
       return NextResponse.json({
-        message: "Headset checked out successfully",
-        checkout: newCheckout,
+        message: "Headsets checked out successfully",
+        checkouts,
       }, { status: 200 });
     }
+    
+    
 
     // ─────────────────────────────────────────────
     // TYPE: 'return' – Return a headset
