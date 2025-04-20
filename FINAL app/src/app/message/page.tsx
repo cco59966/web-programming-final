@@ -9,6 +9,7 @@ const MessagePage: React.FC = () => {
   const [userName, setUserName] = useState('');
   const [commentText, setCommentText] = useState('');
   const [comments, setComments] = useState<any[]>([]);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const userId = "67f68c137a5d74179328d274"; // CHANGE THIS WHEN LOGIN IS WORKING CORRECTLY
 
@@ -103,10 +104,13 @@ const MessagePage: React.FC = () => {
     <div className="app-container">
       <header>
         <nav className="navbar">
-          <ul className="nav-links">
-            <li><Link href="/">Home</Link></li>
-            <li><Link href="/authenticated">Authenticated</Link></li>
-            <li><Link href="/checkout">Checkout</Link></li>
+          <div className="menu-toggle" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+            ☰
+          </div>
+          <ul className={`nav-links ${isMenuOpen ? 'active' : ''}`}>
+            <li><Link href="/" onClick={() => setIsMenuOpen(false)}>Home</Link></li>
+            <li><Link href="/authenticated" onClick={() => setIsMenuOpen(false)}>Authenticated</Link></li>
+            <li><Link href="/checkout" onClick={() => setIsMenuOpen(false)}>Checkout</Link></li>
           </ul>
         </nav>
         <div className="title">Warnell VR Forum</div>
