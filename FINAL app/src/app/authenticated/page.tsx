@@ -145,36 +145,27 @@ export default function Home() {
       </div>
 
       <footer className="bg-black text-white p-0.5 flex flex-col sm:flex-row justify-between items-center">
-        <div className="flex items-center space-x-4 mb-4 sm:mb-0">
-          <div className="relative w-40 h-20">
-            <Image
-              src="https://bitbucket.org/ugamc/uga-global-footer/raw/e0c8a5d1e7e8950a9c2f767c7e941f5b2e5c70ae/src/_assets/img/GEORGIA-FS-CW.svg"
-              alt="UGA Logo"
-              fill
-              className="object-contain"
-            />
-          </div>
-          <span className="text-base flex-1 text-center">© University of Georgia</span>
-        </div>
+  {/* Left side: UGA Logo + © text */}
+  <div className="flex items-center space-x-4 mb-4 sm:mb-0">
+    <div className="relative w-40 h-20">
+      <Image
+        src="https://bitbucket.org/ugamc/uga-global-footer/raw/e0c8a5d1e7e8950a9c2f767c7e941f5b2e5c70ae/src/_assets/img/GEORGIA-FS-CW.svg"
+        alt="UGA Logo"
+        fill
+        className="object-contain"
+      />
+    </div>
+    <span className="text-base">© University of Georgia</span>
+  </div>
 
-        <div className="flex flex-col items-center space-y-2">
-          <a href="https://eits.uga.edu/resources/" className="hover:underline">
-            Resources
-          </a>
-          <a href="https://warnell.uga.edu/resources-students" className="hover:underline">
-            Contact Warnell IT
-          </a>
-          <a
-            href="https://my.uga.edu/htmlportal/index.php?guest=normal/render.uP"
-            className="hover:underline"
-          >
-            MyUGA
-          </a>
-          <a href="https://eits.uga.edu/support/" className="hover:underline">
-            Help
-          </a>
-        </div>
-      </footer>
+  {/* Right side: Links */}
+  <div className="flex flex-col items-center space-y-2">
+    <a href="https://eits.uga.edu/resources/" className="hover:underline">Resources</a>
+    <a href="https://warnell.uga.edu/resources-students" className="hover:underline">Contact Warnell IT</a>
+    <a href="https://my.uga.edu/htmlportal/index.php?guest=normal/render.uP" className="hover:underline">MyUGA</a>
+    <a href="https://eits.uga.edu/support/" className="hover:underline">Help</a>
+  </div>
+</footer>
     </div>
   );
 }

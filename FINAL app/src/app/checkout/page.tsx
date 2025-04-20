@@ -212,6 +212,7 @@ const CheckoutPage = () => {
       </div>
 
       <footer className="bg-black text-white p-0.5 flex flex-col sm:flex-row justify-between items-center">
+        {/* Left side: UGA Logo + © text */}
         <div className="flex items-center space-x-4 mb-4 sm:mb-0">
           <div className="relative w-40 h-20">
             <Image
@@ -224,6 +225,7 @@ const CheckoutPage = () => {
           <span className="text-base">© University of Georgia</span>
         </div>
 
+        {/* Right side: Links */}
         <div className="flex flex-col items-center space-y-2">
           <a href="https://eits.uga.edu/resources/" className="hover:underline">Resources</a>
           <a href="https://warnell.uga.edu/resources-students" className="hover:underline">Contact Warnell IT</a>
