@@ -101,7 +101,7 @@ export default function Home() {
         </div>
         <div className="flex gap-4">
           <button 
-            onClick={() => router.push("/message/page")}
+            onClick={() => router.push("/message/page.tsx")}
             className="bg-black text-white px-4 py-2 rounded font-semibold"
           >
             Messages
