@@ -26,8 +26,8 @@ export default function Home() {
     // Handle form submission logic here
     console.log('Form submitted');
    
-      router.push('/login'); // ✅ Redirect to desired page
-    
+      //router.push('/login'); // ✅ Redirect to desired page
+    router.push('/signup');
   };
   const handleSubmit2 = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
