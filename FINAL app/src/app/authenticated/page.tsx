@@ -6,7 +6,6 @@ import connectMongoDB from ".././config/mongodb";
 import ".././css/VRPage.css";
 import { useRouter } from "next/navigation";
 
-
 const HeadsetItem = ({ id, name, image }: { id: number; name: string; image: string }) => {
   const handleReturn = async () => {
     try {
@@ -92,9 +91,8 @@ export default function Home() {
     fetchCheckedOutHeadsets();
   }, []);
 
-  connectMongoDB(); // Optional — not required on client side unless you're forcing DB logic for dev
+  connectMongoDB();
 
-  // ✅ Single return statement below
   return (
     <div className="min-h-screen flex flex-col">
       <header className="bg-[#BA0C2F] text-black flex justify-between items-center px-8 py-6">
@@ -140,7 +138,7 @@ export default function Home() {
               key={headset._id}
               id={headset.id}
               name={`Return by ${new Date(headset.returnBy).toLocaleDateString()}`}
-              image="https://90a1c75758623581b3f8-5c119c3de181c9857fcb2784776b17ef.ssl.cf2.rackcdn.com/640021_305565_02_front_comping.jpg" // shortened for readability
+              image="https://90a1c75758623581b3f8-5c119c3de181c9857fcb2784776b17ef.ssl.cf2.rackcdn.com/640021_305565_02_front_comping.jpg"
             />
           ))}
         </div>
@@ -156,7 +154,7 @@ export default function Home() {
               className="object-contain"
             />
           </div>
-          <span className="text-base">© University of Georgia</span>
+          <span className="text-base flex-1 text-center">© University of Georgia</span>
         </div>
 
         <div className="flex flex-col items-center space-y-2">
