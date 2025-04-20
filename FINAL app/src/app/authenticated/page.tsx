@@ -14,7 +14,7 @@ const HeadsetItem = ({ id, name, image }: { id: number; name: string; image: str
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
+        body: JSON.stringify({ 
           type: "return",
           data: {
             headsetId: id,
@@ -99,36 +99,32 @@ export default function Home() {
         <div className="flex items-center justify-start">
           <h1 className="text-3xl font-bold text-left">Warnell VR Checkout System</h1>
         </div>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            router.push("home");
-          }}
-        >
-          <button className="bg-black text-white px-4 py-2 rounded font-semibold">
+        <div className="flex gap-4">
+          <button 
+            onClick={() => router.push("/message/page")}
+            className="bg-black text-white px-4 py-2 rounded font-semibold"
+          >
+            Messages
+          </button>
+          <button 
+            onClick={() => router.push("home")}
+            className="bg-black text-white px-4 py-2 rounded font-semibold"
+          >
             Return Home
           </button>
-        </form>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            router.push("checkout");
-          }}
-        >
-          <button className="bg-black text-white px-4 py-2 rounded font-semibold">
+          <button 
+            onClick={() => router.push("checkout")}
+            className="bg-black text-white px-4 py-2 rounded font-semibold"
+          >
             Add Items
           </button>
-        </form>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            router.push("/login");
-          }}
-        >
-          <button className="bg-black text-white px-4 py-2 rounded font-semibold">
+          <button 
+            onClick={() => router.push("/login")}
+            className="bg-black text-white px-4 py-2 rounded font-semibold"
+          >
             Logout
           </button>
-        </form>
+        </div>
       </header>
 
       <div className="vr-container2">
@@ -145,27 +141,36 @@ export default function Home() {
       </div>
 
       <footer className="bg-black text-white p-0.5 flex flex-col sm:flex-row justify-between items-center">
-  {/* Left side: UGA Logo + © text */}
-  <div className="flex items-center space-x-4 mb-4 sm:mb-0">
-    <div className="relative w-40 h-20">
-      <Image
-        src="https://bitbucket.org/ugamc/uga-global-footer/raw/e0c8a5d1e7e8950a9c2f767c7e941f5b2e5c70ae/src/_assets/img/GEORGIA-FS-CW.svg"
-        alt="UGA Logo"
-        fill
-        className="object-contain"
-      />
-    </div>
-    <span className="text-base">© University of Georgia</span>
-  </div>
+        <div className="flex items-center space-x-4 mb-4 sm:mb-0">
+          <div className="relative w-40 h-20">
+            <Image
+              src="https://bitbucket.org/ugamc/uga-global-footer/raw/e0c8a5d1e7e8950a9c2f767c7e941f5b2e5c70ae/src/_assets/img/GEORGIA-FS-CW.svg"
+              alt="UGA Logo"
+              fill
+              className="object-contain"
+            />
+          </div>
+          <span className="text-base flex-1 text-center">© University of Georgia</span>
+        </div>
 
-  {/* Right side: Links */}
-  <div className="flex flex-col items-center space-y-2">
-    <a href="https://eits.uga.edu/resources/" className="hover:underline">Resources</a>
-    <a href="https://warnell.uga.edu/resources-students" className="hover:underline">Contact Warnell IT</a>
-    <a href="https://my.uga.edu/htmlportal/index.php?guest=normal/render.uP" className="hover:underline">MyUGA</a>
-    <a href="https://eits.uga.edu/support/" className="hover:underline">Help</a>
-  </div>
-</footer>
+        <div className="flex flex-col items-center space-y-2">
+          <a href="https://eits.uga.edu/resources/" className="hover:underline">
+            Resources
+          </a>
+          <a href="https://warnell.uga.edu/resources-students" className="hover:underline">
+            Contact Warnell IT
+          </a>
+          <a
+            href="https://my.uga.edu/htmlportal/index.php?guest=normal/render.uP"
+            className="hover:underline"
+          >
+            MyUGA
+          </a>
+          <a href="https://eits.uga.edu/support/" className="hover:underline">
+            Help
+          </a>
+        </div>
+      </footer>
     </div>
   );
 }
