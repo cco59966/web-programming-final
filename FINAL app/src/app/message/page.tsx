@@ -103,17 +103,32 @@ const MessagePage: React.FC = () => {
   return (
     <div className="app-container">
       <header>
-        <nav className="navbar">
-          <div className="menu-toggle" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-            ☰
-          </div>
-          <ul className={`nav-links ${isMenuOpen ? 'active' : ''}`}>
-            <li><Link href="/" onClick={() => setIsMenuOpen(false)}>Home</Link></li>
-            <li><Link href="/authenticated" onClick={() => setIsMenuOpen(false)}>Authenticated</Link></li>
-            <li><Link href="/checkout" onClick={() => setIsMenuOpen(false)}>Checkout</Link></li>
+        <div className="header-content">
+          <button 
+            className="hamburger-menu"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            aria-label="Toggle menu"
+          >
+            <span className={`hamburger-line ${isMenuOpen ? 'open' : ''}`}></span>
+            <span className={`hamburger-line ${isMenuOpen ? 'open' : ''}`}></span>
+            <span className={`hamburger-line ${isMenuOpen ? 'open' : ''}`}></span>
+          </button>
+          <h1 className="title">Warnell VR Forum</h1>
+        </div>
+
+        <nav className={`navbar ${isMenuOpen ? 'open' : ''}`}>
+          <ul className="nav-links">
+            <li>
+              <Link href="/" onClick={() => setIsMenuOpen(false)}>Home</Link>
+            </li>
+            <li>
+              <Link href="/authenticated" onClick={() => setIsMenuOpen(false)}>Authenticated</Link>
+            </li>
+            <li>
+              <Link href="/checkout" onClick={() => setIsMenuOpen(false)}>Checkout</Link>
+            </li>
           </ul>
         </nav>
-        <div className="title">Warnell VR Forum</div>
       </header>
 
       <div className="content-area">
@@ -164,34 +179,26 @@ const MessagePage: React.FC = () => {
         </div>
       </div>
 
-      <footer className="bg-black text-white p-0.5 flex flex-col sm:flex-row justify-between items-center">
-        <div className="flex items-center space-x-4 mb-4 sm:mb-0">
-          <div className="relative w-40 h-20">
+      <footer className="footer">
+        <div className="footer-content">
+          <div className="footer-logo">
             <Image
               src="https://bitbucket.org/ugamc/uga-global-footer/raw/e0c8a5d1e7e8950a9c2f767c7e941f5b2e5c70ae/src/_assets/img/GEORGIA-FS-CW.svg"
               alt="UGA Logo"
-              fill
-              className="object-contain"
+              width={160}
+              height={80}
+              className="logo-image"
             />
+            <span>© University of Georgia</span>
           </div>
-          <span className="text-base">© University of Georgia</span>
-        </div>
-
-        <div className="flex flex-col items-center space-y-2">
-          <a href="https://eits.uga.edu/resources/" className="hover:underline">Resources</a>
-          <a href="https://warnell.uga.edu/resources-students" className="hover:underline">Contact Warnell IT</a>
-          <a href="https://my.uga.edu/htmlportal/index.php?guest=normal/render.uP" className="hover:underline">MyUGA</a>
-          <a href="https://eits.uga.edu/support/" className="hover:underline">Help</a>
+          <div className="footer-links">
+            <a href="https://eits.uga.edu/resources/">Resources</a>
+            <a href="https://warnell.uga.edu/resources-students">Contact Warnell IT</a>
+            <a href="https://my.uga.edu/htmlportal/index.php?guest=normal/render.uP">MyUGA</a>
+            <a href="https://eits.uga.edu/support/">Help</a>
+          </div>
         </div>
       </footer>
-
-      <Image
-        src="/univ.png"
-        alt="UGA Logo"
-        width={200}
-        height={100}
-        className="logo"
-      />
     </div>
   );
 };
