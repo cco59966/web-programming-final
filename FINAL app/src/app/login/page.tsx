@@ -10,7 +10,7 @@ import { set } from "mongoose";
 export default function Home() {
   // State for login toggle
   const router = useRouter();
-  /*
+  
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
 
@@ -40,58 +40,41 @@ export default function Home() {
     
   };
   connectMongoDB();
-  */
+  
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-/*
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setError("");
 
-    const res = await fetch("/api/items/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
-    });
 
-    const result = await res.json();
-
-    if (!res.ok) {
-      setError(result.message || "Login failed");
-    } else {
-      router.push("/authenticated"); // 👈 Protected route
-    }
-  };
-*/
-const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+const handleLoginSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
   e.preventDefault();
   setError("");
 
   try {
-    const res = await fetch("/api/items/login", {
+    const response = await fetch("/api/items/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
+      body: JSON.stringify({ email: formData.email, password: formData.password }),
+      credentials: "include", 
     });
-
-    let result : { message?: string } = {};
-    try {
-      result = await res.json(); // only try parsing if there's body
-    } catch (jsonErr) {
-      console.warn("No JSON returned from login");
-    }
-
-    if (!res.ok) {
-      setError(result.message || "Login failed");
-    } else {
+    
+    
+    const data = await response.json();
+    
+    if (response.ok) {
+      localStorage.setItem("user", JSON.stringify(data.user)); 
       router.push("/checkout");
     }
-  } catch (err) {
-    console.error("Login error:", err);
+    else {
+      setError(data.message || "Login failed");
+    }
+  } catch (error) {    
+
+   
+    console.error("Login error:", error);
     setError("An unexpected error occurred.");
   }
 };
@@ -105,7 +88,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         <div className="min-h-screen flex flex-col vr-container">
           <main className="flex-1">
             <div className="vr-login-form">
-              <form onSubmit={handleSubmit}>
+              <form onSubmit={handleLoginSubmit}>
                 <input
                   type="email"
                   name="email"

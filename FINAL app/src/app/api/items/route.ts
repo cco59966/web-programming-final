@@ -5,6 +5,7 @@ import User from "../../models/User.js";
 import Headset from "../../models/Headset.js";
 import Checkout from "../../models/Checkout.js";
 import Message from "../../models/Message.js";
+import jwt from "jsonwebtoken";
 
 // Import Next.js utilities for handling server requests and responses
 import { NextResponse } from "next/server";
@@ -16,6 +17,25 @@ export async function POST(request: NextRequest) {
     // Extract the 'type' and 'data' fields from the incoming JSON body
     const { type, data } = await request.json();
     console.log("Request received: ", { type, data });
+
+    // Get token from cookie
+    const token = request.cookies.get("token")?.value;
+    console.log("Raw token from cookie:", token);
+    
+    
+    let userIdFromToken: string | null = null;
+    if (token) {
+      try {
+        const decoded: any = jwt.verify(token, process.env.AUTH_SECRET!);
+        userIdFromToken = decoded.userId;
+        console.log("Verified token userId:", userIdFromToken);
+      } catch (err) {
+        console.warn("Invalid token");
+      }
+    } else {
+      console.warn("No token found in cookies");
+    }
+    
    
     
     // Connect to the MongoDB database
@@ -121,23 +141,22 @@ export async function POST(request: NextRequest) {
     // TYPE: 'checkout' – Assign a headset to a user
     // ─────────────────────────────────────────────
     if (type === "checkout") {
-      const { userId, returnBy, quantity } = data; 
-    
-      console.log("Bulk checkout request:", { userId, quantity });
-    
+      const { returnBy, quantity } = data;
+      const userId = userIdFromToken;
+      
+      console.log("Bulk checkout request (verified):", { userId, quantity });
+      
+      if (!userId) {
+        return NextResponse.json({ error: "User not authenticated" }, { status: 401 });
+      }
+      
       await connectMongoDB();
-    
-      let user;
-      try {
-        user = await User.findById(userId);
-      } catch (err) {
-        console.warn("Using fallback user");
-        user = { _id: new mongoose.Types.ObjectId("67f68c137a5d74179328d274") };
-      }
-    
+      
+      const user = await User.findById(userId);
       if (!user) {
-        user = { _id: new mongoose.Types.ObjectId("67f68c137a5d74179328d274") };
+        return NextResponse.json({ error: "User not found" }, { status: 404 });
       }
+      
     
       const returnDate = returnBy || new Date(new Date().setDate(new Date().getDate() + 7));
     
@@ -233,6 +252,7 @@ export async function POST(request: NextRequest) {
         headsets: checkedOutHeadsets,
       }, { status: 200 });
     }
+
 
 
 

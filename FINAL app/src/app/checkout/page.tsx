@@ -4,20 +4,41 @@ import React, { useState } from 'react';
 import '.././css/CheckoutPage.css';
 import Image from "next/image";
 import { useRouter } from 'next/navigation';
+// import jwt from 'jsonwebtoken';
+import { useEffect } from 'react';
+
 
 const CheckoutPage = () => {
   const router = useRouter();
   const [headsetQuantity, setHeadsetQuantity] = useState<number>(0);
   const [checkoutDate, setCheckoutDate] = useState<string>('');
   const [returnDate, setReturnDate] = useState<string>('');
+  const [userId, setUserId] = useState<string | null>(null);
 
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+  
+    if (storedUser) {
+      try {
+        const user = JSON.parse(storedUser);
+        setUserId(user._id);
+        console.log("🪪 User ID loaded:", user._id);
+      } catch (err) {
+        console.error("Failed to parse stored user:", err);
+      }
+    } else {
+      console.warn("No user found in localStorage");
+    }
+  }, []);
+
+  
   // YouTube search state
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [videos, setVideos] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | undefined>(undefined);
-
-  const userId = "67f68c137a5d74179328d274"; // CHANGE THIS WHEN LOGIN IS WORKING CORRECTLY
+  // const [userId, setUserId] = useState<string | null>(null);
+  
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -33,33 +54,38 @@ const CheckoutPage = () => {
     e.preventDefault();
     router.push('authenticated');
   };
-
+  {userId && (
+    <p className="text-sm text-gray-600 mb-4">
+      You’re logged in as: <strong>{userId}</strong>
+    </p>
+  )}
+  
   const handleReservationSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!userId) {
-      console.error("User not logged in.");
-      return;
-    }
+  
     const reservationData = {
       type: "checkout",
       data: {
         quantity: headsetQuantity,
-        userId,
-        //checkoutDate,
+        checkoutDate,
         returnBy: returnDate,
+        userId, 
       },
     };
     
+  
     try {
       const response = await fetch("/api/items", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(reservationData),
+        credentials: "include", 
       });
-    
-      const resultText = await response.text(); // 🔥 read even if it's not ok
+      
+  
+      const resultText = await response.text();
       console.log("Server response:", resultText);
-    
+  
       if (response.ok) {
         console.log("Reservation saved.");
         setHeadsetQuantity(0);
@@ -71,8 +97,8 @@ const CheckoutPage = () => {
     } catch (error) {
       console.error("Error submitting reservation:", error);
     }
-    
-  }
+  };
+  
   // YouTube search handler
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -212,7 +238,6 @@ const CheckoutPage = () => {
       </div>
 
       <footer className="bg-black text-white p-0.5 flex flex-col sm:flex-row justify-between items-center">
-        {/* Left side: UGA Logo + © text */}
         <div className="flex items-center space-x-4 mb-4 sm:mb-0">
           <div className="relative w-40 h-20">
             <Image
@@ -225,7 +250,6 @@ const CheckoutPage = () => {
           <span className="text-base">© University of Georgia</span>
         </div>
 
-        {/* Right side: Links */}
         <div className="flex flex-col items-center space-y-2">
           <a href="https://eits.uga.edu/resources/" className="hover:underline">Resources</a>
           <a href="https://warnell.uga.edu/resources-students" className="hover:underline">Contact Warnell IT</a>

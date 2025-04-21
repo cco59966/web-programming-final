@@ -5,6 +5,7 @@ import Image from "next/image";
 import connectMongoDB from ".././config/mongodb";
 import ".././css/VRPage.css";
 import { useRouter } from "next/navigation";
+import jwt from 'jsonwebtoken';
 
 const HeadsetItem = ({ id, name, image }: { id: number; name: string; image: string }) => {
   const handleReturn = async () => {
@@ -64,10 +65,22 @@ export default function Home() {
   const router = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [headsets, setHeadsets] = useState([]);
-
+  const [userId, setUserId] = useState<string | null>(null);
   useEffect(() => {
-    const fetchCheckedOutHeadsets = async () => {
+    const fetchData = async () => {
       try {
+        const storedUser = localStorage.getItem("user");
+        if (!storedUser) {
+          console.warn("No user found in localStorage");
+          return;
+        }
+        const parsedUser = JSON.parse(storedUser);
+        const extractedUserId = parsedUser._id;
+        
+
+        setUserId(extractedUserId);
+
+        // Now fetch headsets
         const res = await fetch("/api/items", {
           method: "POST",
           headers: {
@@ -76,7 +89,7 @@ export default function Home() {
           body: JSON.stringify({
             type: "getCheckedOut",
             data: {
-              userId: "67f68c137a5d74179328d274",
+              userId: extractedUserId,
             },
           }),
         });
@@ -84,11 +97,11 @@ export default function Home() {
         const json = await res.json();
         setHeadsets(json.headsets || []);
       } catch (err) {
-        console.error("Failed to fetch headsets", err);
+        console.error("Failed to fetch user/headsets:", err);
       }
     };
 
-    fetchCheckedOutHeadsets();
+    fetchData();
   }, []);
 
   connectMongoDB();
