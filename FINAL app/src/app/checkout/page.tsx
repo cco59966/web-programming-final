@@ -1,25 +1,26 @@
-"use client"
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import '.././css/CheckoutPage.css';
+import React, { useState, useEffect } from "react";
+import ".././css/CheckoutPage.css";
 import Image from "next/image";
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 
 const CheckoutPage = () => {
   const router = useRouter();
   const [headsetQuantity, setHeadsetQuantity] = useState<number>(0);
-  const [checkoutDate, setCheckoutDate] = useState<string>('');
-  const [returnDate, setReturnDate] = useState<string>('');
+  const [checkoutDate, setCheckoutDate] = useState<string>("");
+  const [returnDate, setReturnDate] = useState<string>("");
   const [userId, setUserId] = useState<string | null>(null);
   const [userName, setUserName] = useState<string | null>(null);
 
-  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [searchQuery, setSearchQuery] = useState<string>("");
   const [videos, setVideos] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
+
     if (storedUser) {
       try {
         const user = JSON.parse(storedUser);
@@ -36,17 +37,17 @@ const CheckoutPage = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    router.push('/login');
+    router.push("/login");
   };
 
   const handleSubmit2 = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    router.push('home');
+    router.push("home");
   };
 
   const handleSubmit3 = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    router.push('authenticated');
+    router.push("authenticated");
   };
 
   const handleReservationSubmit = async (e: React.FormEvent) => {
@@ -76,8 +77,8 @@ const CheckoutPage = () => {
       if (response.ok) {
         console.log("Reservation saved.");
         setHeadsetQuantity(0);
-        setCheckoutDate('');
-        setReturnDate('');
+        setCheckoutDate("");
+        setReturnDate("");
       } else {
         console.error("Reservation failed to save:", response.status, resultText);
       }
@@ -94,15 +95,15 @@ const CheckoutPage = () => {
     try {
       const res = await fetch(
         `https://www.googleapis.com/youtube/v3/search?` +
-        `part=snippet&type=video&maxResults=10` +
-        `&q=${encodeURIComponent(searchQuery)}` +
-        `&key=${process.env.NEXT_PUBLIC_YOUTUBE_API_KEY}`
+          `part=snippet&type=video&maxResults=10` +
+          `&q=${encodeURIComponent(searchQuery)}` +
+          `&key=${process.env.NEXT_PUBLIC_YOUTUBE_API_KEY}`
       );
       const data = await res.json();
       if (res.ok) {
         setVideos(data.items || []);
       } else {
-        setError(data.error?.message || 'API error');
+        setError(data.error?.message || "API error");
       }
     } catch (err: any) {
       setError(err.message);
@@ -112,11 +113,11 @@ const CheckoutPage = () => {
   };
 
   return (
-    <div className="checkout-container min-h-screen flex flex-col">
+    <div className="checkout-container">
       <header className="bg-[#BA0C2F] text-black flex justify-between items-center px-8 py-6">
         <div className="flex items-center justify-start">
           <h1 className="text-3xl font-bold text-left">
-            {userName ? `Welcome, ${userName}` : 'Warnell VR Checkout System'}
+            {userName ? `Welcome, ${userName}` : "Warnell VR Checkout System"}
           </h1>
         </div>
         <div className="flex gap-4">
@@ -137,10 +138,6 @@ const CheckoutPage = () => {
           </form>
         </div>
       </header>
-
-      {/* 
-      USER ID SECTION REMOVED 
-      */}
 
       <div className="info-section bg-white p-8 my-6 rounded-lg shadow-md max-w-4xl mx-auto">
         <h2 className="text-2xl font-semibold mb-4">Reservation Information</h2>
@@ -205,7 +202,7 @@ const CheckoutPage = () => {
             type="text"
             placeholder="Search for VR tutorials..."
             value={searchQuery}
-            onChange={e => setSearchQuery(e.target.value)}
+            onChange={(e) => setSearchQuery(e.target.value)}
             className="flex-grow p-2 border rounded"
           />
           <button
@@ -220,7 +217,7 @@ const CheckoutPage = () => {
         {error && <p className="text-red-600 text-center py-4">{error}</p>}
 
         <div className="video-results space-y-4 max-h-96 overflow-y-auto">
-          {videos.map(video => (
+          {videos.map((video) => (
             <a
               key={video.id.videoId}
               href={`https://youtu.be/${video.id.videoId}`}
@@ -244,8 +241,6 @@ const CheckoutPage = () => {
         </div>
       </div>
 
-      <div className="pb-48"></div>
-
       <footer className="bg-black text-white p-6 mt-12">
         <div className="container mx-auto flex flex-col md:flex-row justify-between items-center">
           <div className="flex items-center mb-4 md:mb-0">
@@ -260,11 +255,11 @@ const CheckoutPage = () => {
             <span className="text-sm">© University of Georgia</span>
           </div>
 
-          <div className="grid grid-cols-2 md:flex gap-6">
-            <a href="https://eits.uga.edu/resources/" className="hover:underline text-sm">Resources</a>
-            <a href="https://warnell.uga.edu/resources-students" className="hover:underline text-sm">Contact IT</a>
-            <a href="https://my.uga.edu/htmlportal/index.php?guest=normal/render.uP" className="hover:underline text-sm">MyUGA</a>
-            <a href="https://eits.uga.edu/support/" className="hover:underline text-sm">Help</a>
+          <div className="flex flex-col gap-2 text-sm text-right">
+            <a href="https://eits.uga.edu/resources/" className="hover:underline">Resources</a>
+            <a href="https://warnell.uga.edu/resources-students" className="hover:underline">Contact IT</a>
+            <a href="https://my.uga.edu/htmlportal/index.php?guest=normal/render.uP" className="hover:underline">MyUGA</a>
+            <a href="https://eits.uga.edu/support/" className="hover:underline">Help</a>
           </div>
         </div>
       </footer>
