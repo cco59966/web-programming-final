@@ -35,10 +35,21 @@ const CheckoutPage = () => {
     }
   }, []);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleLogout = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    router.push('/login');
+  
+    localStorage.removeItem("user");
+  
+
+    fetch("/api/logout", {
+      method: "POST",
+      credentials: "include",
+    });
+  
+ 
+    router.push("/signup");
   };
+  
 
   const handleSubmit2 = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -131,7 +142,7 @@ const CheckoutPage = () => {
               View Reservations
             </button>
           </form>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleLogout}>
             <button className="bg-black text-white px-4 py-2 rounded font-semibold hover:bg-gray-800 transition">
               Logout
             </button>

@@ -7,7 +7,9 @@ import ".././css/VRPage.css";
 import { useRouter } from "next/navigation";
 import jwt from 'jsonwebtoken';
 
+
 const HeadsetItem = ({ id, name, image }: { id: number; name: string; image: string }) => {
+
   const handleReturn = async () => {
     try {
       const res = await fetch("/api/items", {
@@ -66,6 +68,21 @@ export default function Home() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [headsets, setHeadsets] = useState([]);
   const [userId, setUserId] = useState<string | null>(null);
+
+    const handleLogout = (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+    
+      localStorage.removeItem("user");
+    
+  
+      fetch("/api/logout", {
+        method: "POST",
+        credentials: "include",
+      });
+    
+   
+      router.push("/signup");
+    };
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -77,7 +94,6 @@ export default function Home() {
         const parsedUser = JSON.parse(storedUser);
         const extractedUserId = parsedUser._id;
         
-
         setUserId(extractedUserId);
 
         // Now fetch headsets
@@ -131,12 +147,11 @@ export default function Home() {
           >
             Add Items
           </button>
-          <button 
-            onClick={() => router.push("/login")}
-            className="bg-black text-white px-4 py-2 rounded font-semibold"
-          >
-            Logout
-          </button>
+          <form onSubmit={handleLogout}>
+            <button className="bg-black text-white px-4 py-2 rounded font-semibold hover:bg-gray-800 transition">
+              Logout
+            </button>
+            </form>
         </div>
       </header>
 

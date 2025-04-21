@@ -108,24 +108,36 @@ const MessagePage: React.FC = () => {
 
   return (
     <div className="app-container">
-      {/* HEADER */}
-      <header className="bg-[#BA0C2F] text-black flex justify-between items-center px-8 py-6">
-        <h1 className="text-3xl font-bold">Warnell VR Forum</h1>
-        <form onSubmit={(e) => { e.preventDefault(); router.push('/'); }}>
-          <button className="bg-black text-white px-4 py-2 rounded font-semibold">
+     <header className="bg-[#BA0C2F] text-black flex justify-between items-center px-8 py-6">
+        <div className="flex items-center justify-start">
+          <h1 className="text-3xl font-bold text-left">Warnell VR Checkout System</h1>
+        </div>
+        <div className="flex gap-4">
+          <button 
+            onClick={() => router.push("http://localhost:3000/message")}
+            className="bg-black text-white px-4 py-2 rounded font-semibold"
+          >
+            Messages
+          </button>
+          <button 
+            onClick={() => router.push("home")}
+            className="bg-black text-white px-4 py-2 rounded font-semibold"
+          >
             Return Home
           </button>
-        </form>
-        <form onSubmit={(e) => { e.preventDefault(); router.push('/checkout'); }}>
-          <button className="bg-black text-white px-4 py-2 rounded font-semibold">
+          <button 
+            onClick={() => router.push("checkout")}
+            className="bg-black text-white px-4 py-2 rounded font-semibold"
+          >
             Add Items
           </button>
-        </form>
-        <form onSubmit={(e) => { e.preventDefault(); router.push('/login'); }}>
-          <button className="bg-black text-white px-4 py-2 rounded font-semibold">
-            Logout
+          <button 
+            onClick={() => router.push("authenticated")}
+            className="bg-black text-white px-4 py-2 rounded font-semibold"
+          >
+          View Current Reservations
           </button>
-        </form>
+        </div>
       </header>
 
       {/* FORUM CONTENT */}
