@@ -4,9 +4,7 @@ import React, { useState } from 'react';
 import '.././css/CheckoutPage.css';
 import Image from "next/image";
 import { useRouter } from 'next/navigation';
-// import jwt from 'jsonwebtoken';
 import { useEffect } from 'react';
-
 
 const CheckoutPage = () => {
   const router = useRouter();
@@ -14,6 +12,13 @@ const CheckoutPage = () => {
   const [checkoutDate, setCheckoutDate] = useState<string>('');
   const [returnDate, setReturnDate] = useState<string>('');
   const [userId, setUserId] = useState<string | null>(null);
+  const [userName, setUserName] = useState<string | null>(null);
+
+  // YouTube search state
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [videos, setVideos] = useState<any[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -22,7 +27,8 @@ const CheckoutPage = () => {
       try {
         const user = JSON.parse(storedUser);
         setUserId(user._id);
-        console.log("🪪 User ID loaded:", user._id);
+        setUserName(user.name || user.username || null);
+        console.log("User loaded:", user._id, user.name);
       } catch (err) {
         console.error("Failed to parse stored user:", err);
       }
@@ -30,15 +36,6 @@ const CheckoutPage = () => {
       console.warn("No user found in localStorage");
     }
   }, []);
-
-  
-  // YouTube search state
-  const [searchQuery, setSearchQuery] = useState<string>('');
-  const [videos, setVideos] = useState<any[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | undefined>(undefined);
-  // const [userId, setUserId] = useState<string | null>(null);
-  
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -54,12 +51,7 @@ const CheckoutPage = () => {
     e.preventDefault();
     router.push('authenticated');
   };
-  {userId && (
-    <p className="text-sm text-gray-600 mb-4">
-      You’re logged in as: <strong>{userId}</strong>
-    </p>
-  )}
-  
+
   const handleReservationSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
   
@@ -73,7 +65,6 @@ const CheckoutPage = () => {
       },
     };
     
-  
     try {
       const response = await fetch("/api/items", {
         method: "POST",
@@ -82,7 +73,6 @@ const CheckoutPage = () => {
         credentials: "include", 
       });
       
-  
       const resultText = await response.text();
       console.log("Server response:", resultText);
   
@@ -99,7 +89,6 @@ const CheckoutPage = () => {
     }
   };
   
-  // YouTube search handler
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!searchQuery.trim()) return;
@@ -129,7 +118,9 @@ const CheckoutPage = () => {
     <div>
       <header className="bg-[#BA0C2F] text-black flex justify-between items-center px-8 py-6">
         <div className="flex items-center justify-start">
-          <h1 className="text-3xl font-bold text-left">Warnell VR Checkout System</h1>
+          <h1 className="text-3xl font-bold text-left">
+            {userName ? `Welcome, ${userName}` : 'Warnell VR Checkout System'}
+          </h1>
         </div>
         <form onSubmit={handleSubmit2}>
           <button className="bg-black text-white px-4 py-2 rounded font-semibold">
@@ -147,6 +138,12 @@ const CheckoutPage = () => {
           </button>
         </form>
       </header>
+
+      {userId && (
+        <p className="text-sm text-gray-600 mb-4 text-center">
+          You're logged in as: <strong>{userId}</strong>
+        </p>
+      )}
 
       <div className="info">
         Reservations are first come, first serve.<br /><br />
@@ -184,7 +181,6 @@ const CheckoutPage = () => {
         </form>
       </div>
 
-      {/* YouTube Search Block */}
       <div className="add-item">
         <h2><strong>Search YouTube Videos</strong></h2>
         <form onSubmit={handleSearch} className="flex gap-2 mb-4">
