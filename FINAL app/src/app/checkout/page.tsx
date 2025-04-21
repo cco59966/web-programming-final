@@ -1,10 +1,9 @@
 "use client"
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '.././css/CheckoutPage.css';
 import Image from "next/image";
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
 
 const CheckoutPage = () => {
   const router = useRouter();
@@ -14,7 +13,6 @@ const CheckoutPage = () => {
   const [userId, setUserId] = useState<string | null>(null);
   const [userName, setUserName] = useState<string | null>(null);
 
-  // YouTube search state
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [videos, setVideos] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -22,7 +20,6 @@ const CheckoutPage = () => {
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
-  
     if (storedUser) {
       try {
         const user = JSON.parse(storedUser);
@@ -54,28 +51,28 @@ const CheckoutPage = () => {
 
   const handleReservationSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-  
+
     const reservationData = {
       type: "checkout",
       data: {
         quantity: headsetQuantity,
         checkoutDate,
         returnBy: returnDate,
-        userId, 
+        userId,
       },
     };
-    
+
     try {
       const response = await fetch("/api/items", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(reservationData),
-        credentials: "include", 
+        credentials: "include",
       });
-      
+
       const resultText = await response.text();
       console.log("Server response:", resultText);
-  
+
       if (response.ok) {
         console.log("Reservation saved.");
         setHeadsetQuantity(0);
@@ -88,7 +85,7 @@ const CheckoutPage = () => {
       console.error("Error submitting reservation:", error);
     }
   };
-  
+
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!searchQuery.trim()) return;
@@ -97,9 +94,9 @@ const CheckoutPage = () => {
     try {
       const res = await fetch(
         `https://www.googleapis.com/youtube/v3/search?` +
-          `part=snippet&type=video&maxResults=10` +
-          `&q=${encodeURIComponent(searchQuery)}` +
-          `&key=${process.env.NEXT_PUBLIC_YOUTUBE_API_KEY}`
+        `part=snippet&type=video&maxResults=10` +
+        `&q=${encodeURIComponent(searchQuery)}` +
+        `&key=${process.env.NEXT_PUBLIC_YOUTUBE_API_KEY}`
       );
       const data = await res.json();
       if (res.ok) {
@@ -115,7 +112,7 @@ const CheckoutPage = () => {
   };
 
   return (
-    <div className="checkout-container">
+    <div className="checkout-container min-h-screen flex flex-col">
       <header className="bg-[#BA0C2F] text-black flex justify-between items-center px-8 py-6">
         <div className="flex items-center justify-start">
           <h1 className="text-3xl font-bold text-left">
@@ -137,7 +134,6 @@ const CheckoutPage = () => {
             <button className="bg-black text-white px-4 py-2 rounded font-semibold hover:bg-gray-800 transition">
               Logout
             </button>
-
           </form>
         </div>
       </header>
@@ -197,8 +193,8 @@ const CheckoutPage = () => {
             />
           </div>
 
-          <button 
-            type="submit" 
+          <button
+            type="submit"
             className="w-full bg-[#BA0C2F] text-white py-3 rounded font-semibold hover:bg-[#9a0a2a] transition"
           >
             Submit Reservation
@@ -251,6 +247,9 @@ const CheckoutPage = () => {
           ))}
         </div>
       </div>
+
+      {/* Extra padding at bottom to make YouTube section visible */}
+      <div className="pb-48"></div>
 
       <footer className="bg-black text-white p-6 mt-12">
         <div className="container mx-auto flex flex-col md:flex-row justify-between items-center">
