@@ -13,6 +13,7 @@ const CheckoutPage = () => {
   const [returnDate, setReturnDate] = useState<string>('');
   const [userId, setUserId] = useState<string | null>(null);
   const [userName, setUserName] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [videos, setVideos] = useState<any[]>([]);
@@ -86,14 +87,18 @@ const CheckoutPage = () => {
       console.log("Server response:", resultText);
 
       if (response.ok) {
+        setSuccessMessage(`Reservation for ${headsetQuantity} headset(s) was successful. Thanks!`);
         console.log("Reservation saved.");
         setHeadsetQuantity(0);
         setCheckoutDate('');
         setReturnDate('');
+        setTimeout(() => setSuccessMessage(null), 4000);
       } else {
+        setSuccessMessage('Failed to make reservation:( Please try again.');
         console.error("Reservation failed to save:", response.status, resultText);
       }
     } catch (error) {
+      setSuccessMessage(null);
       console.error("Error submitting reservation:", error);
     }
   };
@@ -149,14 +154,13 @@ const CheckoutPage = () => {
           </form>
         </div>
       </header>
-
-
    
-
+      {successMessage && (
+        <div className="bg-green-100 text-green-800 px-4 py-3 text-center font-medium">
+          {successMessage}
+        </div>
+      )}
      
-
-   
-
       <div className="w-full max-w-[90%] mx-auto flex flex-col lg:flex-row gap-6 mt-1 px-4">
 
 {/* Reservation Info + Form */}
