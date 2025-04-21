@@ -25,7 +25,7 @@ export default function Home() {
     // Handle form submission logic here
     console.log('Form submitted');
    
-      router.push('checkout'); // ✅ Redirect to desired page
+      router.push('checkout');
     
   };
   const handleSubmit3 = (e: React.FormEvent<HTMLFormElement>) => {
@@ -33,49 +33,59 @@ export default function Home() {
     // Handle form submission logic here
     console.log('Form submitted');
    
-      router.push('authenticated'); // ✅ Redirect to desired page
+      router.push('authenticated'); 
     
+  };
+
+  const handleLogout = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+  
+    localStorage.removeItem("user");
+  
+
+    fetch("/api/logout", {
+      method: "POST",
+      credentials: "include",
+    });
+  
+ 
+    router.push("/signup");
   };
   // Connect to the database (if required for your page).
   connectMongoDB();
 
   return (
     <div className="min-h-screen flex flex-col">
-      {/* HEADER (Red Bar) */}
-      <header className="bg-[#BA0C2F] text-black flex justify-between items-center px-8 py-6">
-        <div className = "flex items-center justify-start">
-        {/* Button with Triangle */}
-     
-        <h1 className="text-3xl font-bold text-left">Warnell VR Checkout System</h1>
+     <header className="bg-[#BA0C2F] text-black flex justify-between items-center px-8 py-6">
+        <div className="flex items-center justify-start">
+          <h1 className="text-3xl font-bold text-left">Warnell VR Checkout System</h1>
         </div>
-        <form onSubmit={handleSubmit2}>
-        <button
-         
-          className="bg-black text-white px-4 py-2 rounded font-semibold"
-        >
-         Add Items
-        </button>
-       </form>
-        <form onSubmit={handleSubmit3}>
-        <button
-         
-          className="bg-black text-white px-4 py-2 rounded font-semibold"
-        >
-         View Current Reservations
-        </button>
-       </form>
-       
-
-
-
-       <form onSubmit={handleSubmit}>
-        <button
-         
-          className="bg-black text-white px-4 py-2 rounded font-semibold"
-        >
-         Login / Signup
-        </button>
-        </form>
+        <div className="flex gap-4">
+          <button 
+            onClick={() => router.push("http://localhost:3000/message")}
+            className="bg-black text-white px-4 py-2 rounded font-semibold"
+          >
+            Messages
+          </button>
+        
+          <button 
+            onClick={() => router.push("checkout")}
+            className="bg-black text-white px-4 py-2 rounded font-semibold"
+          >
+            Add Items
+          </button>
+          <button 
+            onClick={() => router.push("authenticated")}
+            className="bg-black text-white px-4 py-2 rounded font-semibold"
+          >
+          View Current Reservations
+          </button>
+          <form onSubmit={handleLogout}>
+            <button className="bg-black text-white px-4 py-2 rounded font-semibold hover:bg-gray-800 transition">
+              Logout
+            </button>
+          </form>
+        </div>
       </header>
 
       {/* MAIN CONTENT */}
