@@ -138,13 +138,9 @@ const CheckoutPage = () => {
         </div>
       </header>
 
-      {userId && (
-        <div className="user-info text-center py-2 bg-gray-100">
-          <p className="text-sm text-gray-600">
-            User ID: <strong>{userId}</strong>
-          </p>
-        </div>
-      )}
+      {/* 
+      USER ID SECTION REMOVED 
+      */}
 
       <div className="info-section bg-white p-8 my-6 rounded-lg shadow-md max-w-4xl mx-auto">
         <h2 className="text-2xl font-semibold mb-4">Reservation Information</h2>
@@ -248,7 +244,6 @@ const CheckoutPage = () => {
         </div>
       </div>
 
-      {/* Extra padding at bottom to make YouTube section visible */}
       <div className="pb-48"></div>
 
       <footer className="bg-black text-white p-6 mt-12">
@@ -262,7 +257,7 @@ const CheckoutPage = () => {
                 className="object-contain"
               />
             </div>
-            <span className="text-sm">© {new Date().getFullYear()} University of Georgia</span>
+            <span className="text-sm">© University of Georgia</span>
           </div>
 
           <div className="grid grid-cols-2 md:flex gap-6">
