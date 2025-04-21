@@ -74,7 +74,7 @@ export default function Home() {
         </form>
         <form onSubmit={handleSubmit}>
           <button className="bg-black text-white px-4 py-2 rounded font-semibold">
-            Login / Signup
+           Signup
           </button>
         </form>
       </header>
