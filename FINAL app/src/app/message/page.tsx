@@ -12,7 +12,7 @@ const MessagePage: React.FC = () => {
   const [comments, setComments] = useState<any[]>([]);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const userId = "67f68c137a5d74179328d274"; // CHANGE THIS WHEN LOGIN IS WORKING CORRECTLY
+  //const userId = "67f68c137a5d74179328d274"; // CHANGE THIS WHEN LOGIN IS WORKING CORRECTLY
 
   useEffect(() => {
     fetchMessages();
