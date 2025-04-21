@@ -13,8 +13,7 @@ const MessagePage: React.FC = () => {
   const [comments, setComments] = useState<any[]>([]);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
-
-  //const userId = "67f68c137a5d74179328d274"; // CHANGE THIS WHEN LOGIN IS WORKING CORRECTLY
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -113,30 +112,29 @@ const MessagePage: React.FC = () => {
           <h1 className="text-3xl font-bold text-left">Warnell VR Checkout System</h1>
         </div>
         <div className="flex gap-4">
-          <button 
-            onClick={() => router.push("http://localhost:3000/message")}
-            className="bg-black text-white px-4 py-2 rounded font-semibold"
-          >
-            Messages
-          </button>
+         
           <button 
             onClick={() => router.push("home")}
             className="bg-black text-white px-4 py-2 rounded font-semibold"
           >
             Return Home
           </button>
+          {isLoggedIn && (
           <button 
             onClick={() => router.push("checkout")}
             className="bg-black text-white px-4 py-2 rounded font-semibold"
           >
             Add Items
           </button>
+          )}
+           {isLoggedIn && (
           <button 
             onClick={() => router.push("authenticated")}
             className="bg-black text-white px-4 py-2 rounded font-semibold"
           >
           View Current Reservations
           </button>
+          )}
         </div>
       </header>
 

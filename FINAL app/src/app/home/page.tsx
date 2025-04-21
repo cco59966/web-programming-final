@@ -4,10 +4,10 @@ import { useEffect } from "react";
 import Image from "next/image";
 import connectMongoDB from "../config/mongodb";
 import { useRouter } from "next/navigation";
-
+import { useState } from "react";
 export default function Home() {
   const router = useRouter();
-
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const col1 = [
     "/images/vrpage/forest1.jpg",
     "/images/vrpage/forest4.jpg",
@@ -72,23 +72,37 @@ export default function Home() {
           >
             Messages
           </button>
-          <button
-            onClick={() => router.push("/checkout")}
-            className="bg-black text-white px-4 py-2 rounded font-semibold"
-          >
-            Add Items
-          </button>
-          <button
-            onClick={() => router.push("/authenticated")}
-            className="bg-black text-white px-4 py-2 rounded font-semibold"
-          >
-            View Reservations
-          </button>
+          {isLoggedIn && (
+            <button
+              onClick={() => router.push("/checkout")}
+              className="bg-black text-white px-4 py-2 rounded font-semibold"
+            >
+              Add Items
+            </button>
+          )}
+          {isLoggedIn && (
+            <button
+              onClick={() => router.push("/authenticated")}
+              className="bg-black text-white px-4 py-2 rounded font-semibold"
+            >
+              View Reservations
+            </button>
+          )}
+           {isLoggedIn && (
           <form onSubmit={handleLogout}>
             <button className="bg-black text-white px-4 py-2 rounded font-semibold hover:bg-gray-800 transition">
               Logout
             </button>
+            
           </form>
+           )}
+          {!isLoggedIn && (
+            <form onSubmit={() => router.push("/signup")}>
+              <button className="bg-black text-white px-4 py-2 rounded font-semibold hover:bg-gray-800 transition">
+                Sign Up
+              </button>
+            </form>
+          )}
         </div>
       </header>
 
