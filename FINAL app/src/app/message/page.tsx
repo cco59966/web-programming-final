@@ -113,7 +113,7 @@ const MessagePage: React.FC = () => {
             <span className={`hamburger-line ${isMenuOpen ? 'open' : ''}`}></span>
             <span className={`hamburger-line ${isMenuOpen ? 'open' : ''}`}></span>
           </button>
-          <h1 className="title">Warnell VR Forum</h1>
+          <h1 className="text-3xl font-bold text-left">Warnell VR Forum</h1>
         </div>
 
         <nav className={`navbar ${isMenuOpen ? 'open' : ''}`}>
