@@ -4,12 +4,14 @@ import React, { useState, useEffect } from 'react';
 import '.././message/message-page.css';
 import Image from "next/image";
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 const MessagePage: React.FC = () => {
   const [userName, setUserName] = useState('');
   const [commentText, setCommentText] = useState('');
   const [comments, setComments] = useState<any[]>([]);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const router = useRouter();
 
   const userId = "67f68c137a5d74179328d274"; // CHANGE THIS WHEN LOGIN IS WORKING CORRECTLY
 
@@ -119,13 +121,37 @@ const MessagePage: React.FC = () => {
         <nav className={`navbar ${isMenuOpen ? 'open' : ''}`}>
           <ul className="nav-links">
             <li>
-              <Link href="/" onClick={() => setIsMenuOpen(false)}>Home</Link>
+              <button
+                onClick={() => {
+                  router.push('/');
+                  setIsMenuOpen(false);
+                }}
+                className="bg-black text-white px-4 py-2 rounded font-semibold"
+              >
+                Home
+              </button>
             </li>
             <li>
-              <Link href="/authenticated" onClick={() => setIsMenuOpen(false)}>Authenticated</Link>
+              <button
+                onClick={() => {
+                  router.push('/authenticated');
+                  setIsMenuOpen(false);
+                }}
+                className="bg-black text-white px-4 py-2 rounded font-semibold"
+              >
+                Authenticated
+              </button>
             </li>
             <li>
-              <Link href="/checkout" onClick={() => setIsMenuOpen(false)}>Checkout</Link>
+              <button
+                onClick={() => {
+                  router.push('/checkout');
+                  setIsMenuOpen(false);
+                }}
+                className="bg-black text-white px-4 py-2 rounded font-semibold"
+              >
+                Checkout
+              </button>
             </li>
           </ul>
         </nav>
