@@ -6,6 +6,6 @@ button {
   }
   
   button:hover {
-    filter: invert(1);
+    background-color: rgb(84, 84, 84);
   }
   

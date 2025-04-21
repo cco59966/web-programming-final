@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+//import '.././css/VRPage.css';
 import Image from "next/image";
 
 export default function SignupPage() {
@@ -51,7 +52,15 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col vr-container">
+    <div 
+    className="min-h-screen flex flex-col"
+    style={{
+      backgroundImage: "url('/images/vrpage/vr.jpg')",
+      backgroundSize:   "cover",
+      backgroundPosition:"center",
+      backgroundRepeat:  "no-repeat",
+    }}
+    >
       <main className="flex-1">
         <div className="vr-login-form">
           <form onSubmit={handleSubmit}>
