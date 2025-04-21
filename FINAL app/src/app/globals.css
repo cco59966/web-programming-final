@@ -1,0 +1,11 @@
+@import "tailwindcss";
+
+/* Smooth invert on hover for all <button> elements */
+button {
+    transition: filter 0.2s ease;
+  }
+  
+  button:hover {
+    background-color: rgb(84, 84, 84);
+  }
+  
