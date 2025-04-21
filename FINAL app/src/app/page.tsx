@@ -27,7 +27,10 @@ export default function Home() {
     e.preventDefault();
     router.push("/");
   };
-
+  const handleSubmit4 = (e: React.FormEvent) => {
+    e.preventDefault();
+    router.push("/message");
+  };
   connectMongoDB();
 
   return (
@@ -61,6 +64,14 @@ export default function Home() {
             </button>
           </form>
         )}
+        <form onSubmit={handleSubmit4}>
+        <button
+         
+          className="bg-black text-white px-4 py-2 rounded font-semibold"
+        >
+         View Message Board
+        </button>
+        </form>
         <form onSubmit={handleSubmit}>
           <button className="bg-black text-white px-4 py-2 rounded font-semibold">
             Login / Signup
