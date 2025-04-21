@@ -170,16 +170,6 @@ const CheckoutPage = () => {
             required
           />
 
-          <label htmlFor="startDate">Checkout Date:</label>
-          <input
-            type="date"
-            id="startDate"
-            name="startDate"
-            value={checkoutDate}
-            onChange={(e) => setCheckoutDate(e.target.value)}
-            required
-          />
-
           <label htmlFor="returnDate">Return Date:</label>
           <input
             type="date"
