@@ -12,6 +12,7 @@ export default function SignupPage() {
     password: "",
   });
   const [error, setError] = useState("");
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -20,6 +21,7 @@ export default function SignupPage() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
+    setSuccessMessage(null);
 
     try {
       const res = await fetch("/api/items/signup", {
@@ -33,8 +35,11 @@ export default function SignupPage() {
       if (!res.ok) {
         setError(result.message || "Signup failed");
       } else {
-        alert("Signup successful! Account activated.");
-        router.push("/checkout");
+        //alert("Signup successful! Account activated.");
+        setSuccessMessage(`Sign up confirmed!!! Welcome ${formData.name}!!!`);
+        setTimeout(() => {
+          router.push("/checkout");
+        }, 2500);
       }
     } catch (err) {
       setError("An unexpected error occurred.");
@@ -81,6 +86,7 @@ export default function SignupPage() {
             />
             <button type="submit">Sign Up</button>
             {error && <p className="text-red-600 mt-2">{error}</p>}
+            {successMessage && <p className="text-green-600 mt-2 font-semibold">{successMessage}</p>}
             <p className="mt-2 text-sm">
               Already have an account?{' '}
               <button type="button" onClick={handleNavigateLogin} className="text-blue-600 underline">
