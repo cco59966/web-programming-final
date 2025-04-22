@@ -113,7 +113,7 @@ export default function Home() {
           onClick={() => router.push("/signup")}
           className="bg-black text-white px-4 py-2 rounded font-semibold hover:bg-gray-800 transition"
         >
-          Sign Up
+          Sign Up Or Log In
         </button>
           )}
         </div>

@@ -53,30 +53,41 @@ export default function Home() {
         })}
       </div>
 
-      {/* HEADER (Red Bar) */}
       <header className="relative z-10 bg-[#BA0C2F] text-black flex justify-between items-center px-8 py-6">
         <h1 className="text-3xl font-bold">Warnell VR Checkout System</h1>
-        <form onSubmit={handleSubmit3}></form>
-        {isLoggedIn && (
-          <form onSubmit={handleSubmit2}>
-            <button className="bg-black text-white px-4 py-2 rounded font-semibold">
-              View Current Reservations
-            </button>
-          </form>
-        )}
-        <form onSubmit={handleSubmit4}>
-        <button
-         
-          className="bg-black text-white px-4 py-2 rounded font-semibold"
-        >
-         View Message Board
-        </button>
-        </form>
-        <form onSubmit={handleSubmit}>
-          <button className="bg-black text-white px-4 py-2 rounded font-semibold">
-           Signup
+        <div className="flex gap-4">
+          <button
+            onClick={() => router.push("/message")}
+            className="bg-black text-white px-4 py-2 rounded font-semibold"
+          >
+            Messages
           </button>
-        </form>
+          {isLoggedIn && (
+            <button
+              onClick={() => router.push("/checkout")}
+              className="bg-black text-white px-4 py-2 rounded font-semibold"
+            >
+              Add Items
+            </button>
+          )}
+          {isLoggedIn && (
+            <button
+              onClick={() => router.push("/authenticated")}
+              className="bg-black text-white px-4 py-2 rounded font-semibold"
+            >
+              View Reservations
+            </button>
+          )}
+     
+          {!isLoggedIn && (
+          <button
+          onClick={() => router.push("/signup")}
+          className="bg-black text-white px-4 py-2 rounded font-semibold hover:bg-gray-800 transition"
+        >
+          Sign Up Or Log In
+        </button>
+          )}
+        </div>
       </header>
 
       {/* MAIN CONTENT (transparent so background shows) */}

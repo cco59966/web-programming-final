@@ -35,22 +35,7 @@ const CheckoutPage = () => {
       console.warn("No user found in localStorage");
     }
   }, []);
-  useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      try {
-        const user = JSON.parse(storedUser);
-        setUserId(user._id);
-        console.log("User loaded from localStorage:", user._id);
-      } catch (err) {
-        console.error("Failed to parse stored user:", err);
-      }
-    } else {
-      console.warn("No user found in localStorage");
-      router.push("/home");
-    }
-  }, []);
-  
+
   const handleLogout = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
   
