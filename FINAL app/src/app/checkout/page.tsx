@@ -1,10 +1,10 @@
 "use client"
 
 import React, { useState, useEffect } from 'react';
-import '.././css/CheckoutPage.css';
+//import '.././css/CheckoutPage.css';
 import Image from "next/image";
 import { useRouter } from 'next/navigation';
-import '.././css/VRPage.css';
+//import '.././css/VRPage.css';
 
 const CheckoutPage = () => {
   const router = useRouter();
@@ -129,7 +129,8 @@ const CheckoutPage = () => {
   };
 
   return (
-    <div className="checkout-container min-h-screen flex flex-col">
+    <div className="checkout-container min-h-screen flex flex-col bg-[#eed6ea]">
+
       <header className="bg-[#BA0C2F] text-black flex justify-between items-center px-8 py-6">
         <div className="flex items-center justify-start">
           <h1 className="text-3xl font-bold text-left">

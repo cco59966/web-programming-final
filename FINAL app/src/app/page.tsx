@@ -9,11 +9,11 @@ import { useState } from "react";
 export default function Home() {
   const router = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
+ // setIsLoggedIn(false); 
   // --- IMAGES FOR EACH COLUMN ---
-  const col1 = ["/images/vrpage/forest1.jpg", "/images/vrpage/forest4.jpg", "/images/vrpage/forest7.jpg", "/images/vrpage/forest14.jpg"];
-  const col2 = ["/images/vrpage/forest2.jpg", "/images/vrpage/forest5.jpg", "/images/vrpage/forest8.jpg", "/images/vrpage/forest9.jpg", "/images/vrpage/forest15.jpg"];
-  const col3 = ["/images/vrpage/forest3.jpg", "/images/vrpage/forest6.jpg", "/images/vrpage/forest11.jpg", "/images/vrpage/forest13.jpg"];
+  const col1 = ["/images/vrpage/forest1.jpg", "/images/vrpage/forest4.jpg", "/images/vrpage/forest7.jpg"];
+  const col2 = ["/images/vrpage/forest2.jpg", "/images/vrpage/forest5.jpg", "/images/vrpage/forest8.jpg","/images/vrpage/forest15.jpg"];
+  const col3 = ["/images/vrpage/forest3.jpg", "/images/vrpage/forest6.jpg", "/images/vrpage/forest11.jpg"];
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

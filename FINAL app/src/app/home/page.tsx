@@ -8,29 +8,41 @@ import { useState } from "react";
 export default function Home() {
   const router = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  //tIsLoggedIn(true);
   const col1 = [
     "/images/vrpage/forest1.jpg",
     "/images/vrpage/forest4.jpg",
     "/images/vrpage/forest7.jpg",
-    "/images/vrpage/forest14.jpg",
+   
   ];
   const col2 = [
     "/images/vrpage/forest2.jpg",
     "/images/vrpage/forest5.jpg",
     "/images/vrpage/forest8.jpg",
     "/images/vrpage/forest9.jpg",
-    "/images/vrpage/forest15.jpg",
+
   ];
   const col3 = [
     "/images/vrpage/forest3.jpg",
     "/images/vrpage/forest6.jpg",
     "/images/vrpage/forest11.jpg",
-    "/images/vrpage/forest13.jpg",
+    
   ];
 
   useEffect(() => {
     connectMongoDB();
+  
+    
+    const user = localStorage.getItem("user"); 
+  
+    if (user) {
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+    }
   }, []);
+  
+  
 
   const handleLogout = (e: React.FormEvent) => {
     e.preventDefault();
@@ -89,19 +101,20 @@ export default function Home() {
             </button>
           )}
            {isLoggedIn && (
-          <form onSubmit={handleLogout}>
-            <button className="bg-black text-white px-4 py-2 rounded font-semibold hover:bg-gray-800 transition">
-              Logout
-            </button>
-            
-          </form>
-           )}
+<button
+  onClick={handleLogout}
+  className="bg-black text-white px-4 py-2 rounded font-semibold"
+>
+  Logout
+</button>
+   )}
           {!isLoggedIn && (
-            <form onSubmit={() => router.push("/signup")}>
-              <button className="bg-black text-white px-4 py-2 rounded font-semibold hover:bg-gray-800 transition">
-                Sign Up
-              </button>
-            </form>
+          <button
+          onClick={() => router.push("/signup")}
+          className="bg-black text-white px-4 py-2 rounded font-semibold hover:bg-gray-800 transition"
+        >
+          Sign Up
+        </button>
           )}
         </div>
       </header>
