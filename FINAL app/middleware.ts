@@ -8,7 +8,8 @@ export function middleware(request: NextRequest) {
   const isAuthRoute =
     pathname.startsWith("/api/items/login") ||
     pathname.startsWith("/api/items/signup") ||
-    pathname.startsWith("/api/items/logout");
+    pathname.startsWith("/api/items/logout") ||
+    pathname.startsWith("/api/items/message");
   const isPublicPage =
     pathname === "/login" ||
     pathname === "/signup" ||
