@@ -73,12 +73,20 @@ export default function Home() {
   const [userId, setUserId] = useState<string | null>(null);
   const [returnMessage, setReturnMessage] = useState<string | null>(null);
 
-  // 🔐 Logout + redirect
-  const handleLogout = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    await fetch("/api/logout", { method: "POST", credentials: "include" });
-    router.push("/signup");
-  };
+  const handleLogout = (e: React.FormEvent<HTMLFormElement>) => {
+     e.preventDefault();
+   
+     localStorage.removeItem("user");
+   
+ 
+     fetch("/api/logout", {
+       method: "POST",
+       credentials: "include",
+     });
+   
+  
+     router.push("/home");
+   };
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -92,7 +100,7 @@ export default function Home() {
       }
     } else {
       console.warn("No user found in localStorage");
-      router.push("/signup");
+      router.push("/home");
     }
   }, []);
   

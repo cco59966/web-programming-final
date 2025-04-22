@@ -14,6 +14,7 @@ export default function SignupPage() {
   });
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
