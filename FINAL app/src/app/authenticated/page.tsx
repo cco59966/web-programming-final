@@ -2,19 +2,16 @@
 
 import { useState, useEffect, ReactNode } from "react";
 import Image from "next/image";
-import connectMongoDB from ".././config/mongodb";
 import { useRouter } from "next/navigation";
 
+// Card wrapper component
+const Card = ({ children }: { children: ReactNode }) => (
+  <div className="bg-white rounded-2xl shadow-lg p-6 flex flex-col items-center text-center transition-transform transform hover:scale-105 duration-300">
+    {children}
+  </div>
+);
 
-const Card = ({ children }: { children: ReactNode }) => {
-  return (
-    <div className="bg-white rounded-2xl shadow-lg p-6 flex flex-col items-center text-center transition-transform transform hover:scale-105 duration-300">
-      {children}
-    </div>
-  );
-};
-
-
+// Single headset return component
 const HeadsetItem = ({
   id,
   name,
@@ -41,10 +38,10 @@ const HeadsetItem = ({
       if (res.ok) {
         onReturnSuccess();
       } else {
-        console.error("Failed to return headset:", result.error);
+        console.error("❌ Failed to return headset:", result.error);
       }
     } catch (error) {
-      console.error("Error returning headset:", error);
+      console.error("❌ Error returning headset:", error);
     }
   };
 
@@ -69,47 +66,44 @@ const HeadsetItem = ({
   );
 };
 
-// ✅ Main Home component
+// Main page
 export default function Home() {
   const router = useRouter();
-  const [headsets, setHeadsets] = useState([]);
+  const [headsets, setHeadsets] = useState<any[]>([]);
   const [userId, setUserId] = useState<string | null>(null);
   const [returnMessage, setReturnMessage] = useState<string | null>(null);
 
   const handleLogout = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    localStorage.removeItem("user");
-    fetch("/api/logout", { method: "POST", credentials: "include" });
-    router.push("/signup");
-  };
+     e.preventDefault();
+   
+     localStorage.removeItem("user");
+   
+ 
+     fetch("/api/logout", {
+       method: "POST",
+       credentials: "include",
+     });
+   
+  
+     router.push("/home");
+   };
 
   useEffect(() => {
-    const fetchData = async () => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
       try {
-        const storedUser = localStorage.getItem("user");
-        if (!storedUser) return;
-        const parsedUser = JSON.parse(storedUser);
-        const extractedUserId = parsedUser._id;
-        setUserId(extractedUserId);
-
-        const res = await fetch("/api/items", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            type: "getCheckedOut",
-            data: { userId: extractedUserId },
-          }),
-        });
-
-        const json = await res.json();
-        setHeadsets(json.headsets || []);
+        const user = JSON.parse(storedUser);
+        setUserId(user._id);
+        console.log("User loaded from localStorage:", user._id);
       } catch (err) {
-        console.error("Failed to fetch headsets:", err);
+        console.error("Failed to parse stored user:", err);
       }
-    };
-
-    fetchData();
+    } else {
+      console.warn("No user found in localStorage");
+      router.push("/home");
+    }
   }, []);
+  
 
   const handleReturnSuccess = () => {
     setReturnMessage("Returned 1 headset. Thanks!!!");
@@ -130,8 +124,30 @@ export default function Home() {
     }
   };
 
-  connectMongoDB();
-
+  useEffect(() => {
+    if (!userId) return;
+  
+    const fetchHeadsets = async () => {
+      try {
+        const res = await fetch("/api/items", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            type: "getCheckedOut",
+            data: { userId },
+          }),
+        });
+  
+        const data = await res.json();
+        setHeadsets(data.headsets || []);
+      } catch (err) {
+        console.error("Failed to fetch headsets:", err);
+      }
+    };
+  
+    fetchHeadsets();
+  }, [userId]);
+  
   return (
     <div className="min-h-screen flex flex-col bg-[#f2cbec]">
       {/* Header */}
@@ -156,6 +172,12 @@ export default function Home() {
           >
             Add Items
           </button>
+          <button
+            onClick={() => router.push("/authenticated")}
+            className="bg-black text-white px-4 py-2 rounded font-semibold"
+          >
+            View Reservations
+          </button>
           <form onSubmit={handleLogout}>
             <button className="bg-black text-white px-4 py-2 rounded font-semibold hover:bg-gray-800 transition">
               Logout
@@ -176,9 +198,7 @@ export default function Home() {
             <HeadsetItem
               key={headset._id}
               id={headset.id}
-              name={`Return by ${new Date(
-                headset.returnBy
-              ).toLocaleDateString()}`}
+              name={`Return by ${new Date(headset.returnBy).toLocaleDateString()}`}
               image="https://90a1c75758623581b3f8-5c119c3de181c9857fcb2784776b17ef.ssl.cf2.rackcdn.com/640021_305565_02_front_comping.jpg"
               onReturnSuccess={handleReturnSuccess}
             />
@@ -199,26 +219,11 @@ export default function Home() {
           </div>
           <span className="text-base">© University of Georgia</span>
         </div>
-
         <div className="flex flex-col items-center space-y-2">
-          <a href="https://eits.uga.edu/resources/" className="hover:underline">
-            Resources
-          </a>
-          <a
-            href="https://warnell.uga.edu/resources-students"
-            className="hover:underline"
-          >
-            Contact Warnell IT
-          </a>
-          <a
-            href="https://my.uga.edu/htmlportal/index.php?guest=normal/render.uP"
-            className="hover:underline"
-          >
-            MyUGA
-          </a>
-          <a href="https://eits.uga.edu/support/" className="hover:underline">
-            Help
-          </a>
+          <a href="https://eits.uga.edu/resources/" className="hover:underline">Resources</a>
+          <a href="https://warnell.uga.edu/resources-students" className="hover:underline">Contact Warnell IT</a>
+          <a href="https://my.uga.edu/htmlportal/index.php?guest=normal/render.uP" className="hover:underline">MyUGA</a>
+          <a href="https://eits.uga.edu/support/" className="hover:underline">Help</a>
         </div>
       </footer>
     </div>
