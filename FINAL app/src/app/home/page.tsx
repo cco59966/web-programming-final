@@ -1,5 +1,5 @@
 "use client";
-
+// Our home page
 import { useEffect } from "react";
 import Image from "next/image";
 import connectMongoDB from "../config/mongodb";
@@ -8,7 +8,8 @@ import { useState } from "react";
 export default function Home() {
   const router = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  //tIsLoggedIn(true);
+
+  // Our columns for our scrolling background of images
   const col1 = [
     "/images/vrpage/forest1.jpg",
     "/images/vrpage/forest4.jpg",
@@ -29,12 +30,10 @@ export default function Home() {
     
   ];
 
+  // See if the user is logged in right now
   useEffect(() => {
     connectMongoDB();
-  
-    
     const user = localStorage.getItem("user"); 
-  
     if (user) {
       setIsLoggedIn(true);
     } else {
@@ -53,7 +52,7 @@ export default function Home() {
 
   return (
     <div className="relative min-h-screen flex flex-col">
-      {/* ─── BACKGROUND (now visible) ───────────────────────────── */}
+      {/* Create the background, pretty cool*/}
       <div
         className="absolute inset-0 z-0 grid grid-cols-[1fr_3fr_1fr] gap-4 p-8 pointer-events-none"
         aria-hidden="true"
@@ -74,7 +73,7 @@ export default function Home() {
         })}
       </div>
 
-      {/* ─── HEADER ──────────────────────────────────────────────── */}
+      {/* Universal header */}
       <header className="relative z-10 bg-[#BA0C2F] text-black flex justify-between items-center px-8 py-6">
         <h1 className="text-3xl font-bold">Warnell VR Checkout System</h1>
         <div className="flex gap-4">
@@ -100,6 +99,9 @@ export default function Home() {
               View Reservations
             </button>
           )}
+
+          
+      {/* Some things show depending on if the user is logged in */}
            {isLoggedIn && (
 <button
   onClick={handleLogout}
@@ -119,9 +121,9 @@ export default function Home() {
         </div>
       </header>
 
-      {/* MAIN CONTENT (transparent so background shows) */}
+      {/* Our text box */}
       <main className="relative z-10 flex-1 text-black px-8 py-10 flex flex-col gap-8 sm:flex-row sm:px-20 sm:py-20">
-        {/* BOX AROUND LEFT TEXT */}
+ 
         <div className="solid-box flex-1 flex flex-col justify-center gap-4">
           <p className="text-lg">
             Navigate to your intended page using the buttons above.
@@ -132,7 +134,7 @@ export default function Home() {
         </div>
       </main>
 
-      {/* ─── FOOTER ──────────────────────────────────────────────── */}
+      {/* Universal footer */}
       <footer className="relative z-10 bg-black text-white p-0.5 flex flex-col sm:flex-row justify-between items-center">
         <div className="flex items-center space-x-4 mb-4 sm:mb-0">
           <div className="relative w-40 h-20">
@@ -167,7 +169,7 @@ export default function Home() {
         </div>
       </footer>
 
-      {/* ─── INLINE STYLES FOR THE SCROLLING BACKGROUND ───────────────── */}
+      {/* Inline styles for the background */}
       <style jsx global>{`
         .col-mask {
           overflow: hidden;

@@ -1,4 +1,3 @@
-// Import database connection and required models
 import connectMongoDB from "../../config/mongodb";
 import mongoose from "mongoose";
 import User from "../../models/User.js";
@@ -6,14 +5,15 @@ import Headset from "../../models/Headset.js";
 import Checkout from "../../models/Checkout.js";
 import Message from "../../models/Message.js";
 import jwt from "jsonwebtoken";
-
-// Import Next.js utilities for handling server requests and responses
 import { NextResponse } from "next/server";
 import { NextRequest } from "next/server";
 
-// Define the POST endpoint to handle various operations based on 'type'
+// Our POST request for most of the rest of our pages
+// Changes based on "type"
 export async function POST(request: NextRequest) {
+
   try {
+
     // Extract the 'type' and 'data' fields from the incoming JSON body
     const { type, data } = await request.json();
     console.log("Request received: ", { type, data });
@@ -21,8 +21,9 @@ export async function POST(request: NextRequest) {
     // Get token from cookie
     const token = request.cookies.get("token")?.value;
     console.log("Raw token from cookie:", token);
-    
-    
+
+
+    // This gets the userID from the token it extracts
     let userIdFromToken: string | null = null;
     if (token) {
       try {
@@ -36,33 +37,26 @@ export async function POST(request: NextRequest) {
       console.warn("No token found in cookies");
     }
     
-   
-    
-    // Connect to the MongoDB database
     await connectMongoDB();
    
+    // If the user calls deleteMessage
     if (type === "deleteMessage") {
       const { messageId, userId } = data;
     
-      if (!messageId || !userId) {
-        return NextResponse.json({ error: "Missing messageId or userId" }, { status: 400 });
-      }
-    
       const message = await Message.findById(messageId);
     
-      if (!message) {
-        return NextResponse.json({ error: "Message not found" }, { status: 404 });
-      }
-    
+      // Make sure that the user can actually delete the emssage
       if (message.postedBy.toString() !== userId) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
       }
     
+      // If so then delete the message
       await Message.findByIdAndDelete(messageId);
     
       return NextResponse.json({ message: "Message deleted" });
     }
     
+    // If the user wants to post a message
     if (type === "message") {
       const { name, message, postedBy } = data;
     
@@ -70,10 +64,8 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ error: "Missing user ID" }, { status: 400 });
       }
     
-      const newMessage = await Message.create({
-        name,
-        message,
-        postedBy,
+      // Add a name and message
+      const newMessage = await Message.create({ name, message, postedBy,
       });
     
       return NextResponse.json({
@@ -82,11 +74,8 @@ export async function POST(request: NextRequest) {
       }, { status: 201 });
     }
     
-      
-
-    // ─────────────────────────────────────────────
-    // TYPE: 'headset' – Add a new headset to the system
-    // ─────────────────────────────────────────────
+    // This was for when we were adding headsets, kind of useless now
+    // unless we want to add more
     if (type === "headset") {
       const { id, status, assignedTo, returnBy } = data;
 
@@ -96,7 +85,7 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ error: "Headset with this ID already exists" }, { status: 400 });
       }
 
-      // Create a new headset entry with default or provided values
+// Make a new headset
       const newHeadset = new Headset({
         id,
         status: status || "available",
@@ -114,13 +103,13 @@ export async function POST(request: NextRequest) {
       }, { status: 201 });
     }
 
-    // ─────────────────────────────────────────────
-    // TYPE: 'user' – Create a new user account
-    // ─────────────────────────────────────────────
+
+    // This is for when we were manually creating users, mostly with postman
     if (type === "user") {
       const { name, email, password, role } = data;
 
       // Create a new user with default role 'student' if not provided
+      // We ditched this concept kind of, but it's still here for now
       const newUser = new User({
         name,
         email,
@@ -137,15 +126,15 @@ export async function POST(request: NextRequest) {
       }, { status: 201 });
     }
 
-    // ─────────────────────────────────────────────
-    // TYPE: 'checkout' – Assign a headset to a user
-    // ─────────────────────────────────────────────
+    // This is for when the user calls checkout
     if (type === "checkout") {
       const { returnBy, quantity } = data;
       const userId = userIdFromToken;
-      
+
+      // This was very helpful for testing purposes
       console.log("Bulk checkout request (verified):", { userId, quantity });
       
+      // So was this, we could remove it but not now
       if (!userId) {
         return NextResponse.json({ error: "User not authenticated" }, { status: 401 });
       }
@@ -157,9 +146,10 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ error: "User not found" }, { status: 404 });
       }
       
-    
+      // Sets a default return date if they don't pick one
       const returnDate = returnBy || new Date(new Date().setDate(new Date().getDate() + 7));
     
+      // This portion checks and sees if there are enough headsets available
       const availableHeadsets = await Headset.find({ status: "available" }).limit(quantity);
     
       if (availableHeadsets.length < quantity) {
@@ -170,6 +160,7 @@ export async function POST(request: NextRequest) {
     
       const checkouts = [];
     
+      // Sets a checkout for each headset that is available
       for (const headset of availableHeadsets) {
         const newCheckout = new Checkout({
           headsetId: headset.id,
@@ -180,6 +171,8 @@ export async function POST(request: NextRequest) {
         await newCheckout.save();
         checkouts.push(newCheckout);
     
+
+        // Updates the headset with the checked out status
         headset.status = "checked out";
         headset.assignedTo = user._id;
         headset.lastCheckedOut = new Date();
@@ -188,7 +181,6 @@ export async function POST(request: NextRequest) {
       }
     
      
-    
       return NextResponse.json({
         message: "Headsets checked out successfully",
         checkouts,
@@ -196,20 +188,13 @@ export async function POST(request: NextRequest) {
     }
     
     
-
-    // ─────────────────────────────────────────────
-    // TYPE: 'return' – Return a headset
-    // ─────────────────────────────────────────────
+// If the user wants to return a headset
     if (type === "return") {
       const { headsetId } = data;
       console.log("Processing return for headsetId:", headsetId);
 
-      // Find the headset by ID
+    
       const headset = await Headset.findOne({ id: headsetId });
-      if (!headset) {
-        console.error("Headset not found:", headsetId);
-        return NextResponse.json({ error: "Headset not found" }, { status: 404 });
-      }
 
       // Reset the headset status and related fields
       headset.status = "available";
@@ -233,16 +218,18 @@ export async function POST(request: NextRequest) {
     }
 
 
-    // ─────────────────────────────────────────────
-    // TYPE: 'getCheckedOut' – Get all headsets checked out by a user
-    // ─────────────────────────────────────────────
+ // If the user wants to see all of their checked out headsets
     if (type === "getCheckedOut") {
       const { userId } = data;
 
+
+      // Useless for testing purposes
       if (!userId) {
         return NextResponse.json({ error: "Missing userId in request data" }, { status: 400 });
       }
 
+
+      // Find the headsets that the users has checked out
       const checkedOutHeadsets = await Headset.find({ assignedTo: userId });
 
       console.log("Checked out headsets for user:", userId, checkedOutHeadsets);
@@ -253,15 +240,14 @@ export async function POST(request: NextRequest) {
       }, { status: 200 });
     }
 
-
-
-
-    // If no matching type was found, return a bad request
+   // After everything, checks to make sure that the type is right
     return NextResponse.json({
       error: "Invalid type. Must be 'user', 'headset', 'checkout', or 'return'."
     }, { status: 400 });
 
   } catch (error) {
+
+
     // Catch any unexpected errors and return a 500 response
     console.error("Failed to process request:", error);
     return NextResponse.json({ error: "Request failed" }, { status: 500 });
@@ -270,6 +256,7 @@ export async function POST(request: NextRequest) {
   
 }
 
+// This is only for the messages page, but it gets the messages and shows them to the users
 export async function GET(request: NextRequest) {
   try {
     await connectMongoDB();

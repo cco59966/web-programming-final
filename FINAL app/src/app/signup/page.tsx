@@ -30,18 +30,25 @@ export default function SignupPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
+        credentials: "include", 
       });
+      
 
       const result = await res.json();
-
+      
+      
       if (!res.ok) {
         setError(result.message || "Signup failed");
       } else {
         //alert("Signup successful! Account activated.");
         setSuccessMessage(`Sign up confirmed!!! Welcome ${formData.name}!!!`);
-        setTimeout(() => {
+        if (res.ok) {
+          localStorage.clear()
+          localStorage.setItem("user", JSON.stringify(result.user)); 
+        //  localStorage.setItem("token", result.token); 
           router.push("/checkout");
-        }, 2500);
+        }
+
       }
     } catch (err) {
       setError("An unexpected error occurred.");

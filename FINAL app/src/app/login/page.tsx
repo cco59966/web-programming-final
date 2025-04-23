@@ -8,37 +8,12 @@ import { useRouter } from 'next/navigation';
 import { set } from "mongoose";
 
 export default function Home() {
+
   // State for login toggle
   const router = useRouter();
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setIsLoggedIn(true); // Set login state to true // CHANGE THIS FOR THE END OF THE PROJECT
-    // Handle form submission logic here
-    console.log('Form submitted');
-
-    router.push('authenticated'); // ✅ Redirect to desired page
-
-  };
-  const handleSubmit2 = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    // Handle form submission logic here
-    console.log('Form submitted');
-
-    router.push('authenticated'); // ✅ Redirect to desired page
-
-  };
-  const handleSubmit3 = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    // Handle form submission logic here
-    console.log('Form submitted');
-
-    router.push('home'); // ✅ Redirect to desired page
-
-  };
   connectMongoDB();
 
   const [formData, setFormData] = useState({ email: "", password: "" });

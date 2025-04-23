@@ -89,6 +89,7 @@ const MessagePage: React.FC = () => {
         } else {
           const errorText = await res.text();
           console.error("Failed to post comment", res.status, errorText);
+          alert("Comment Failed. Please Login to post a comment.");
         }
       } catch (err) {
         console.error("Error posting comment:", err);

@@ -4,14 +4,15 @@ import { useState, useEffect, ReactNode } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-// Card wrapper component
+// Added a card per the project instructions
 const Card = ({ children }: { children: ReactNode }) => (
-  <div className="bg-white rounded-2xl shadow-lg p-6 flex flex-col items-center text-center transition-transform transform hover:scale-105 duration-300">
+  <div className="bg-white rounded-2xl shadow-lg p-6 flex flex-col items-center text-center 
+  transition-transform transform hover:scale-105 duration-300">
     {children}
   </div>
 );
 
-// Single headset return component
+// This is for our return function
 const HeadsetItem = ({
   id,
   name,
@@ -23,6 +24,7 @@ const HeadsetItem = ({
   image: string;
   onReturnSuccess: () => void;
 }) => {
+  // Gets the headset id
   const handleReturn = async () => {
     try {
       const res = await fetch("/api/items", {
@@ -34,18 +36,23 @@ const HeadsetItem = ({
         }),
       });
 
+      // If it's a bad request
       const result = await res.json();
       if (res.ok) {
         onReturnSuccess();
       } else {
-        console.error("❌ Failed to return headset:", result.error);
+        console.error("Failed to return headset:", result.error);
       }
     } catch (error) {
-      console.error("❌ Error returning headset:", error);
+      console.error("Error returning headset:", error);
     }
   };
 
+
+ // The cards to display the headsets
   return (
+
+    // The card that we created that holds the headsets
     <Card>
       <Image
         src={image}
@@ -56,6 +63,8 @@ const HeadsetItem = ({
       />
       <h3 className="text-lg font-bold text-gray-800 mb-2">Meta Quest #{id}</h3>
       <p className="text-sm text-gray-600 mb-4">{name}</p>
+
+      {/* Button to return the headset */}
       <button
         onClick={handleReturn}
         className="bg-black text-white px-4 py-2 rounded font-semibold hover:bg-gray-800 transition"
@@ -66,28 +75,25 @@ const HeadsetItem = ({
   );
 };
 
-// Main page
+// Page for the user to see
 export default function Home() {
   const router = useRouter();
   const [headsets, setHeadsets] = useState<any[]>([]);
   const [userId, setUserId] = useState<string | null>(null);
   const [returnMessage, setReturnMessage] = useState<string | null>(null);
 
+  // If the user wants to logout
   const handleLogout = (e: React.FormEvent<HTMLFormElement>) => {
-     e.preventDefault();
-   
-     localStorage.removeItem("user");
-   
- 
+     e.preventDefault(); 
+     localStorage.removeItem("user"); 
      fetch("/api/logout", {
        method: "POST",
        credentials: "include",
      });
-   
-  
      router.push("/home");
    };
 
+   // This is how we are authenticating the user
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
@@ -105,6 +111,7 @@ export default function Home() {
   }, []);
   
 
+  // Handles the returned headsets and prints a message to the user on the page
   const handleReturnSuccess = () => {
     setReturnMessage("Returned 1 headset. Thanks!!!");
     setTimeout(() => setReturnMessage(null), 4000);
@@ -124,6 +131,8 @@ export default function Home() {
     }
   };
 
+
+  // Fetches the headsets so that it can show it to the user
   useEffect(() => {
     if (!userId) return;
   
@@ -148,9 +157,11 @@ export default function Home() {
     fetchHeadsets();
   }, [userId]);
   
+
+  // More of the page
   return (
     <div className="min-h-screen flex flex-col bg-[#f2cbec]">
-      {/* Header */}
+      {/* For all of the pages */}
       <header className="bg-[#BA0C2F] text-black flex justify-between items-center px-8 py-6">
         <h1 className="text-3xl font-bold">Warnell VR Checkout System</h1>
         <div className="flex gap-4">
@@ -186,13 +197,16 @@ export default function Home() {
         </div>
       </header>
 
-      {/* Main content */}
+      {/* Main page stuff */}
       <main className="flex-grow px-8 py-6">
+        {/* Return message to display to the user */}
         {returnMessage && (
           <div className="bg-green-100 text-green-800 px-4 py-2 text-center font-semibold mb-6 rounded shadow">
             {returnMessage}
           </div>
         )}
+
+        {/*  The map that we made to display the headsets */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
           {headsets.map((headset: any) => (
             <HeadsetItem
@@ -206,7 +220,7 @@ export default function Home() {
         </div>
       </main>
 
-      {/* Footer */}
+      {/* Footer across all the pages*/}
       <footer className="bg-black text-white p-4 flex flex-col sm:flex-row justify-between items-center">
         <div className="flex items-center space-x-4 mb-4 sm:mb-0">
           <div className="relative w-40 h-20">

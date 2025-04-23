@@ -1,11 +1,10 @@
 "use client"
 
 import React, { useState, useEffect } from 'react';
-//import '.././css/CheckoutPage.css';
 import Image from "next/image";
 import { useRouter } from 'next/navigation';
-//import '.././css/VRPage.css';
 
+// Our checkout page, lot of stuff here
 const CheckoutPage = () => {
   const router = useRouter();
   const [headsetQuantity, setHeadsetQuantity] = useState<number>(0);
@@ -14,12 +13,13 @@ const CheckoutPage = () => {
   const [userId, setUserId] = useState<string | null>(null);
   const [userName, setUserName] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
-
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [videos, setVideos] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | undefined>(undefined);
 
+
+  // How we are authenticating the user
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
@@ -36,22 +36,19 @@ const CheckoutPage = () => {
     }
   }, []);
 
+
+  // Logs out the user
   const handleLogout = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-  
     localStorage.removeItem("user");
-  
-
     fetch("/api/logout", {
       method: "POST",
       credentials: "include",
     });
-  
- 
     router.push("/home");
   };
   
-
+  // All of our other buttons 
   const handleSubmit2 = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     router.push('home');
@@ -65,6 +62,7 @@ const CheckoutPage = () => {
   const handleReservationSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    // This is whats passed when the user calls it 
     const reservationData = {
       type: "checkout",
       data: {
@@ -75,6 +73,7 @@ const CheckoutPage = () => {
       },
     };
 
+    // // Trys to reserve the headsets for the user
     try {
       const response = await fetch("/api/items", {
         method: "POST",
@@ -86,6 +85,7 @@ const CheckoutPage = () => {
       const resultText = await response.text();
       console.log("Server response:", resultText);
 
+      // If the response is good send a success message to the user and reset the form
       if (response.ok) {
         setSuccessMessage(`Reservation for ${headsetQuantity} headset(s) was successful. Thanks!`);
         console.log("Reservation saved.");
@@ -93,6 +93,8 @@ const CheckoutPage = () => {
         setCheckoutDate('');
         setReturnDate('');
         setTimeout(() => setSuccessMessage(null), 4000);
+
+        // Otherwise tell them it failed, helpful when testing
       } else {
         setSuccessMessage('Failed to make reservation:( Please try again.');
         console.error("Reservation failed to save:", response.status, resultText);
@@ -103,11 +105,14 @@ const CheckoutPage = () => {
     }
   };
 
+  // This is how we handle searching using the YouTube API
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!searchQuery.trim()) return;
     setLoading(true);
     setError(undefined);
+
+    // Try to find the video like a youtube search bar
     try {
       const res = await fetch(
         `https://www.googleapis.com/youtube/v3/search?` +
@@ -128,9 +133,11 @@ const CheckoutPage = () => {
     }
   };
 
+  // The main page
   return (
     <div className="checkout-container min-h-screen flex flex-col bg-[#eed6ea]">
 
+      {/* Our classic header */}
       <header className="bg-[#BA0C2F] text-black flex justify-between items-center px-8 py-6">
         <div className="flex items-center justify-start">
           <h1 className="text-3xl font-bold text-left">
@@ -164,7 +171,7 @@ const CheckoutPage = () => {
      
       <div className="w-full max-w-[90%] mx-auto flex flex-col lg:flex-row gap-6 mt-1 px-4">
 
-{/* Reservation Info + Form */}
+{/* Info and form for the headsets*/}
 <div className="flex-1 bg-white p-6 rounded-lg shadow-md">
   <h2 className="text-2xl font-semibold mb-4">Reservation Information</h2>
   <p className="mb-4">
@@ -178,6 +185,7 @@ const CheckoutPage = () => {
   <h2 className="text-2xl font-semibold mt-6 mb-4">Reservation Details</h2>
   <form onSubmit={handleReservationSubmit} className="space-y-6">
     <div>
+      {/* Form for the headsets, also keeps track of quantity so people can checkout multiple at once */}
       <label htmlFor="headsetQuantity" className="block mb-2 font-medium">Headset Amount:</label>
       <input
         type="number"
@@ -191,6 +199,7 @@ const CheckoutPage = () => {
       />
     </div>
 
+{/* Sets the return date section */}
     <div>
       <label htmlFor="returnDate" className="block mb-2 font-medium">Return Date:</label>
       <input
@@ -213,7 +222,7 @@ const CheckoutPage = () => {
   </form>
 </div>
 
-{/* YouTube Search */}
+{/* YouTube Search Bar */}
 <div className="flex-1 bg-white p-6 rounded-lg shadow-md">
   <h2 className="text-2xl font-semibold mb-4">Don't know what to watch, search here!</h2>
   <form onSubmit={handleSearch} className="flex gap-4 mb-6">
@@ -235,6 +244,7 @@ const CheckoutPage = () => {
   {loading && <p className="text-center py-4">Loading results...</p>}
   {error && <p className="text-red-600 text-center py-4">{error}</p>}
 
+{/* Makes a map of all of the videos to show them to the user */}
   <div className="space-y-4 max-h-96 overflow-y-auto">
     {videos.map(video => (
       <a
@@ -261,9 +271,9 @@ const CheckoutPage = () => {
 </div>
 </div>
 
-
+{/* Our universal footer */}
           <footer className="bg-black text-white p-0.5 flex flex-col sm:flex-row justify-between items-center">
-               {/* Left side: UGA Logo + © text */}
+             
                <div className="flex items-center space-x-4 mb-4 sm:mb-0">
                  <div className="relative w-40 h-20">
                    <Image
@@ -276,7 +286,7 @@ const CheckoutPage = () => {
                  <span className="text-base">© University of Georgia</span>
                </div>
        
-               {/* Right side: Links */}
+         
                <div className="flex flex-col items-center space-y-2">
                  <a href="https://eits.uga.edu/resources/" className="hover:underline">Resources</a>
                  <a href="https://warnell.uga.edu/resources-students" className="hover:underline">Contact Warnell IT</a>

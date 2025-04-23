@@ -1,3 +1,7 @@
+/* Our css file we started with, a lot of this may be useless now because of 
+how much we ended up using typescript to style the page. But we are keeping it
+just because some stuff is still effected by it */
+
 .vr-container {
     margin: 0;
     padding: 0;
@@ -18,7 +22,7 @@
 
 .vr-header {
     width: 100%;
-    background-color: rgb(186, 12, 47); /* Uga red color scheme */
+    background-color: rgb(186, 12, 47); 
     height: 50px;
     position: absolute;
     top: 0;
@@ -117,11 +121,6 @@ footer {
     text-decoration: underline;
 }
 
-/* ----------------------------------------------------
-   Infinite-scroll background columns
----------------------------------------------------- */
-
-/* 1) Mask container so overflow is hidden */
 .col-mask {
     position: relative;
     overflow: hidden;
@@ -129,14 +128,12 @@ footer {
     width: 100%;
 }
 
-/* 2) Stack images vertically */
 .col-content {
     display: flex;
     flex-direction: column;
     gap: 1rem;
 }
 
-/* 3) Keyframes for each column (we’ll scroll up 50% of the duplicated list) */
 @keyframes scrollcol1 {
     0%   { transform: translateY(0); }
     100% { transform: translateY(-50%); }
@@ -150,7 +147,6 @@ footer {
     100% { transform: translateY(-50%); }
 }
 
-/* 4) Attach animations (tweak durations to your taste) */
 .scroll-col-1 {
     animation: scrollcol1 30s linear infinite;
 }
@@ -166,8 +162,8 @@ footer {
     border-radius: 8px;
     padding: 1rem;
     max-width: 800px;
-    max-height: fit-content;      /* ← limit its width */
-    margin: 0 auto;        /* ← center it horizontally */
+    max-height: fit-content;      
+    margin: 0 auto;      
     margin-block: auto;
   }
   
