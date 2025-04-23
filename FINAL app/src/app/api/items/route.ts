@@ -26,7 +26,9 @@ export async function POST(request: NextRequest) {
     // This gets the userID from the token it extracts
     let userIdFromToken: string | null = null;
     if (token) {
+      
       try {
+
         const decoded: any = jwt.verify(token, process.env.AUTH_SECRET!);
         userIdFromToken = decoded.userId;
         console.log("Verified token userId:", userIdFromToken);
@@ -235,6 +237,7 @@ export async function POST(request: NextRequest) {
       console.log("Checked out headsets for user:", userId, checkedOutHeadsets);
 
       return NextResponse.json({
+
         message: "Checked out headsets fetched successfully",
         headsets: checkedOutHeadsets,
       }, { status: 200 });
@@ -251,6 +254,7 @@ export async function POST(request: NextRequest) {
     // Catch any unexpected errors and return a 500 response
     console.error("Failed to process request:", error);
     return NextResponse.json({ error: "Request failed" }, { status: 500 });
+
   }
 
   
@@ -259,11 +263,15 @@ export async function POST(request: NextRequest) {
 // This is only for the messages page, but it gets the messages and shows them to the users
 export async function GET(request: NextRequest) {
   try {
+
     await connectMongoDB();
     const messages = await Message.find({});
     return NextResponse.json({ messages }, { status: 200 });
+
   } catch (error) {
+
     console.error("Failed to fetch messages:", error);
     return NextResponse.json({ error: "Failed to fetch messages" }, { status: 500 });
+
   }
 }

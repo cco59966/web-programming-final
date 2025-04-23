@@ -6,11 +6,15 @@ import User from "../../../models/User.js";
 
 const AUTH_SECRET = process.env.AUTH_SECRET || "warnell-vr-secret";
 
+// Post request to create a new user session and log them in
 export async function POST(req: NextRequest) {
+  
   try {
+
     const { email, password } = await req.json();
     await connectMongoDB();
 
+    // Read their dada and see it it matches a user in the database
     const user = await User.findOne({ email });
     if (!user || !(await bcrypt.compare(password, user.password))) {
       return NextResponse.json({ message: "Incorrect email or password" }, { status: 401 });
@@ -18,6 +22,7 @@ export async function POST(req: NextRequest) {
 
     const token = jwt.sign({ userId: user._id }, AUTH_SECRET, { expiresIn: "1d" });
 
+    // If the response is successful, set the token in the cookies and return the user data
     const res = NextResponse.json({
       message: "Login successful",
       user: {
@@ -30,14 +35,15 @@ export async function POST(req: NextRequest) {
     
     res.cookies.set("token", token, {
       httpOnly: true,
-      // secure: process.env.NODE_ENV === "production",
       secure: false,
       sameSite: "lax",
       path: "/",
-      maxAge: 60 * 60 * 24, // 1 day
+      maxAge: 60 * 60 * 24, 
     });
     
     return res;
+
+    // Return this if there is an error
   } catch (err) {
     console.error("Login API error:", err);
     return NextResponse.json({ message: "Internal Server Error" }, { status: 500 });

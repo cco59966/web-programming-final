@@ -13,6 +13,7 @@ interface RouteParams {
 
 // Handle PUT request to update a user document by ID
 export async function PUT(request: NextRequest, { params }: RouteParams) {
+    
     const { id } = params; 
     const { name, email, password, role } = await request.json(); 
     
@@ -40,6 +41,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
 
 // Handle DELETE request to remove a user document by ID
 export async function DELETE(request: NextRequest, { params }: RouteParams) {
+
     const { id } = params; 
 
     // Validate that the ID is a proper MongoDB ObjectId

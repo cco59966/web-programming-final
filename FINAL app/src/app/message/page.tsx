@@ -5,7 +5,7 @@ import '.././message/message-page.css';
 import Image from "next/image";
 import { useRouter } from 'next/navigation';
 import '.././css/VRPage.css';
-
+// Our beautiful message page that users and non-users can see
 const MessagePage: React.FC = () => {
   const router = useRouter();
   const [userName, setUserName] = useState('');
@@ -15,6 +15,8 @@ const MessagePage: React.FC = () => {
   const [userId, setUserId] = useState<string | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+
+// Sees if the user is logged in
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
@@ -26,7 +28,7 @@ const MessagePage: React.FC = () => {
     fetchMessages();
   }, []);
   
-
+// Gets the messages from the database
   const fetchMessages = async () => {
     try {
       const res = await fetch("/api/items"); 
@@ -37,6 +39,7 @@ const MessagePage: React.FC = () => {
     }
   };
 
+  // Allows the user to delete their own comments
   const handleDeleteComment = async (messageId: string) => {
     const confirmDelete = window.confirm("Are you sure you want to delete this comment?");
     if (!confirmDelete) return;
@@ -66,6 +69,7 @@ const MessagePage: React.FC = () => {
     }
   };
   
+  // Allows the user to add new comments
   const addNewComment = async () => {
     if (userName.trim() && commentText.trim()) {
       try {
@@ -87,6 +91,8 @@ const MessagePage: React.FC = () => {
           setCommentText('');
           fetchMessages();
         } else {
+
+          // This happens if the user is not logged in
           const errorText = await res.text();
           console.error("Failed to post comment", res.status, errorText);
           alert("Comment Failed. Please Login to post a comment.");
@@ -107,7 +113,11 @@ const MessagePage: React.FC = () => {
   };
 
   return (
+    
+      
     <div className="app-container">
+      
+      {/* Universal header */}
      <header className="bg-[#BA0C2F] text-black flex justify-between items-center px-8 py-6">
         <div className="flex items-center justify-start">
           <h1 className="text-3xl font-bold text-left">Warnell VR Checkout System</h1>
@@ -139,7 +149,7 @@ const MessagePage: React.FC = () => {
         </div>
       </header>
 
-      {/* FORUM CONTENT */}
+      {/* Section to add comments */}
       <div className="content-area">
         <div className="forum-container">
           <div className="comment-form">
@@ -147,13 +157,13 @@ const MessagePage: React.FC = () => {
             <input
               type="text"
               className="name-input"
-              placeholder="Your name"
+              placeholder="Your name (Or type Anonymous)"
               value={userName}
               onChange={(e) => setUserName(e.target.value)}
               required
             />
             <textarea
-              placeholder="Share your thoughts about VR technology at Warnell..."
+              placeholder="Type your message here!"
               value={commentText}
               onChange={(e) => setCommentText(e.target.value)}
               onKeyDown={handleKeyDown}
@@ -164,8 +174,11 @@ const MessagePage: React.FC = () => {
 
           <div className="comments-list">
             {comments.length === 0 ? (
-              <div className="no-comments">No comments yet. Be the first to share!</div>
+              <div className="no-comments">No comments right now. Add something to fix that!</div>
             ) : (
+
+              // The map function that shows the comments to the user, no matter if they
+              // are logged in or not
               comments.map((comment, index) => (
                 <div key={index} className="comment">
                   <div className="comment-header">
@@ -187,6 +200,7 @@ const MessagePage: React.FC = () => {
         </div>
       </div>
 
+      {/* Universal footer*/}
        <footer className="bg-black text-white p-0.5 flex flex-col sm:flex-row justify-between items-center">
          <div className="flex items-center space-x-4 mb-4 sm:mb-0">
            <div className="relative w-40 h-20">

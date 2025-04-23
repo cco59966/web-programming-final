@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-//import '.././css/VRPage.css';
 import Image from "next/image";
 
 export default function SignupPage() {
@@ -15,11 +14,13 @@ export default function SignupPage() {
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   
+  // Handles the change of the forms, just like the /login does
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  // Handles the submit for the signup page
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
@@ -32,20 +33,19 @@ export default function SignupPage() {
         body: JSON.stringify(formData),
         credentials: "include", 
       });
-      
-
+    
       const result = await res.json();
-      
-      
+       
       if (!res.ok) {
         setError(result.message || "Signup failed");
       } else {
-        //alert("Signup successful! Account activated.");
+     // Sends the user feedback saying they signed up successfully
         setSuccessMessage(`Sign up confirmed!!! Welcome ${formData.name}!!!`);
         if (res.ok) {
+
+          // Clear the storage of the old data just in case and push the user to checkout
           localStorage.clear()
           localStorage.setItem("user", JSON.stringify(result.user)); 
-        //  localStorage.setItem("token", result.token); 
           router.push("/checkout");
         }
 
@@ -55,6 +55,8 @@ export default function SignupPage() {
     }
   };
 
+
+  // Header buttons
   const handleReturnHome = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     router.push("/");
@@ -65,15 +67,20 @@ export default function SignupPage() {
   };
 
   return (
+
+    
     <div 
     className="min-h-screen flex flex-col"
     style={{
+      
       backgroundImage: "url('/images/vrpage/vr.jpg')",
       backgroundSize:   "cover",
       backgroundPosition:"center",
       backgroundRepeat:  "no-repeat",
     }}
     >
+      
+      {/* SIgnup form */}
       <main className="flex-1">
         <div className="vr-login-form">
           <form onSubmit={handleSubmit}>
@@ -106,6 +113,8 @@ export default function SignupPage() {
             {successMessage && <p className="text-green-600 mt-2 font-semibold">{successMessage}</p>}
             <p className="mt-2 text-sm">
               Already have an account?{' '}
+              
+      {/* Gives the user an option for a login button */}
               <button type="button" onClick={handleNavigateLogin} className="text-blue-600 underline">
                 Log in here
               </button>
@@ -113,6 +122,8 @@ export default function SignupPage() {
           </form>
         </div>
 
+
+      {/* Universal header */}
         <header className="bg-[#BA0C2F] text-black flex justify-between items-center px-8 py-6">
           <div className="flex items-center justify-start">
             <h1 className="text-3xl font-bold text-left">Warnell VR Checkout System</h1>
@@ -125,6 +136,7 @@ export default function SignupPage() {
         </header>
       </main>
 
+      {/* Universal footer */}
       <footer className="bg-black text-white p-0.5 flex flex-col sm:flex-row justify-between items-center">
         <div className="flex items-center space-x-4 mb-4 sm:mb-0">
           <div className="relative w-40 h-20">

@@ -9,33 +9,18 @@ import { useState } from "react";
 export default function Home() {
   const router = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
- // setIsLoggedIn(false); 
-  // --- IMAGES FOR EACH COLUMN ---
+
+  // Images for each page on the splash
   const col1 = ["/images/vrpage/forest1.jpg", "/images/vrpage/forest4.jpg", "/images/vrpage/forest7.jpg"];
   const col2 = ["/images/vrpage/forest2.jpg", "/images/vrpage/forest5.jpg", "/images/vrpage/forest8.jpg","/images/vrpage/forest15.jpg"];
   const col3 = ["/images/vrpage/forest3.jpg", "/images/vrpage/forest6.jpg", "/images/vrpage/forest11.jpg"];
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    router.push("/signup");
-  };
-  const handleSubmit2 = (e: React.FormEvent) => {
-    e.preventDefault();
-    router.push("authenticated");
-  };
-  const handleSubmit3 = (e: React.FormEvent) => {
-    e.preventDefault();
-    router.push("/");
-  };
-  const handleSubmit4 = (e: React.FormEvent) => {
-    e.preventDefault();
-    router.push("/message");
-  };
+  
   connectMongoDB();
 
   return (
     <div className="relative min-h-screen flex flex-col">
-      {/* BACKGROUND: 3‑column infinite scroll */}
+      {/* Create the background, pretty cool*/}
       <div className="absolute inset-0 -z-10 grid grid-cols-[1fr_3fr_1fr] gap-4 p-8" aria-hidden="true">
         {[col1, col2, col3].map((col, idx) => {
           const imgs = [...col, ...col];
@@ -53,6 +38,7 @@ export default function Home() {
         })}
       </div>
 
+      {/* Universal header, some buttons only show if logged in */}
       <header className="relative z-10 bg-[#BA0C2F] text-black flex justify-between items-center px-8 py-6">
         <h1 className="text-3xl font-bold">Warnell VR Checkout System</h1>
         <div className="flex gap-4">
@@ -89,10 +75,8 @@ export default function Home() {
           )}
         </div>
       </header>
-
-      {/* MAIN CONTENT (transparent so background shows) */}
       <main className="relative z-10 flex-1 text-black px-8 py-10 flex flex-col gap-8 sm:flex-row sm:px-20 sm:py-20">
-        {/* BOX AROUND LEFT TEXT */}
+        {/* Main text box */}
         <div className="solid-box flex-1 flex flex-col justify-center gap-4">
           <p className="text-lg">
             Login using your UGA email to access our VR Headset checkout system for labs and projects.
@@ -103,7 +87,7 @@ export default function Home() {
         </div>
       </main>
 
-      {/* FOOTER */}
+      {/* Universal footer */}
       <footer className="relative z-10 bg-black text-white p-0.5 flex flex-col sm:flex-row justify-between items-center">
         <div className="flex items-center space-x-4 mb-4 sm:mb-0">
           <div className="relative w-40 h-20">

@@ -5,7 +5,6 @@ import connectMongoDB from ".././config/mongodb";
 import '.././css/VRPage.css';
 import Image from "next/image";
 import { useRouter } from 'next/navigation';
-import { set } from "mongoose";
 
 export default function Home() {
 
@@ -19,11 +18,13 @@ export default function Home() {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
 
+  // Handler for changing the data of the user
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
 
+  // Tries to handle the login, it sees if it matches a user thats in the database
   const handleLoginSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
@@ -35,10 +36,8 @@ export default function Home() {
         body: JSON.stringify({ email: formData.email, password: formData.password }),
         credentials: "include",
       });
-
-
       const data = await response.json();
-
+      // If it finds a user it pushes them to the checkout page
       if (response.ok) {
         localStorage.setItem("user", JSON.stringify(data.user));
         router.push("/checkout");
@@ -53,13 +52,14 @@ export default function Home() {
       setError("An unexpected error occurred.");
     }
   };
-
+// Send them home
   const handleReturnHome = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     router.push("/");
   };
 
   return (
+    // Creates the background, i like this image a lot
     <div className="relative min-h-screen flex flex-col"
       style={{
         backgroundImage: "url('/images/vrpage/vr.jpg')",
@@ -67,6 +67,9 @@ export default function Home() {
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
       }}>
+        
+        
+      {/* Takes in the users information */}
       <main className="flex-1">
         <div className="vr-login-form">
           <form onSubmit={handleLoginSubmit}>
@@ -91,6 +94,7 @@ export default function Home() {
           </form>
         </div>
 
+      {/* Universal header */}
         <header className="bg-[#BA0C2F] text-black flex justify-between items-center px-8 py-6">
           <div className="flex items-center justify-start">
             <h1 className="text-3xl font-bold text-left">Warnell VR Checkout System</h1>
@@ -104,7 +108,8 @@ export default function Home() {
       </main>
 
       <footer className="bg-black text-white p-0.5 flex flex-col sm:flex-row justify-between items-center">
-        {/* Left side: UGA Logo + © text */}
+       
+      {/* Universal footer */}
         <div className="flex items-center space-x-4 mb-4 sm:mb-0">
           <div className="relative w-40 h-20">
             <Image
@@ -117,7 +122,7 @@ export default function Home() {
           <span className="text-base">© University of Georgia</span>
         </div>
 
-        {/* Right side: Links */}
+     
         <div className="flex flex-col items-center space-y-2">
           <a href="https://eits.uga.edu/resources/" className="hover:underline">Resources</a>
           <a href="https://warnell.uga.edu/resources-students" className="hover:underline">Contact Warnell IT</a>
@@ -126,7 +131,7 @@ export default function Home() {
         </div>
       </footer>
     </div>
-    //</div>
+
   );
 }
 
