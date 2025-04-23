@@ -153,7 +153,16 @@ const MessagePage: React.FC = () => {
       <div className="content-area">
         <div className="forum-container">
           <div className="comment-form">
-            <h3>Add Your Comment</h3>
+
+             {/* Displays to the user if they aren't logged in */}
+          {!isLoggedIn && (
+       
+       <h3>Login to add comments!</h3>
+         
+          )}
+          {isLoggedIn && (    
+       <h3>Add a comment</h3>       
+          )}
             <input
               type="text"
               className="name-input"
