@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 
+// Our schema for the users, takes in name, email, password, role, and createdAt date
 const UserSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
@@ -15,6 +16,7 @@ const UserSchema = new mongoose.Schema(
       default: Date.now,
     },
   },
+  // Added this because we were having problems with it going to the wrong space
   {
     collection: "Users", 
   }

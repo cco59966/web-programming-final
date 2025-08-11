@@ -1,78 +1,97 @@
-"use client"
+"use client";
 
 import { useState } from "react";
-import connectMongoDB from ".././config/mongodb";
-import '.././css/VRPage.css';
+import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { useRouter } from 'next/navigation';
 
-export default function Home() {
-
-  // State for login toggle
+export default function SignupPage() {
   const router = useRouter();
-
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  connectMongoDB();
-
-  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
   const [error, setError] = useState("");
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  
+  // Handles the change of the forms, just like the /login does
 
-  // Handler for changing the data of the user
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-
-  // Tries to handle the login, it sees if it matches a user thats in the database
-  const handleLoginSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  // Handles the submit for the signup page
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
+    setSuccessMessage(null);
 
     try {
-      const response = await fetch("/api/items/login", {
+      const res = await fetch("/api/items/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: formData.email, password: formData.password }),
-        credentials: "include",
+        body: JSON.stringify(formData),
+        credentials: "include", 
       });
-      const data = await response.json();
-      // If it finds a user it pushes them to the checkout page
-      if (response.ok) {
-        localStorage.setItem("user", JSON.stringify(data.user));
-        router.push("/checkout");
-      }
-      else {
-        setError(data.message || "Login failed");
-      }
-    } catch (error) {
+    
+      const result = await res.json();
+       
+      if (!res.ok) {
+        setError(result.message || "Signup failed");
+      } else {
+     // Sends the user feedback saying they signed up successfully
+        setSuccessMessage(`Sign up confirmed!!! Welcome ${formData.name}!!!`);
+        if (res.ok) {
 
+          // Clear the storage of the old data just in case and push the user to checkout
+          localStorage.clear()
+          localStorage.setItem("user", JSON.stringify(result.user)); 
+          router.push("/checkout");
+        }
 
-      console.error("Login error:", error);
+      }
+    } catch (err) {
       setError("An unexpected error occurred.");
     }
   };
-// Send them home
+
+
+  // Header buttons
   const handleReturnHome = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     router.push("/");
   };
 
+  const handleNavigateLogin = () => {
+    router.push("/login");
+  };
+
   return (
-    // Creates the background, i like this image a lot
-    <div className="relative min-h-screen flex flex-col"
-      style={{
-        backgroundImage: "url('/images/vrpage/vr.jpg')",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-      }}>
-        
-        
-      {/* Takes in the users information */}
+
+    
+    <div 
+    className="min-h-screen flex flex-col"
+    style={{
+      
+      backgroundImage: "url('/images/vrpage/vr.jpg')",
+      backgroundSize:   "cover",
+      backgroundPosition:"center",
+      backgroundRepeat:  "no-repeat",
+    }}
+    >
+      
+      {/* SIgnup form */}
       <main className="flex-1">
         <div className="vr-login-form">
-          <form onSubmit={handleLoginSubmit}>
+          <form onSubmit={handleSubmit}>
+            <input
+              type="text"
+              name="name"
+              placeholder="Enter your name"
+              value={formData.name}
+              onChange={handleChange}
+              required
+            />
             <input
               type="email"
               name="email"
@@ -89,10 +108,20 @@ export default function Home() {
               onChange={handleChange}
               required
             />
-            <button type="submit">Login</button>
-            {error && <p className="text-red-600">{error}</p>}
+            <button type="submit">Sign Up</button>
+            {error && <p className="text-red-600 mt-2">{error}</p>}
+            {successMessage && <p className="text-green-600 mt-2 font-semibold">{successMessage}</p>}
+            <p className="mt-2 text-sm">
+              Already have an account?{' '}
+              
+      {/* Gives the user an option for a login button */}
+              <button type="button" onClick={handleNavigateLogin} className="text-blue-600 underline">
+                Log in here
+              </button>
+            </p>
           </form>
         </div>
+
 
       {/* Universal header */}
         <header className="bg-[#BA0C2F] text-black flex justify-between items-center px-8 py-6">
@@ -107,9 +136,8 @@ export default function Home() {
         </header>
       </main>
 
-      <footer className="bg-black text-white p-0.5 flex flex-col sm:flex-row justify-between items-center">
-       
       {/* Universal footer */}
+      <footer className="bg-black text-white p-0.5 flex flex-col sm:flex-row justify-between items-center">
         <div className="flex items-center space-x-4 mb-4 sm:mb-0">
           <div className="relative w-40 h-20">
             <Image
@@ -122,16 +150,13 @@ export default function Home() {
           <span className="text-base">© University of Georgia</span>
         </div>
 
-     
         <div className="flex flex-col items-center space-y-2">
           <a href="https://eits.uga.edu/resources/" className="hover:underline">Resources</a>
           <a href="https://warnell.uga.edu/resources-students" className="hover:underline">Contact Warnell IT</a>
           <a href="https://my.uga.edu/htmlportal/index.php?guest=normal/render.uP" className="hover:underline">MyUGA</a>
-          <a href="https://eits.uga.edu/support/" className="hover:underline">Help</a>
+          <a href="https://eits.uga.enpdu/support/" className="hover:underline">Help</a>
         </div>
       </footer>
     </div>
-
   );
 }
-

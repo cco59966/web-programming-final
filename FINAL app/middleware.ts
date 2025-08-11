@@ -1,19 +1,32 @@
 import { NextRequest, NextResponse } from "next/server";
+// Middleware for disallowing access to certain routes based on authentication status
+export function middleware(request: NextRequest) {
+  const { pathname, origin } = request.nextUrl;
+  // Public routes that all users can view
+  const isAuthRoute =
+    pathname.startsWith("/api/items/login") ||
+    pathname.startsWith("/api/items/signup") ||
+    pathname.startsWith("/api/items/logout") ||
+    pathname.startsWith("/api/items/message");
 
-const middleware = (request: NextRequest) => {
-  const { pathname } = request.nextUrl;
+  const isPublicPage =
+    pathname === "/login" ||
+    pathname === "/signup" ||
+    pathname.startsWith("/_next") ||
+    pathname.startsWith("/favicon.ico");
 
-  console.log(`Restricted route hit: ${pathname}`);
-  console.log("Can't go here!");
+  if (isAuthRoute || isPublicPage) {
+    return NextResponse.next();
+  }
 
-  return NextResponse.redirect(new URL("/", request.url));
-};
+  const token = request.cookies.get("token")?.value;
+  if (!token) {
+    const loginUrl = new URL("/login", origin);
+    return NextResponse.redirect(loginUrl);
+  }
+  return NextResponse.next();
+}
 
 export const config = {
-
-    matcher: [
-        "/app/api/items/:path*"
-    ]
+  matcher: ["/((?!_next|favicon.ico).*)"],
 };
-
-export default middleware;
